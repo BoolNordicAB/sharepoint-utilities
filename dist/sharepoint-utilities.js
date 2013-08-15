@@ -41,7 +41,7 @@ function $_global_bool_sharepoint_rest () {
     // Is asynchronous for consistency.
 
     // Returns a promise resolving to the ajax defaults.
-    var getDefaults = function (url) {
+    var getDefaults = function (url, config) {
       var deferred = $.Deferred();
       var defaults = {
         url: _spPageContextInfo.webAbsoluteUrl + url,
@@ -51,6 +51,7 @@ function $_global_bool_sharepoint_rest () {
         }
       };
 
+      _.extend(defaults, config);
       deferred.resolve(defaults);
       return deferred.promise();
     };
@@ -59,7 +60,7 @@ function $_global_bool_sharepoint_rest () {
     // which includes the getConfig and the request digest.
 
     // Returns a promise resolving to the ajax post defaults.
-    var postDefaults = function (url, data) {
+    var postDefaults = function (url, data, config) {
       return $.when(getDefaults(url), withRequestDigest())
         .then(function (defaults, digest) {
           var added = {
@@ -71,7 +72,7 @@ function $_global_bool_sharepoint_rest () {
             }
           };
 
-          return $.extend(true, defaults, added);
+          return $.extend(true, defaults, added, config);
         });
     };
 
@@ -81,8 +82,8 @@ function $_global_bool_sharepoint_rest () {
 
     */
 
-    var get = function (url) {
-      return getDefaults(url)
+    var get = function (url, config) {
+      return getDefaults(url, config)
         .then(function (defaults) {
           return $.ajax(defaults);
         });
@@ -100,9 +101,9 @@ function $_global_bool_sharepoint_rest () {
 
     */
 
-    var post = function (url, data) {
+    var post = function (url, data, config) {
       data = typeof data === 'string' ? data : JSON.stringify(data);
-      return postDefaults(url, data).then(function (defaults) {
+      return postDefaults(url, data, config).then(function (defaults) {
         return $.ajax(defaults);
       });
     };
@@ -125,9 +126,9 @@ function $_global_bool_sharepoint_rest () {
 
     */
 
-    var getListByName = function (name) {
+    var getListByName = function (name, config) {
       var url = '/_api/Web/Lists/getByTitle(\'' + name + '\')/items/';
-      return get(url);
+      return get(url, config);
     };
 
     /*
@@ -139,9 +140,9 @@ function $_global_bool_sharepoint_rest () {
 
     */
 
-    var postListByName = function (name, data) {
+    var postListByName = function (name, data, config) {
       var url = '/_api/Web/Lists/getByTitle(\'' + name + '\')/items/';
-      return post(url, data);
+      return post(url, data, config);
     };
 
     /*
