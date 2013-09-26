@@ -1,5 +1,5 @@
 function $_global_bool_sharepoint_rest () {
-  (function ($, _spPageContextInfo) {
+  (function (_spPageContextInfo) {
     'use strict';
 
     /*
@@ -27,7 +27,7 @@ function $_global_bool_sharepoint_rest () {
             deferred.reject(
               new Error("Timed out getting RequestDigest"));
           }
-          return;
+          return; 
         }
 
         clearInterval(interval);
@@ -162,6 +162,6 @@ function $_global_bool_sharepoint_rest () {
       getListByName: getListByName,
       postListByName: postListByName
     };
-  })(jQuery, _spPageContextInfo);
+  })(_spPageContextInfo);
 }
 $_global_bool_sharepoint_rest();
