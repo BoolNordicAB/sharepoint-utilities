@@ -45,14 +45,12 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build', [
-    'jshint',
     'concat',
     'uglify'
   ]);
 
   grunt.registerTask('default', [
     'jshint',
-    'karma',
-    'build'
+    'karma'
   ]);
 };
