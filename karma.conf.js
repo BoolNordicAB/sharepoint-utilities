@@ -8,6 +8,7 @@ files = [
   MOCHA,
   MOCHA_ADAPTER,
   'node_modules/chai/chai.js',
+  'bower_components/jquery/jquery.js',
   'test/utilities/*.js',
   'src/**/*.js',
   'test/**/*.js'

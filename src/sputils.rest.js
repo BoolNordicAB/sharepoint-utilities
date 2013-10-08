@@ -1,5 +1,5 @@
 function $_global_sputils_rest () {
-  (function (_spPageContextInfo) {
+  (function ($, _spPageContextInfo) {
     'use strict';
 
     /*
@@ -74,7 +74,7 @@ function $_global_sputils_rest () {
         }
       };
 
-      _.extend(defaults, config);
+      $.extend(defaults, config);
       deferred.resolve(defaults);
       return deferred.promise();
     };
@@ -185,6 +185,6 @@ function $_global_sputils_rest () {
       getListByName: getListByName,
       postListByName: postListByName
     };
-  })(_spPageContextInfo);
+  })(jQuery, _spPageContextInfo);
 }
 $_global_sputils_rest();
