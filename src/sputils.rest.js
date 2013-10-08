@@ -10,8 +10,15 @@ function $_global_sputils_rest () {
 
     Type.registerNamespace('sputils.rest');
 
+    // This is used to cache results
+    // from grabbing the request digest.
     var requestDigest;
 
+    // Simple AJAX request for fetching the request digest
+    // from /_api/contextinfo. This is used as a fallback
+    // for the one embedded in the SharePoint page.
+
+    // Returns a promise resolving to the digest string.
     var requestFormDigest = function () {
       var deferred = $.Deferred();
 
