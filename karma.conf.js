@@ -5,8 +5,9 @@ basePath = '';
 
 // list of files / patterns to load in the browser
 files = [
-  JASMINE,
-  JASMINE_ADAPTER,
+  MOCHA,
+  MOCHA_ADAPTER,
+  'node_modules/chai/chai.js',
   'test/utilities/*.js',
   'src/**/*.js',
   'test/**/*.js'
