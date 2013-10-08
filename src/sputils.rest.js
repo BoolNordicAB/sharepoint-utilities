@@ -1,4 +1,4 @@
-function $_global_bool_sharepoint_rest () {
+function $_global_sputils_rest () {
   (function (_spPageContextInfo) {
     'use strict';
 
@@ -8,7 +8,7 @@ function $_global_bool_sharepoint_rest () {
 
     */
 
-    Type.registerNamespace('bool.sharepoint.rest');
+    Type.registerNamespace('sputils.rest');
 
     // Utility for grabbing the digest off the page in
     // an asynchronous manner. Solves the issue of script
@@ -93,7 +93,7 @@ function $_global_bool_sharepoint_rest () {
 
     EXAMPLE USE:
 
-    get("/_api/web/lists").then(function (data) {
+    sputils.rest.get("/_api/web/lists").then(function (data) {
       $.each(data.d.results, function (idx,el) {
         console.log(el);
       });
@@ -115,7 +115,7 @@ function $_global_bool_sharepoint_rest () {
     var data = {"Title":"REST API FTW",
                 "__metadata": { "type": "SP.Data.AnnouncementsListItem"}};
 
-    post("/_api/Web/Lists/getByTitle('Announcements')/items/", data)
+    sputils.rest.post("/_api/Web/Lists/getByTitle('Announcements')/items/", data)
       .then(function (data) { console.log(data) });
 
     */
@@ -135,7 +135,7 @@ function $_global_bool_sharepoint_rest () {
 
     EXAMPLE USE
 
-    getListByName('Announcements')
+    sputils.rest.getListByName('Announcements')
       .then(function (data) { console.log(data.d.results) });
 
     */
@@ -151,7 +151,7 @@ function $_global_bool_sharepoint_rest () {
 
     var data = {"Title": "RESTlessly POSTing",
                 "__metadata": { type: "SP.Data.AnnouncementsListItem"} };
-    bool.sharepoint.rest.postListByName("Announcements", data)
+    sputils.rest.postListByName("Announcements", data)
       .then(function (data) { console.log(data); });
 
     */
