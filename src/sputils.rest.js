@@ -10,29 +10,45 @@ function $_global_sputils_rest () {
 
     Type.registerNamespace('sputils.rest');
 
+    var requestDigest;
+
+    var requestFormDigest = function () {
+      var deferred = $.Deferred();
+
+      sputils.rest.get("/_api/contextinfo", { "method": "POST" })
+        .then(function (data) {
+          deferred.resolve(data.d.GetContextWebInformation.FormDigestValue);
+        });
+
+      return deferred.promise();
+    };
+
     // Utility for grabbing the digest off the page in
     // an asynchronous manner. Solves the issue of script
     // running before page has loaded proper.
 
     // Returns a promise resolving to the digest string.
     var withRequestDigest = function () {
-      var deferred = $.Deferred(),
-          tries = 0;
+      var deferred = $.Deferred();
 
-      var interval = setInterval(function () {
+      if (requestDigest) {
+        deferred.resolve(requestDigest);
+      }
+      else {
         var rd = $("#__REQUESTDIGEST");
-        if (rd.length < 1) {
-          if (++tries > timeout) {
-            clearInterval(interval);
-            deferred.reject(
-              new Error("Timed out getting RequestDigest"));
-          }
-          return; 
-        }
 
-        clearInterval(interval);
-        deferred.resolve(rd.val());
-      }, 100);
+        if (rd.length > 0 && rd.val() !== "Invalid form digest") {
+          requestDigest = rd.val();
+          deferred.resolve(rd.val());
+        }
+        else {
+          requestFormDigest()
+            .then(function (digest) {
+              requestDigest = digest;
+              deferred.resolve(digest);
+            });
+        }
+      }
 
       return deferred.promise();
     };
