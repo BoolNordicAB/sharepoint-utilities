@@ -37,7 +37,7 @@ function $_global_sputils_rest () {
       else {
         var rd = $("#__REQUESTDIGEST");
 
-        if (rd.length > 0 && rd.val() !== "Invalid form digest") {
+        if (rd.length > 0 && rd.val() !== "InvalidFormDigest") {
           requestDigest = rd.val();
           deferred.resolve(rd.val());
         }
