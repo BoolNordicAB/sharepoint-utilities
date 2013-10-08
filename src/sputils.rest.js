@@ -156,7 +156,7 @@ function $_global_sputils_rest () {
 
     */
 
-    bool.sharepoint.rest = {
+    sputils.rest = {
       get: get,
       post: post,
       getListByName: getListByName,
@@ -164,4 +164,4 @@ function $_global_sputils_rest () {
     };
   })(_spPageContextInfo);
 }
-$_global_bool_sharepoint_rest();
+$_global_sputils_rest();
