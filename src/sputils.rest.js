@@ -22,7 +22,7 @@ function $_global_sputils_rest () {
     var requestFormDigest = function () {
       var deferred = $.Deferred();
 
-      sputils.rest.get("/_api/contextinfo", { "method": "POST" })
+      get("/_api/contextinfo", { "type": "POST" })
         .then(function (data) {
           deferred.resolve(data.d.GetContextWebInformation.FormDigestValue);
         });
@@ -43,7 +43,6 @@ function $_global_sputils_rest () {
       }
       else {
         var rd = $("#__REQUESTDIGEST");
-
         if (rd.length > 0 && rd.val() !== "InvalidFormDigest") {
           requestDigest = rd.val();
           deferred.resolve(rd.val());
