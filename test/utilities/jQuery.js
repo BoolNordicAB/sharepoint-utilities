@@ -1,6 +1,9 @@
-window.jQuery = $.extend(jQuery, function(el) {
+$.extend(jQuery, function(el) {
   console.log(el);
 });
 
-jQuery.find = function(selector){ throw "Don't forget to stub!"; };
-jQuery.ajax = function(config){ throw "Don't forget to stub!"; };
+window.initialize_jquery = function () {
+  jQuery.ajax = function(config){ throw "Don't forget to stub!"; };
+};
+
+initialize_jquery();
