@@ -31,18 +31,27 @@ describe('SharePoint REST API Wrapper', function () {
   describe('post', function () {
     it('should have correct config settings', function (done) {
 
+      // Post requests require a request digest.
+      // We manually write this to the document.
       /* jshint evil: true */
-      document.write("<input id=__REQUESTDIGEST val=TestValue />");
+      document.write("<input id=__REQUESTDIGEST value=TestValue />");
       /* jshint evil: false */
 
+      // Mock jQuery ajax
       jQuery.ajax = function (config) {
+        console.log(config);
         expect(config)
           .to.have.deep.property('headers.accept',
                                  'application/json;odata=verbose');
         expect(config)
+          .to.have.deep.property('headers.X-RequestDigest',
+                                 'TestValue');
+        expect(config)
           .to.have.property('url');
         expect(config)
           .to.have.property('type', 'POST');
+        expect(config)
+          .to.have.property('data', '{"test":"test"}');
       };
 
       sputils.rest.post("/", {"test":"test"})
