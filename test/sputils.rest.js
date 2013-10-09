@@ -39,7 +39,6 @@ describe('SharePoint REST API Wrapper', function () {
 
       // Mock jQuery ajax
       jQuery.ajax = function (config) {
-        console.log(config);
         expect(config)
           .to.have.deep.property('headers.accept',
                                  'application/json;odata=verbose');
