@@ -59,4 +59,58 @@ describe('SharePoint REST API Wrapper', function () {
         });
     });
   });
+
+  describe('getListByName', function () {
+    it('should have correct config settings', function (done) {
+      //Mock jQuery ajax
+      jQuery.ajax = function (config) {
+        expect(config)
+          .to.have.deep.property('headers.accept',
+                                 'application/json;odata=verbose');
+        expect(config)
+          .to.have.property('url',
+            'http://testpath/_api/Web/Lists/getByTitle(\'Announcements\')/items/');
+        expect(config)
+          .to.have.property('type', 'GET');
+      };
+
+      sputils.rest.getListByName("Announcements")
+        .then(function (res) {
+          done();
+        });
+    });
+  });
+
+  describe('postListByName', function () {
+    it('should have correct config settings', function (done) {
+
+      // Post requests require a request digest.
+      // We manually write this to the document.
+      /* jshint evil: true */
+      document.write("<input id=__REQUESTDIGEST value=TestValue />");
+      /* jshint evil: false */
+
+      //Mock jQuery ajax
+      jQuery.ajax = function (config) {
+        expect(config)
+          .to.have.deep.property('headers.accept',
+                                 'application/json;odata=verbose');
+        expect(config)
+          .to.have.deep.property('headers.X-RequestDigest',
+                                 'TestValue');
+        expect(config)
+          .to.have.property('url',
+            'http://testpath/_api/Web/Lists/getByTitle(\'Announcements\')/items/');
+        expect(config)
+          .to.have.property('type', 'POST');
+        expect(config)
+          .to.have.property('data', '{"test":"test"}');
+      };
+
+      sputils.rest.postListByName("Announcements", { "test": "test" })
+        .then(function (res) {
+          done();
+        });
+    });
+  });
 });
