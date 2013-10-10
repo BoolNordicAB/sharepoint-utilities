@@ -1,5 +1,5 @@
 function $_global_sputils_rest () {
-  (function ($, _spPageContextInfo) {
+  (function (window, $, _spPageContextInfo) {
     'use strict';
 
     /*
@@ -7,8 +7,6 @@ function $_global_sputils_rest () {
       SETUP
 
     */
-
-    Type.registerNamespace('sputils.rest');
 
     // This is used to cache results
     // from grabbing the request digest.
@@ -178,12 +176,13 @@ function $_global_sputils_rest () {
 
     */
 
-    sputils.rest = {
+    window.sputils = window.sputils || {};
+    window.sputils.rest = {
       get: get,
       post: post,
       getListByName: getListByName,
       postListByName: postListByName
     };
-  })(jQuery, _spPageContextInfo);
+  })(window, jQuery, _spPageContextInfo);
 }
 $_global_sputils_rest();
