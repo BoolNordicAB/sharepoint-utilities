@@ -6,6 +6,7 @@ describe('SharePoint REST API Wrapper', function () {
 
   beforeEach(function () {
     initialize_jquery();
+    initialize_dom();
   });
 
   describe('get', function () {
@@ -30,13 +31,6 @@ describe('SharePoint REST API Wrapper', function () {
 
   describe('post', function () {
     it('should have correct config settings', function (done) {
-
-      // Post requests require a request digest.
-      // We manually write this to the document.
-      /* jshint evil: true */
-      document.write("<input id=__REQUESTDIGEST value=TestValue />");
-      /* jshint evil: false */
-
       // Mock jQuery ajax
       jQuery.ajax = function (config) {
         expect(config)
@@ -83,13 +77,6 @@ describe('SharePoint REST API Wrapper', function () {
 
   describe('postListByName', function () {
     it('should have correct config settings', function (done) {
-
-      // Post requests require a request digest.
-      // We manually write this to the document.
-      /* jshint evil: true */
-      document.write("<input id=__REQUESTDIGEST value=TestValue />");
-      /* jshint evil: false */
-
       //Mock jQuery ajax
       jQuery.ajax = function (config) {
         expect(config)
