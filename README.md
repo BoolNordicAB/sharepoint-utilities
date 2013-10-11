@@ -33,11 +33,15 @@ Miscellaneous convenience functions.
 
 Setup
 ------------
+
     $ git clone https://github.com/eakron/sharepoint-utilities.git
 
 [Install Node.js](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager) for your OS
 
     $ sudo npm install -g grunt-cli bower
+
+
+Specific to the project:
 
     $ npm install
 
