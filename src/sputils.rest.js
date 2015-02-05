@@ -143,6 +143,27 @@ function $_global_sputils_rest () {
 
     */
 
+    // Results from the standard SharePoint REST APIs come
+    // wrapped in objects. This convenience function unwraps
+    // them for you. See example use.
+    var unwrapResults = function (object) {
+      return object.d.results;
+    };
+
+    /*
+
+    EXAMPLE USE:
+
+    sputils.rest.get("/_api/web/lists")
+      .then(sputils.rest.unwrapResults)
+      .then(function (data) {
+        $.each(data, function (idx,el) {
+          console.log(el);
+        });
+    });
+
+    */
+
     /*
 
       SPECIALIZED
@@ -151,7 +172,8 @@ function $_global_sputils_rest () {
 
     var getListByName = function (name, config) {
       var url = '/_api/Web/Lists/getByTitle(\'' + name + '\')/items/';
-      return get(url, config);
+      return get(url, config)
+        .then(unwrapResults);
     };
 
     /*
@@ -165,7 +187,8 @@ function $_global_sputils_rest () {
 
     var postListByName = function (name, data, config) {
       var url = '/_api/Web/Lists/getByTitle(\'' + name + '\')/items/';
-      return post(url, data, config);
+      return post(url, data, config)
+        .then(unwrapResults);
     };
 
     /*
@@ -184,7 +207,8 @@ function $_global_sputils_rest () {
       get: get,
       post: post,
       getListByName: getListByName,
-      postListByName: postListByName
+      postListByName: postListByName,
+      unwrapResults: unwrapResults
     };
   })(window, jQuery, _spPageContextInfo);
 }
