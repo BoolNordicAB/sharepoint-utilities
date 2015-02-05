@@ -63,8 +63,11 @@ function $_global_sputils_rest () {
     // Returns a promise resolving to the ajax defaults.
     var getDefaults = function (url, config) {
       var deferred = $.Deferred();
+
       var defaults = {
-        url: _spPageContextInfo.webAbsoluteUrl + url,
+        // If the URL is not absolute, get the missing part
+        // from _spPageContextInfo
+        url: url.indexOf('http') > -1 ? url : _spPageContextInfo.webAbsoluteUrl + url,
         type: "GET",
         headers: {
           "accept": "application/json;odata=verbose"
