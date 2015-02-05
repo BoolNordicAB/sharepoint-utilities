@@ -3,6 +3,8 @@ sharepoint-utilities
 
 The intent of this project is to gather best practice in JavaScript interaction with SharePoint. The goal is to provide a unified API through which developers can work. Although there is much to read on the best practices of server side SP development, the same can not be said for client side.
 
+To reduce the complexity of the library it is dependent on jQuery.
+
 Pull requests are welcome, but please follow the instructions listed further down.
 
 The project is arranged into namespaces, all children of `sputils`. The currently planned namespaces are:
