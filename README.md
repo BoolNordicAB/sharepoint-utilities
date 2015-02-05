@@ -3,10 +3,13 @@ sharepoint-utilities
 
 The intent of this project is to gather best practice in JavaScript interaction with SharePoint. The goal is to provide a unified API through which developers can work. Although there is much to read on the best practices of server side SP development, the same can not be said for client side.
 
+Pull requests are welcome, but please follow the instructions listed further down.
+
 The project is arranged into namespaces, all children of `sputils`. The currently planned namespaces are:
 * rest
 * search
 * template
+* conversions
 * helpers
 
 Each namespace will be extensively documented with examples and through tests. This will be assisted by the build system.
@@ -25,6 +28,11 @@ template
 --------
 
 SharePoint-aware templating.
+
+conversions
+-----------
+
+Converting between formats, such as AD and Claims.
 
 helpers
 -------
@@ -48,3 +56,13 @@ Specific to the project:
     $ bower install
 
     $ grunt
+
+Building
+--------
+
+Running `grunt build` will create two build artifacts in the dist/ folder: sputils.js and sputils.min.js.
+
+Pull requests
+-------------
+
+New code is expected to follow the general style of existing code. Please take the time to familiarize yourself with the code base. Make sure you are not reinventing the wheel, some functionality you need may already exist. It is recommended to use an EditorConfig plugin for your text editor. All new API functions must be covered by tests.
