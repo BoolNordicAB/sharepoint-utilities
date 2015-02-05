@@ -164,50 +164,10 @@ function $_global_sputils_rest () {
 
     */
 
-    /*
-
-      SPECIALIZED
-
-    */
-
-    var getListByName = function (name, config) {
-      var url = '/_api/Web/Lists/getByTitle(\'' + name + '\')/items/';
-      return get(url, config)
-        .then(unwrapResults);
-    };
-
-    /*
-
-    EXAMPLE USE
-
-    sputils.rest.getListByName('Announcements')
-      .then(function (data) { console.log(data.d.results) });
-
-    */
-
-    var postListByName = function (name, data, config) {
-      var url = '/_api/Web/Lists/getByTitle(\'' + name + '\')/items/';
-      return post(url, data, config)
-        .then(unwrapResults);
-    };
-
-    /*
-
-    EXAMPLE USE
-
-    var data = {"Title": "RESTlessly POSTing",
-                "__metadata": { type: "SP.Data.AnnouncementsListItem"} };
-    sputils.rest.postListByName("Announcements", data)
-      .then(function (data) { console.log(data); });
-
-    */
-
     window.sputils = window.sputils || {};
     window.sputils.rest = {
       get: get,
       post: post,
-      getListByName: getListByName,
-      postListByName: postListByName,
       unwrapResults: unwrapResults
     };
   })(window, jQuery, _spPageContextInfo);
