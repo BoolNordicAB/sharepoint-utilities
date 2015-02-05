@@ -18,11 +18,26 @@ describe('SharePoint REST API Wrapper', function () {
                                  'application/json;odata=verbose');
         expect(config)
           .to.have.property('url');
+        expect(config.url)
+          .to.equal('http://example.com/');
         expect(config)
           .to.have.property('type', 'GET');
       };
 
       sputils.rest.get("/")
+        .then(function (res) {
+          done();
+        });
+    });
+
+    it('should allow absolute urls', function (done) {
+      // Mock jQuery ajax
+      jQuery.ajax = function (config) {
+        expect(config.url)
+          .to.equal('http://example.com/');
+      };
+
+      sputils.rest.get("http://example.com/")
         .then(function (res) {
           done();
         });
@@ -63,7 +78,7 @@ describe('SharePoint REST API Wrapper', function () {
                                  'application/json;odata=verbose');
         expect(config)
           .to.have.property('url',
-            'http://testpath/_api/Web/Lists/getByTitle(\'Announcements\')/items/');
+            'http://example.com/_api/Web/Lists/getByTitle(\'Announcements\')/items/');
         expect(config)
           .to.have.property('type', 'GET');
       };
@@ -87,7 +102,7 @@ describe('SharePoint REST API Wrapper', function () {
                                  'TestValue');
         expect(config)
           .to.have.property('url',
-            'http://testpath/_api/Web/Lists/getByTitle(\'Announcements\')/items/');
+            'http://example.com/_api/Web/Lists/getByTitle(\'Announcements\')/items/');
         expect(config)
           .to.have.property('type', 'POST');
         expect(config)
