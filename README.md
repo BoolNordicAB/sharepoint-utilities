@@ -67,4 +67,6 @@ Running `grunt build` will create two build artifacts in the dist/ folder: sputi
 Pull requests
 -------------
 
+Read CONTRIBUTING.md before making a pull request.
+
 New code is expected to follow the general style of existing code. Please take the time to familiarize yourself with the code base. Make sure you are not reinventing the wheel, some functionality you need may already exist. It is recommended to use an EditorConfig plugin for your text editor. All new API functions must be covered by tests.
