@@ -135,9 +135,14 @@
     return tree;
   };
 
-  // Returns a promise which resolves with
-  // an object containing all the terms
-  // corresponding to the given termset id.
+  /**
+  Returns a promise which resolves with
+  an object containing all the terms
+  corresponding to the given termset id.
+  @function sputils.termstore.getTerms
+  @param {int} id a termset guid
+  @returns {object}
+  */
   var getTerms = function(id) {
     return new Promise(function (resolve, reject) {
       withTaxonomy().then(function() {
@@ -158,18 +163,28 @@
     });
   };
 
-  // Returns a promise which resolves
-  // to a tree object. Each element
-  // is a taxonomy term object.
+  /**
+  Returns a promise which resolves
+  to an array. Each element
+  is a taxonomy term object.
+  @function sputils.termstore.getTermsList
+  @param {int} id a termset guid
+  @returns {array}
+  */
   var getTermsList = function(id) {
     return getTerms(id)
       .then(generateList);
   };
 
-  // Returns a promise which resolves
-  // to a tree object. Each node has
-  // a children property which is sorted
-  // according to customSortOrder.
+  /**
+  Returns a promise which resolves
+  to a tree object. Each node has
+  a children property which is sorted
+  according to customSortOrder.
+  @function sputils.termstore.getTermsTree
+  @param {int} id a termset guid
+  @returns {object}
+  */
   var getTermsTree = function(id) {
     return getTerms(id)
       // The terms are unordered and without
