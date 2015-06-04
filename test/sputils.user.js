@@ -7,18 +7,18 @@ describe('SharePoint User Profile Helpers', function () {
           .to.have.deep.property('headers.accept',
                                  'application/json;odata=verbose');
         expect(url)
-          .to.equal('/_api/SP.UserProfiles.PeopleManager/GetMyProperties?$select=UserUrl');
+          .to.equal('http://example.com/_api/SP.UserProfiles.PeopleManager/GetMyProperties?$select=UserUrl');
         expect(config)
           .to.have.property('method', 'GET');
 
-        return {
+        return stdPromise({
           d: {
             UserUrl: ''
           }
-        };
+        });
       };
 
-      sputils.userprofile.getCurrentUserPersonalSiteUrl()
+      sputils.user.getCurrentUserPersonalSiteUrl()
         .then(function (res) {
           done();
         });

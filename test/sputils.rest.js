@@ -21,6 +21,8 @@ describe('SharePoint REST API Wrapper', function () {
           .to.equal('http://example.com/');
         expect(config)
           .to.have.property('method', 'GET');
+
+        return stdPromise();
       };
 
       sputils.rest.get("/")
@@ -34,6 +36,8 @@ describe('SharePoint REST API Wrapper', function () {
       fetch = function (url, config) {
         expect(url)
           .to.equal('http://example.com/');
+
+        return stdPromise();
       };
 
       sputils.rest.get("http://example.com/")
@@ -57,6 +61,8 @@ describe('SharePoint REST API Wrapper', function () {
           .to.have.property('method', 'POST');
         expect(config)
           .to.have.property('body', '{"test":"test"}');
+
+        return stdPromise();
       };
 
       sputils.rest.post("/", {"test":"test"})

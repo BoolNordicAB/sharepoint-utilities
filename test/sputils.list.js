@@ -22,7 +22,7 @@ describe('SharePoint List API Wrapper', function () {
         expect(config)
           .to.have.property('method', 'GET');
 
-        return { d: { results: [] } };
+        return stdPromise();
       };
 
       sputils.list.getListByName("Announcements")
@@ -50,7 +50,7 @@ describe('SharePoint List API Wrapper', function () {
         expect(config)
           .to.have.property('body', '{"test":"test"}');
 
-        return { d: { results: [] } };
+        return stdPromise();
       };
 
       sputils.list.postListByName("Announcements", { "test": "test" })

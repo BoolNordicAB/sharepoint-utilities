@@ -152,7 +152,7 @@
   };
 
   var jsonify = function (result) {
-    return result.json();
+    return typeof result.json === 'function' ? result.json() : result;
   };
 
   /*
