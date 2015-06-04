@@ -15,7 +15,7 @@ module.exports = function(config) {
       'node_modules/chai/chai.js',
       'bower_components/jquery/jquery.js',
       'test/utilities/*.js',
-      'src/**/*.js',
+      'dist/sputils.js',
       'test/**/*.js'
     ],
 

@@ -64,7 +64,7 @@
 
       // fjs assign has the destination last (because curry), i.e. data flow:
       // config => defaults
-      deferred.resolve(fjs.assign(config, defaults));
+      resolve(fjs.assign(config || {}, defaults));
     });
   };
 
