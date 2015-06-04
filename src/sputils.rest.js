@@ -1,3 +1,5 @@
+/** @namespace sputils.rest */
+
 (function () {
 
   /*

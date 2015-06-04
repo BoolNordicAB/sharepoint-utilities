@@ -56,6 +56,14 @@ module.exports = function (grunt) {
     watch: {
       files: ['<%= jshint.files %>'],
       tasks: ['jshint', 'karma']
+    },
+    jsdoc: {
+      dist: {
+        src: ['src/**/*.js', 'README.md'],
+        options: {
+          destination: 'doc'
+        }
+      }
     }
   });
 
