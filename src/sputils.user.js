@@ -69,6 +69,7 @@
   sputils.user = {
     loginAsAnotherUser: loginAsAnotherUser,
     logoutUser: logoutUser,
-    getCurrentUser: getCurrentUser
+    getCurrentUser: getCurrentUser,
+    getCurrentUserPersonalSiteUrl: getCurrentUserPersonalSiteUrl
   };
 })();

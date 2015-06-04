@@ -60,6 +60,7 @@
         // from _spPageContextInfo
         url: url.indexOf('http') > -1 ? url : _spPageContextInfo.webAbsoluteUrl + url,
         method: "GET",
+        credentials: "include",
         headers: {
           "accept": "application/json;odata=verbose"
         }
@@ -108,7 +109,7 @@
     url = url || '/';
     return getDefaults(url, config)
       .then(function (defaults) {
-        return fetch(url, defaults);
+        return fetch(defaults.url, defaults).then(jsonify);
       });
   };
 
@@ -127,7 +128,7 @@
   var post = function (url, data, config) {
     data = typeof data === 'string' ? data : JSON.stringify(data);
     return postDefaults(url, data, config).then(function (defaults) {
-      return fetch(url, defaults);
+      return fetch(url, defaults).then(jsonify);
     });
   };
 
@@ -147,7 +148,11 @@
   // wrapped in objects. This convenience function unwraps
   // them for you. See example use.
   var unwrapResults = function (object) {
-    return object.d.results;
+    return object.d.results || object.d;
+  };
+
+  var jsonify = function (result) {
+    return typeof result.json === 'function' ? result.json() : result;
   };
 
   /*
