@@ -99,12 +99,20 @@
       });
   };
 
-  /*
-
-    API
-
+  /**
+  Rest API get helper. Uses sane defaults to speak to the API. Additional
+  configuration can be passed with the config argument.
+  @function sputils.rest.get
+  @param {string} url an SP endpoint
+  @param {object} config additional configuration
+  @returns {object} a promise that resolves to the response data
+  @example
+  sputils.rest.get("/_api/web/lists").then(function (data) {
+  $.each(data.d.results, function (idx,el) {
+    console.log(el);
+  });
+});
   */
-
   var get = function (url, config) {
     url = url || '/';
     return getDefaults(url, config)
@@ -117,14 +125,25 @@
 
   EXAMPLE USE:
 
-  sputils.rest.get("/_api/web/lists").then(function (data) {
-    $.each(data.d.results, function (idx,el) {
-      console.log(el);
-    });
-  });
+
 
   */
 
+  /**
+  Rest API post helper. Uses sane defaults to speak to the API. Additional
+  configuration can be passed with the config argument.
+  @function sputils.rest.post
+  @param {string} url an SP endpoint
+  @param {object} data the payload
+  @param {object} config additional configuration
+  @returns {object} a promise that resolves to the response data
+  @example
+  var data = {"Title":"REST API FTW",
+            "__metadata": { "type": "SP.Data.AnnouncementsListItem"}};
+
+sputils.rest.post("/_api/Web/Lists/getByTitle('Announcements')/items/", data)
+  .then(function (data) { console.log(data) });
+  */
   var post = function (url, data, config) {
     data = typeof data === 'string' ? data : JSON.stringify(data);
     return postDefaults(url, data, config).then(function (defaults) {
@@ -132,42 +151,32 @@
     });
   };
 
-  /*
-
-  EXAMPLE USE
-
-  var data = {"Title":"REST API FTW",
-              "__metadata": { "type": "SP.Data.AnnouncementsListItem"}};
-
-  sputils.rest.post("/_api/Web/Lists/getByTitle('Announcements')/items/", data)
-    .then(function (data) { console.log(data) });
-
+  /**
+  Results from the standard SharePoint REST APIs come
+  wrapped in objects. This convenience function unwraps
+  them for you. See example use.
+  @function sputils.rest.unwrapResults
+  @param {object} object raw SP API response data
+  @returns {object} unwrapped SP API data
+  @example
+  sputils.rest.get("/_api/web/lists")
+  .then(sputils.rest.unwrapResults)
+  .then(function (data) {
+    $.each(data, function (idx,el) {
+      console.log(el);
+    });
+  });
   */
-
-  // Results from the standard SharePoint REST APIs come
-  // wrapped in objects. This convenience function unwraps
-  // them for you. See example use.
   var unwrapResults = function (object) {
     return object.d.results || object.d;
   };
 
+  // If the given argument has a json method
+  // we call it, otherwise just return the argument.
   var jsonify = function (result) {
     return typeof result.json === 'function' ? result.json() : result;
   };
 
-  /*
-
-  EXAMPLE USE:
-
-  sputils.rest.get("/_api/web/lists")
-    .then(sputils.rest.unwrapResults)
-    .then(function (data) {
-      $.each(data, function (idx,el) {
-        console.log(el);
-      });
-  });
-
-  */
 
   sputils.rest = {
     get: get,
