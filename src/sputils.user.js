@@ -1,3 +1,5 @@
+/** @namespace sputils.user */
+
 (function () {
   var loginAsAnotherUser = function () {
     window.location.href = "/_layouts/closeconnection.aspx?loginasanotheruser=true";

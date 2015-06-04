@@ -1,3 +1,5 @@
+/** @namespace sputils.search */
+
 (function () {
   // cf. https://msdn.microsoft.com/en-us/library/office/jj163876.aspx
   var POST_URL_PATH = '/_api/search/postquery';

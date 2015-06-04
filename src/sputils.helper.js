@@ -1,3 +1,5 @@
+/** @namespace sputils.helper */
+
 (function () {
   var resolveDependency = function (dep) {
     var file = dep.file,

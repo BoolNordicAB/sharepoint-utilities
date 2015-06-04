@@ -1,3 +1,5 @@
+/** @namespace sputils.termstore */
+
 (function () {
   var TermsTree = function(termSet) {
     this.termSet = termSet;
