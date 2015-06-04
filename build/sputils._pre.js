@@ -6,3 +6,6 @@ function $_global_sputils () {
 
 global.sputils = global.sputils || {};
 var sputils = global.sputils;
+_spPageContextInfo = _spPageContextInfo || (function () {
+  throw Error('_spPageContextInfo not found');
+})();

@@ -1,69 +1,58 @@
-function $_global_sputils_rest () {
-  (function (window, $, _spPageContextInfo) {
-    'use strict';
+(function () {
 
-    /*
+  /*
 
-      SETUP
+    SETUP
 
-    */
+  */
 
-    // This is used to cache results
-    // from grabbing the request digest.
-    var requestDigest;
+  // This is used to cache results
+  // from grabbing the request digest.
+  var requestDigest;
 
-    // Simple AJAX request for fetching the request digest
-    // from /_api/contextinfo. This is used as a fallback
-    // for the one embedded in the SharePoint page.
+  // Simple AJAX request for fetching the request digest
+  // from /_api/contextinfo. This is used as a fallback
+  // for the one embedded in the SharePoint page.
 
-    // Returns a promise resolving to the digest string.
-    var requestFormDigest = function () {
-      var deferred = $.Deferred();
+  // Returns a promise resolving to the digest string.
+  var requestFormDigest = function () {
+    return post("/_api/contextinfo", { })
+      .then(function (data) {
+        return data.d.GetContextWebInformation.FormDigestValue;
+      });
+  };
 
-      get("/_api/contextinfo", { "type": "POST" })
-        .then(function (data) {
-          deferred.resolve(data.d.GetContextWebInformation.FormDigestValue);
-        });
-
-      return deferred.promise();
-    };
-
-    // Utility for grabbing the digest off the page in
-    // an asynchronous manner. Solves the issue of script
-    // running before page has loaded proper.
-
-    // Returns a promise resolving to the digest string.
-    var withRequestDigest = function () {
-      var deferred = $.Deferred();
-
+  // Utility for grabbing the digest off the page in
+  // an asynchronous manner. Solves the issue of script
+  // running before page has loaded proper.
+  // --
+  // Returns a promise resolving to the digest string.
+  var withRequestDigest = function () {
+    return new Promise(function(resolve, reject) {
       if (requestDigest) {
-        deferred.resolve(requestDigest);
-      }
-      else {
-        var rd = $("#__REQUESTDIGEST");
-        if (rd.length > 0 && rd.val() !== "InvalidFormDigest") {
-          requestDigest = rd.val();
-          deferred.resolve(rd.val());
-        }
-        else {
-          requestFormDigest()
-            .then(function (digest) {
+        resolve(requestDigest);
+      } else {
+        var rd = global.document.getElementById("__REQUESTDIGEST");
+        if (rd !== null && rd.value !== "InvalidFormDigest") {
+          requestDigest = rd.value;
+          resolve(requestDigest);
+        } else {
+          return requestFormDigest()
+            .then(tap(function (digest) {
+              // `tap` will pass the digest to the next handler
               requestDigest = digest;
-              deferred.resolve(digest);
-            });
+            }));
         }
       }
+    });
+  };
 
-      return deferred.promise();
-    };
+  // Gets the default config object for ajax requests.
+  // Is asynchronous for consistency.
 
-    // Gets the default config object for ajax requests.
-    // Is asynchronous for consistency.
-
-    // Returns a promise resolving to the ajax defaults.
-    var getDefaults = function (url, config) {
-      var deferred = $.Deferred();
-
+  // Returns a promise resolving to the ajax defaults.
+  var getDefaults = function (url, config) {
+    return new Promise(function(resolve, reject) {
       var defaults = {
         // If the URL is not absolute, get the missing part
         // from _spPageContextInfo
@@ -74,102 +63,108 @@ function $_global_sputils_rest () {
         }
       };
 
-      $.extend(defaults, config);
-      deferred.resolve(defaults);
-      return deferred.promise();
-    };
+      // fjs assign has the destination last (because curry), i.e. data flow:
+      // config => defaults
+      deferred.resolve(fjs.assign(config, defaults));
+    });
+  };
 
-    // Gets the default config object for ajax post requests,
-    // which includes the getConfig and the request digest.
+  // Gets the default config object for ajax post requests,
+  // which includes the getConfig and the request digest.
 
-    // Returns a promise resolving to the ajax post defaults.
-    var postDefaults = function (url, data, config) {
-      return $.when(getDefaults(url), withRequestDigest())
-        .then(function (defaults, digest) {
-          var added = {
-            type: "POST",
-            data: data,
-            contentType: "application/json;odata=verbose",
-            headers: {
-              "X-RequestDigest": digest,
-            }
-          };
+  // Returns a promise resolving to the ajax post defaults.
+  var postDefaults = function (url, data, config) {
+    return Promise.all([getDefaults(url), withRequestDigest()])
+      .then(function (results) {
+        var defaults = results[0],
+            digest = results[1];
 
-          return $.extend(true, defaults, added, config);
+        var headers = fjs.assign(
+          config.headers || {},
+          "X-RequestDigest": digest,
         });
-    };
 
-    /*
+        var added = {
+          method: "POST",
+          body: data,
+          contentType: "application/json;odata=verbose"
+        };
 
-      API
+        var cfg = fjs.assign(config, added, defaults);
+        cfg.headers = headers;
+        return cfg;
+      });
+  };
 
-    */
+  /*
 
-    var get = function (url, config) {
-      return getDefaults(url, config)
-        .then(function (defaults) {
-          return $.ajax(defaults);
-        });
-    };
+    API
 
-    /*
+  */
 
-    EXAMPLE USE:
+  var get = function (url, config) {
+    url = url || '/';
+    return getDefaults(url, config)
+      .then(function (defaults) {
+        return fetch(url, defaults);
+      });
+  };
 
-    sputils.rest.get("/_api/web/lists").then(function (data) {
-      $.each(data.d.results, function (idx,el) {
+  /*
+
+  EXAMPLE USE:
+
+  sputils.rest.get("/_api/web/lists").then(function (data) {
+    $.each(data.d.results, function (idx,el) {
+      console.log(el);
+    });
+  });
+
+  */
+
+  var post = function (url, data, config) {
+    data = typeof data === 'string' ? data : JSON.stringify(data);
+    return postDefaults(url, data, config).then(function (defaults) {
+      return fetch(url, defaults);
+    });
+  };
+
+  /*
+
+  EXAMPLE USE
+
+  var data = {"Title":"REST API FTW",
+              "__metadata": { "type": "SP.Data.AnnouncementsListItem"}};
+
+  sputils.rest.post("/_api/Web/Lists/getByTitle('Announcements')/items/", data)
+    .then(function (data) { console.log(data) });
+
+  */
+
+  // Results from the standard SharePoint REST APIs come
+  // wrapped in objects. This convenience function unwraps
+  // them for you. See example use.
+  var unwrapResults = function (object) {
+    return object.d.results;
+  };
+
+  /*
+
+  EXAMPLE USE:
+
+  sputils.rest.get("/_api/web/lists")
+    .then(sputils.rest.unwrapResults)
+    .then(function (data) {
+      $.each(data, function (idx,el) {
         console.log(el);
       });
-    });
+  });
 
-    */
+  */
 
-    var post = function (url, data, config) {
-      data = typeof data === 'string' ? data : JSON.stringify(data);
-      return postDefaults(url, data, config).then(function (defaults) {
-        return $.ajax(defaults);
-      });
-    };
-
-    /*
-
-    EXAMPLE USE
-
-    var data = {"Title":"REST API FTW",
-                "__metadata": { "type": "SP.Data.AnnouncementsListItem"}};
-
-    sputils.rest.post("/_api/Web/Lists/getByTitle('Announcements')/items/", data)
-      .then(function (data) { console.log(data) });
-
-    */
-
-    // Results from the standard SharePoint REST APIs come
-    // wrapped in objects. This convenience function unwraps
-    // them for you. See example use.
-    var unwrapResults = function (object) {
-      return object.d.results;
-    };
-
-    /*
-
-    EXAMPLE USE:
-
-    sputils.rest.get("/_api/web/lists")
-      .then(sputils.rest.unwrapResults)
-      .then(function (data) {
-        $.each(data, function (idx,el) {
-          console.log(el);
-        });
-    });
-
-    */
-
-    window.sputils = window.sputils || {};
-    window.sputils.rest = {
-      get: get,
-      post: post,
-      unwrapResults: unwrapResults
-    };
-  })(window, jQuery, _spPageContextInfo);
-}
-$_global_sputils_rest();
+  sputils.rest = {
+    get: get,
+    post: post,
+    unwrapResults: unwrapResults
+  };
+})();

@@ -17,7 +17,7 @@ describe('SharePoint User Profile Helpers', function () {
           d: {
             UserUrl: ''
           }
-        }
+        };
       };
 
       sputils.userprofile.getCurrentUserPersonalSiteUrl()
