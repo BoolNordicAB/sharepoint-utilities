@@ -9,6 +9,18 @@ var tap = function (fn) {
   };
 };
 
+
+/**
+Get a value deeply from an object without crashing on nulls.
+@function sputils.lib.getval
+@param {string} subscript - the subscript string, i.e. 'a.b.c.prop'
+@param {Optional<object>} root - the root object
+@returns {string} the value of the prop, if exists else undefined
+@example
+var obj = {a:{b:{c:{}}}}
+var c = sputils.lib.getval('a.b.c', obj);
+c === obj;
+**/
 var getval = function recur(subscript, root) {
   root = root || this || {};
   var parts = subscript.split('.');
@@ -24,3 +36,5 @@ var getval = function recur(subscript, root) {
 
   return void 0;
 };
+
+//sputils.lib.getval = getval;

@@ -8,7 +8,7 @@
   @returns {string} username
   @example
 var claimsToken = 'i:0ǵ.t|ipdomain|jdoe';
-var username = sputils.getUserNameFromClaim(claimsToken);
+var username = sputils.conversion.getUserNameFromClaim(claimsToken);
 console.log(username); // => 'jdoe'
   **/
   var getUserNameFromClaim = function (claimsString) {
