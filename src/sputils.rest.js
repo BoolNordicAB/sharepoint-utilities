@@ -1,5 +1,4 @@
 (function () {
-
   /*
 
     SETUP
@@ -65,7 +64,7 @@
 
       // fjs assign has the destination last (because curry), i.e. data flow:
       // config => defaults
-      deferred.resolve(fjs.assign(config, defaults));
+      resolve(fjs.assign(config || {}, defaults));
     });
   };
 
@@ -79,8 +78,7 @@
         var defaults = results[0],
             digest = results[1];
 
-        var headers = fjs.assign(
-          config.headers || {},
+        var headers = fjs.assign(config.headers || {}, {
           "X-RequestDigest": digest,
         });
 

@@ -1,6 +1,4 @@
 (function () {
-
-
   /*
 
   EXAMPLE USE
