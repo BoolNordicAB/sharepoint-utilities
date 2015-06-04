@@ -2,13 +2,17 @@
 
 (function () {
   /**
-   * This is a description of the foo function.
-   * @param {string} str The string
-   * @returns {string}
-   */
-
-  var getUserNameFromClaim = function (string) {
-    var splitUserName = string.split("|");
+  Get the user name from the claims token string
+  @function sputils.conversion.getUserNameFromClaim
+  @param {string} claimsString - the claims string
+  @returns {string} username
+  @example
+var claimsToken = 'i:0ǵ.t|ipdomain|jdoe';
+var username = sputils.getUserNameFromClaim(claimsToken);
+console.log(username); // => 'jdoe'
+  **/
+  var getUserNameFromClaim = function (claimsString) {
+    var splitUserName = claimsString.split("|");
     return splitUserName[splitUserName.length -1];
   };
 
