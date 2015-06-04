@@ -140,7 +140,7 @@
   an object containing all the terms
   corresponding to the given termset id.
   @function sputils.termstore.getTerms
-  @param {int} id a termset guid
+  @param {string} id a termset guid
   @returns {object}
   */
   var getTerms = function(id) {
@@ -168,7 +168,7 @@
   to an array. Each element
   is a taxonomy term object.
   @function sputils.termstore.getTermsList
-  @param {int} id a termset guid
+  @param {string} id a termset guid
   @returns {array}
   */
   var getTermsList = function(id) {
@@ -182,7 +182,7 @@
   a children property which is sorted
   according to customSortOrder.
   @function sputils.termstore.getTermsTree
-  @param {int} id a termset guid
+  @param {string} id a termset guid
   @returns {object}
   */
   var getTermsTree = function(id) {
