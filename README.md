@@ -3,43 +3,37 @@ sharepoint-utilities
 
 The intent of this project is to gather best practice in JavaScript interaction with SharePoint. The goal is to provide a unified API through which developers can work. Although there is much to read on the best practices of server side SP development, the same can not be said for client side.
 
-To reduce the complexity of the library it is dependent on jQuery.
-
 Pull requests are welcome, but please follow the instructions listed further down.
 
 The project is arranged into namespaces, all children of `sputils`. The currently planned namespaces are:
+* conversion
+* list
 * rest
 * search
-* template
-* conversions
-* helpers
+* termstore
+* user
 
 Each namespace will be extensively documented with examples and through tests. This will be assisted by the build system.
 
 rest
 ----
 
-This namespace contains the infrastructure required to easily interact with SharePoint's REST API, both through a series of helper functions designed to take care of the common use cases, and through a low level interface which is little more than a thin wrapper around jQuery.
+This namespace contains the infrastructure required to easily interact with SharePoint's REST API, both through a series of helper functions designed to take care of the common use cases, and through a low level interface which is little more than a thin wrapper around XHR.
 
 search
 ------
 
 Because of the size of the SP search REST API it merits its own namespace. This module will combine convenience with best practice, covering the common cases of interaction with the SharePoint search engine and, as far as it is applicable, using sensible defaults.
 
-template
---------
+termstore
+---------
 
-SharePoint-aware templating.
-
-conversions
------------
-
-Converting between formats, such as AD and Claims.
+Making it a breeze to interact with the SharePoint termstore. Get the terms for a specific term group, either as a list or a tree. Automatically handles custom sort orders configured in the terms.
 
 helpers
 -------
 
-Miscellaneous convenience functions.
+Miscellaneous convenience functions, eg promise based SP dependency loading.
 
 Setup
 ------------
