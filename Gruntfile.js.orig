@@ -13,8 +13,11 @@ module.exports = function (grunt) {
     'src/sputils.list.js',
     'src/sputils.conversion.js',
     'src/sputils.termstore.js',
+<<<<<<< HEAD
     'src/sputils.user.js',
+=======
     'src/sputils.search.js',
+>>>>>>> Fix tests and bugs in new impl
     'src/sputils.userprofile.js',
     'build/sputils._post.js'
   ];
