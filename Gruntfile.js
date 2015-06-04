@@ -4,8 +4,10 @@ module.exports = function (grunt) {
 
   var concatFiles = [
     'build/sputils._pre.js',
+    'bower_components/functional.js/functional.js',
     'bower_components/es6-promise-polyfill/promise.js',
     'bower_components/fetch/fetch.js',
+    'src/sputils.lib.js',
     'src/sputils.rest.js',
     'src/sputils.list.js',
     'src/sputils.conversion.js',
