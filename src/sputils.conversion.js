@@ -2,8 +2,9 @@ function $_global_sputils_conversion () {
   (function (window) {
     'use strict';
 
-    var convertClaimsToAd = function (string) {
-      return string.split("|")[1];
+    var getUserNameFromClaim = function (string) {
+      var splitUserName = string.split("|");
+      return splitUserName[splitUserName.length -1];
     };
 
     window.sputils = window.sputils || {};
