@@ -16,21 +16,17 @@ function $_global_sputils_user () {
 
       var clientContext = new SP.ClientContext.get_current();
       var currentWeb = clientContext.get_web();
-      clientContext.load(currentWeb);
       var currentUser = web.get_currentUser();
 
-      //Load currentUser to the context in order to retrieve the user data.
+      // Load currentUser to the context in order to retrieve the user data.
       clientContext.load(currentUser);
 
-      var successHandler = function (currentUser) {
+      // Execute the query. Takes two functions: success and failed that returns the SPUser object or an error message.
+      clientContext.executeQueryAsync(function () {
         deferred.resolve(currentUser);
-      };
-
-      var errorHandler = function () {
-        deferred.reject('error');
-      };
-
-      clientContext.executeQueryAsync(successHandler, errorHandler);
+      }, function (sender, args) {
+        deferred.reject(args.get_message());
+      });
 
       return deferred.promise();
     };
@@ -38,7 +34,8 @@ function $_global_sputils_user () {
     window.sputils = window.sputils || {};
     window.sputils.user = {
       loginAsAnotherUser: loginAsAnotherUser,
-      logoutUser: logoutUser
+      logoutUser: logoutUser,
+      getCurrentUser: getCurrentUser
     };
   })(window);
 }
