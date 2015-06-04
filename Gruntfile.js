@@ -2,6 +2,16 @@ module.exports = function (grunt) {
   // Load all grunt tasks
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
+  var concatFiles = [
+    'build/sputils._pre.js',
+    'bower_components/es6-promise-polyfill/promise.js',
+    'bower_components/fetch/fetch.js',
+    'src/sputils.rest.js',
+    'src/sputils.list.js',
+    'src/sputils.conversion.js',
+    'build/sputils._post.js'
+  ];
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
@@ -9,11 +19,7 @@ module.exports = function (grunt) {
         separator: ';'
       },
       dist: {
-        src: [
-          'src/sputils.rest.js',
-          'src/sputils.list.js',
-          'src/sputils.conversion.js'
-        ],
+        src: concatFiles,
         dest: 'dist/<%= pkg.name %>.js'
       }
     },
