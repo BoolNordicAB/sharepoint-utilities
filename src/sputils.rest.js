@@ -1,5 +1,4 @@
 (function () {
-
   /*
 
     SETUP
@@ -79,8 +78,7 @@
         var defaults = results[0],
             digest = results[1];
 
-        var headers = fjs.assign(
-          config.headers || {},
+        var headers = fjs.assign(config.headers || {}, {
           "X-RequestDigest": digest,
         });
 

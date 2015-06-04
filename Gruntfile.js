@@ -8,9 +8,11 @@ module.exports = function (grunt) {
     'bower_components/es6-promise-polyfill/promise.js',
     'bower_components/fetch/fetch.js',
     'src/sputils.lib.js',
+    'src/sputils.helper.js',
     'src/sputils.rest.js',
     'src/sputils.list.js',
     'src/sputils.conversion.js',
+    'src/sputils.termstore.js',
     'build/sputils._post.js'
   ];
 
