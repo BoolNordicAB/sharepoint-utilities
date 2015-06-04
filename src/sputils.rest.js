@@ -1,4 +1,5 @@
 (function () {
+
   /*
 
     SETUP
@@ -56,7 +57,7 @@
         // If the URL is not absolute, get the missing part
         // from _spPageContextInfo
         url: url.indexOf('http') > -1 ? url : _spPageContextInfo.webAbsoluteUrl + url,
-        type: "GET",
+        method: "GET",
         headers: {
           "accept": "application/json;odata=verbose"
         }
@@ -78,9 +79,10 @@
         var defaults = results[0],
             digest = results[1];
 
-        var headers = fjs.assign(config.headers || {}, {
-          "X-RequestDigest": digest,
-        });
+        var headers = fjs.assign(
+          getval('headers', config) || {},
+          getval('headers', defaults) || {},
+          { "X-RequestDigest": digest });
 
         var added = {
           method: "POST",
@@ -88,7 +90,7 @@
           contentType: "application/json;odata=verbose"
         };
 
-        var cfg = fjs.assign(config, added, defaults);
+        var cfg = fjs.assign(config || {}, added, defaults);
         cfg.headers = headers;
         return cfg;
       });

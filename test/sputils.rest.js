@@ -5,14 +5,13 @@ describe('SharePoint REST API Wrapper', function () {
   });
 
   beforeEach(function () {
-    initialize_jquery();
     initialize_dom();
   });
 
   describe('get', function () {
     it('should have correct config settings', function (done) {
       // Mock jQuery ajax
-      jQuery.ajax = function (config) {
+      fetch = function (url, config) {
         expect(config)
           .to.have.deep.property('headers.accept',
                                  'application/json;odata=verbose');
@@ -21,7 +20,7 @@ describe('SharePoint REST API Wrapper', function () {
         expect(config.url)
           .to.equal('http://example.com/');
         expect(config)
-          .to.have.property('type', 'GET');
+          .to.have.property('method', 'GET');
       };
 
       sputils.rest.get("/")
@@ -32,8 +31,8 @@ describe('SharePoint REST API Wrapper', function () {
 
     it('should allow absolute urls', function (done) {
       // Mock jQuery ajax
-      jQuery.ajax = function (config) {
-        expect(config.url)
+      fetch = function (url, config) {
+        expect(url)
           .to.equal('http://example.com/');
       };
 
@@ -47,7 +46,7 @@ describe('SharePoint REST API Wrapper', function () {
   describe('post', function () {
     it('should have correct config settings', function (done) {
       // Mock jQuery ajax
-      jQuery.ajax = function (config) {
+      fetch = function (url, config) {
         expect(config)
           .to.have.deep.property('headers.accept',
                                  'application/json;odata=verbose');
@@ -55,11 +54,9 @@ describe('SharePoint REST API Wrapper', function () {
           .to.have.deep.property('headers.X-RequestDigest',
                                  'TestValue');
         expect(config)
-          .to.have.property('url');
+          .to.have.property('method', 'POST');
         expect(config)
-          .to.have.property('type', 'POST');
-        expect(config)
-          .to.have.property('data', '{"test":"test"}');
+          .to.have.property('body', '{"test":"test"}');
       };
 
       sputils.rest.post("/", {"test":"test"})

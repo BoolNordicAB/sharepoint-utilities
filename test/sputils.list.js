@@ -6,14 +6,13 @@ describe('SharePoint List API Wrapper', function () {
   });
 
   beforeEach(function () {
-    initialize_jquery();
     initialize_dom();
   });
 
   describe('getListByName', function () {
     it('should have correct config settings', function (done) {
       //Mock jQuery ajax
-      jQuery.ajax = function (config) {
+      fetch = function (url, config) {
         expect(config)
           .to.have.deep.property('headers.accept',
                                  'application/json;odata=verbose');
@@ -21,7 +20,7 @@ describe('SharePoint List API Wrapper', function () {
           .to.have.property('url',
             'http://example.com/_api/Web/Lists/getByTitle(\'Announcements\')/items/');
         expect(config)
-          .to.have.property('type', 'GET');
+          .to.have.property('method', 'GET');
 
         return { d: { results: [] } };
       };
@@ -36,7 +35,7 @@ describe('SharePoint List API Wrapper', function () {
   describe('postListByName', function () {
     it('should have correct config settings', function (done) {
       //Mock jQuery ajax
-      jQuery.ajax = function (config) {
+      fetch = function (url, config) {
         expect(config)
           .to.have.deep.property('headers.accept',
                                  'application/json;odata=verbose');
@@ -47,9 +46,9 @@ describe('SharePoint List API Wrapper', function () {
           .to.have.property('url',
             'http://example.com/_api/Web/Lists/getByTitle(\'Announcements\')/items/');
         expect(config)
-          .to.have.property('type', 'POST');
+          .to.have.property('method', 'POST');
         expect(config)
-          .to.have.property('data', '{"test":"test"}');
+          .to.have.property('body', '{"test":"test"}');
 
         return { d: { results: [] } };
       };

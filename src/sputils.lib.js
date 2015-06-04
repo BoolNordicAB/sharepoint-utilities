@@ -7,3 +7,19 @@ var tap = function (fn) {
     return value;
   };
 };
+
+var getval = function recur(subscript, root) {
+  root = root || this || {};
+  var parts = subscript.split('.');
+  var nextProp = parts[0];
+  var next = root[nextProp];
+  if (next) {
+    if (parts.length > 1) {
+      return recur(parts.join('.'), next);
+    }
+
+    return next;
+  }
+
+  return void 0;
+};
