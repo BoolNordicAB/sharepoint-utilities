@@ -32,8 +32,25 @@
       .then(sputils.rest.unwrapResults);
   };
 
+
+  /*
+
+  EXAMPLE USE
+
+  sputils.list.getListItemById('Announcements', 1)
+    .then(function (data) { console.log(data.d.results) });
+
+  */
+  // Returns the list item with the specified id.
+  var getListItemById = function (listName, itemId, config) {
+    var url = '/_api/Web/Lists/getByTitle(\'' + listName + '\')/items/getbyid(' + itemId + ')'
+    return sputils.rest.get(url, config)
+      .then(sputils.rest.unwrapResults);
+  }
+
   sputils.list = {
     getListByName: getListByName,
-    postListByName: postListByName
+    postListByName: postListByName,
+    getListItemById: getListItemById
   };
 })();
