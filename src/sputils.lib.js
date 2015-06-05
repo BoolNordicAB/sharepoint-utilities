@@ -1,7 +1,9 @@
 /** @namespace sputils.lib */
 
-// "taps" a function to produce a side effect
-// but wrap it in an identity fn.
+/**
+"taps" a function to produce a side effect
+but wrap it in an identity fn.
+**/
 var tap = function (fn) {
   return function (value) {
     fn();
@@ -19,7 +21,9 @@ Get a value deeply from an object without crashing on nulls.
 @example
 var obj = {a:{b:{c:{}}}}
 var c = sputils.lib.getval('a.b.c', obj);
-c === obj;
+c === obj.a.b.c;
+var none = sputils.lib.getval('a.b.1.notHere', obj);
+none === void 0;
 **/
 var getval = function recur(subscript, root) {
   root = root || this || {};
@@ -28,7 +32,7 @@ var getval = function recur(subscript, root) {
   var next = root[nextProp];
   if (next) {
     if (parts.length > 1) {
-      return recur(parts.join('.'), next);
+      return recur(parts.slice(1).join('.'), next);
     }
 
     return next;
@@ -37,4 +41,6 @@ var getval = function recur(subscript, root) {
   return void 0;
 };
 
-//sputils.lib.getval = getval;
+sputils.lib = {
+  getval: getval
+};
