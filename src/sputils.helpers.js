@@ -1,4 +1,4 @@
-/** @namespace sputils.helper */
+/** @namespace sputils.helpers */
 
 (function () {
   var resolveDependency = function (dep) {
@@ -72,7 +72,7 @@ rurl === '/a/path/to.html';
 
   @function sputils.helpers.clientContextForWeb
   @param {string} - the absolute url of the listitem, file or other asset.
-  @returns {Promise<object>} - the promise of a client context
+  @returns {Promise<SP.ClientContext>} - the promise of a client context
   @example
 console.log(location);// => http://contoso.com/sub1
 var fileUrl = 'http://contoso.com/sub21231/Shared Documents/file1.docx';

@@ -8,7 +8,7 @@ module.exports = function (grunt) {
     'bower_components/es6-promise-polyfill/promise.js',
     'bower_components/fetch/fetch.js',
     'src/sputils.lib.js',
-    'src/sputils.helper.js',
+    'src/sputils.helpers.js',
     'src/sputils.rest.js',
     'src/sputils.list.js',
     'src/sputils.conversion.js',
@@ -69,7 +69,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'concat',
-    'uglify'
+    'uglify',
+    'jsdoc'
   ]);
 
   grunt.registerTask('default', [

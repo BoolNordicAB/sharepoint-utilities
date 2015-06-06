@@ -31,7 +31,7 @@ describe('SPUTILS LIB', function () {
       expect(getval('a.b.c.z', testObjects)).to.equal(0);
       expect(getval('a.b.c.n', testObjects)).to.equal(false);
       expect(getval('a.b.c.es', testObjects)).to.equal('');
-    })
+    });
 
     it('should use the global object as root if no root is supplied', function () {
       window.p = { q: 1 };
