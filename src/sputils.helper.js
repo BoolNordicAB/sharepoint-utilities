@@ -52,6 +52,17 @@ rurl === '/a/path/to.html';
     return parts[1];
   }
 
+  function urlQuery(optArg) {
+    var result = {};
+    var qs = (optArg || global.location.search).replace('?', '');
+    var parts = qs.split('&');
+    fjs.each(function (part) {
+      var kvp = part.split('=');
+      result[kvp[0]] = result[kvp[1]];
+    });
+    return result;
+  }
+
   /**
   Get a promise for a client context that could be on another
   site/web.
@@ -74,13 +85,11 @@ cctxPromise.then(function (cctx) {
 });
   **/
   function clientContext(absoluteFileOrWebUrl) {
-    var CONTEXT_INFO_API = '/_api/contextinfo';
-    var apiUrl = absoluteFileOrWebUrl.substring(
-      0, absoluteFileOrWebUrl.lastIndexOf('/')) + CONTEXT_INFO_API;
+    var url = absoluteFileOrWebUrl.substring(
+      0, absoluteFileOrWebUrl.lastIndexOf('/')) ;
 
-    return sputils.rest.post(apiUrl).then(function (data) {
-      // data.d.GetContextWebInformation.WebFullUrl
-      var info = data.d.GetContextWebInformation;
+    return sputils.rest.contextInfo(url).then(function (info) {
+      // create the context and set the extra prop.
       var cctx = new SP.ClientContext(info.WebFullUrl);
       cctx._info = info;
 

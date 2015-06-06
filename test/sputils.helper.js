@@ -11,6 +11,7 @@ describe('Helpers', function () {
   describe('abs2rel', function () {
     it('should convert an abs url to the relative part.', function () {
       // mock
+      var temp = sputils.lib.getval;
       sputils.lib.getval = function (path) {
         expect(path).to.equal('location.hostname');
         return 'example.com';
@@ -18,6 +19,7 @@ describe('Helpers', function () {
       var aurl = 'http://example.com/a/path/to.html';
       var rurl = sputils.helpers.abs2rel(aurl);
       expect(rurl).to.equal('/a/path/to.html');
+      sputils.lib.getval = temp;
     });
   });
 });

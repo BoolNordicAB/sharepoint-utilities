@@ -105,6 +105,15 @@
 
   var sortTerms = function (parent) {
     var sortOrder = parent.getSortOrder();
+    function accordingToSortOrder(childA, childB) {
+      var a = sortOrder.indexOf(childA.getGuid()),
+          b = sortOrder.indexOf(childB.getGuid());
+
+      // numerically, ascending
+      return a - b;
+      // numerically, descending
+      // return b - a;
+    }
 
     if (sortOrder) {
       // Sort order is a string of guids
@@ -113,13 +122,12 @@
 
       // Replace children with an array sorted
       // according to the sortOrder.
-      parent.children = _.sortBy(parent.children, function (child) {
-        return sortOrder.indexOf(child.getGuid());
-      });
+      parent.children.sort(accordingToSortOrder);
     } else {
       // sortBy with no second parameter
       // sorts on identity (just compares the values)
-      parent.children = _.sortBy(parent.children);
+      // lexicographically, i.e. "alphabetically".
+      parent.children.sort();
     }
   };
 
@@ -129,7 +137,7 @@
     sortTerms(tree);
 
     if (tree.children) {
-      _.each(tree.children, sortTree);
+      fjs.each(sortTree, tree.children);
     }
 
     return tree;
