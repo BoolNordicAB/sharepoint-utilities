@@ -1,3 +1,5 @@
+var sputils = {};
+var global = this || window;
 var expect = chai.expect;
 var fetch;
 var stdPromise = function (result) {

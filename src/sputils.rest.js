@@ -18,11 +18,19 @@
 
   // Returns a promise resolving to the digest string.
   var requestFormDigest = function () {
-    return post("/_api/contextinfo", { })
-      .then(function (data) {
-        return data.d.GetContextWebInformation.FormDigestValue;
+    return contextInfo()
+      .then(function (info) {
+        return info.FormDigestValue;
       });
   };
+
+  function contextInfo(webUrl) {
+    var CONTEXT_INFO_API = '/_api/contextinfo';
+    return post(webUrl + CONTEXT_INFO_API)
+      .then(function (data) {
+        return data.d.GetContextWebInformation;
+      });
+  }
 
   // Utility for grabbing the digest off the page in
   // an asynchronous manner. Solves the issue of script
@@ -181,6 +189,7 @@ sputils.rest.post("/_api/Web/Lists/getByTitle('Announcements')/items/", data)
   sputils.rest = {
     get: get,
     post: post,
-    unwrapResults: unwrapResults
+    unwrapResults: unwrapResults,
+    contextInfo: contextInfo
   };
 })();

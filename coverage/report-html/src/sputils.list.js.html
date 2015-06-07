@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for ./src/sputils.list.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../prettify.css">
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header low">
+    <h1>Code coverage report for <span class="entity">./src/sputils.list.js</span></h1>
+    <h2>
+        Statements: <span class="metric">44% <small>(11 / 25)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">0% <small>(0 / 4)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">42.86% <small>(3 / 7)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">44% <small>(11 / 25)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">./src/</a> &#187; sputils.list.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/** @namespace sputils.list */
+&nbsp;
+(function () {
+&nbsp;
+  /**
+  Returns the list items from the given list name.
+  @function sputils.lists.getListByName
+  @param {string} name a list name
+  @returns {array}
+  @example
+&nbsp;
+  sputils.list.getListByName('Announcements')
+    .then(function (data) { console.log(data.d.results) });
+&nbsp;
+  */
+  var getListByName = function (name, config) {
+    var url = '/_api/Web/Lists/getByTitle(\'' + name + '\')/items/';
+    return sputils.rest.get(url, config)
+      .then(sputils.rest.unwrapResults);
+  };
+&nbsp;
+  /**
+  Modifies list items in the given list.
+  @function sputils.lists.postListByName
+  @param {string} name a list name
+  @param {object} data the payload
+  @param {object} config the config
+  @returns {object} Promise
+  @example
+&nbsp;
+var data = {"Title": "listlessly POSTing",
+            "__metadata": { type: "SP.Data.AnnouncementsListItem"} };
+sputils.list.postListByName("Announcements", data)
+  .then(function (data) { console.log(data); });
+&nbsp;
+  */
+  var postListByName = function (name, data, config) {
+    var url = '/_api/Web/Lists/getByTitle(\'' + name + '\')/items/';
+    return sputils.rest.post(url, data, config)
+      .then(sputils.rest.unwrapResults);
+  };
+&nbsp;
+  /**
+  Returns the list item with the specified id.
+  @function sputils.lists.getListItemById
+  @param {string} name a list name
+  @param {object} data the payload
+  @param {object} config the config
+  @returns {array} List items
+  @example
+&nbsp;
+sputils.list.getListItemById('Announcements', 1)
+  .then(function (data) { console.log(data.d.results) });
+&nbsp;
+  */
+  var getListItemById = <span class="fstat-no" title="function not covered" >function (listName, itemId, config) {</span>
+<span class="cstat-no" title="statement not covered" >    var url = '/_api/Web/Lists/getByTitle(\'' + listName + '\')/items/getbyid(' + itemId + ')';</span>
+<span class="cstat-no" title="statement not covered" >    return sputils.rest.get(url, config)</span>
+      .then(sputils.rest.unwrapResults);
+  };
+&nbsp;
+<span class="fstat-no" title="function not covered" >  function checkFile(dir, fileUrl) {</span>
+<span class="cstat-no" title="statement not covered" >    var cctxPromise = sputils.helpers.clientContext(fileUrl);</span>
+<span class="cstat-no" title="statement not covered" >    return cctxPromise.then(<span class="fstat-no" title="function not covered" >function (cctx) {</span></span>
+<span class="cstat-no" title="statement not covered" >        var webUrl = data.d.GetContextWebInformation.WebFullUrl;</span>
+<span class="cstat-no" title="statement not covered" >        var web = cctx.get_web();</span>
+<span class="cstat-no" title="statement not covered" >        var page = web.getFileByServerRelativeUrl(fileUrl.split(window.location.hostname)[1]);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (dir === 'in') {</span>
+<span class="cstat-no" title="statement not covered" >          page.checkIn();</span>
+        } else <span class="cstat-no" title="statement not covered" >if (dir === 'out') {</span>
+<span class="cstat-no" title="statement not covered" >          page.checkOut();</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return new Promise(cctx.executeQueryAsync);</span>
+    });
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  function checkFileOutThenIn(fileUrl) {</span>
+<span class="cstat-no" title="statement not covered" >    var checkIn = checkFile.bind(null, 'in', fileUrl);</span>
+<span class="cstat-no" title="statement not covered" >    return checkFile('out', fileUrl)</span>
+      .then(checkIn, checkIn);
+  }
+&nbsp;
+&nbsp;
+  sputils.list = {
+    getListByName: getListByName,
+    postListByName: postListByName,
+    getListItemById: getListItemById
+  };
+})();
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Jun 06 2015 22:34:12 GMT+0200 (W. Europe Daylight Time)</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>
