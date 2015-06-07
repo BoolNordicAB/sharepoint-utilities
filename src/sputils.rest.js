@@ -47,11 +47,11 @@
           requestDigest = rd.value;
           resolve(requestDigest);
         } else {
-          return requestFormDigest()
+          requestFormDigest()
             .then(tap(function (digest) {
               // `tap` will pass the digest to the next handler
               requestDigest = digest;
-            }));
+            })).then(resolve);
         }
       }
     });

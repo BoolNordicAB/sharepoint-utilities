@@ -4,6 +4,10 @@ describe('SharePoint REST API Wrapper', function () {
     expect(sputils).to.have.ownProperty('rest');
   });
 
+  function thrower() {
+    throw new Error();
+  }
+
   beforeEach(function () {
     initialize_dom();
   });
@@ -30,7 +34,7 @@ describe('SharePoint REST API Wrapper', function () {
         done();
         expect(rd).to.equal(idVal);
         initialize_dom();
-      });
+      }, thrower);
     });
   });
 
