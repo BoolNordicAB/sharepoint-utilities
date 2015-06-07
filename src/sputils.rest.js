@@ -37,9 +37,9 @@
   // running before page has loaded proper.
   // --
   // Returns a promise resolving to the digest string.
-  var withRequestDigest = function () {
+  var withRequestDigest = function (refresh) {
     return new Promise(function(resolve, reject) {
-      if (requestDigest) {
+      if (requestDigest && refresh !== true) {
         resolve(requestDigest);
       } else {
         var rd = global.document.getElementById("__REQUESTDIGEST");
@@ -189,6 +189,7 @@ sputils.rest.post("/_api/Web/Lists/getByTitle('Announcements')/items/", data)
   sputils.rest = {
     get: get,
     post: post,
+    withRequestDigest: withRequestDigest,
     unwrapResults: unwrapResults,
     contextInfo: contextInfo
   };

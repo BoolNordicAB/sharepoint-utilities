@@ -8,6 +8,32 @@ describe('SharePoint REST API Wrapper', function () {
     initialize_dom();
   });
 
+  describe('requestFormDigest', function () {
+    it('should fetch the form digest value', function (done) {
+      var a = document.getElementById('__REQUESTDIGEST');
+      a.parentNode.removeChild(a);
+      var idVal = '#123';
+
+      fetch = function (url, cfg) {
+        return new Promise(function(resolve, reject) {
+          resolve({
+            d: {
+              GetContextWebInformation: {
+                FormDigestValue: idVal
+              }
+            }
+          });
+        });
+      };
+
+      sputils.rest.withRequestDigest(true).then(function (rd) {
+        done();
+        expect(rd).to.equal(idVal);
+        initialize_dom();
+      });
+    });
+  });
+
   describe('get', function () {
     it('should have correct config settings', function (done) {
       // Mock jQuery ajax
