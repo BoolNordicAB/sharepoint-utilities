@@ -1,6 +1,10 @@
 {
   "name": "sputils",
   "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BoolNordicAB/sharepoint-utilities"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-concat": "~0.5.0",
