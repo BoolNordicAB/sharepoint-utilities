@@ -62,9 +62,9 @@ sputils.list.getListItemById('Announcements', 1)
   function checkFile(dir, fileUrl) {
     var cctxPromise = sputils.helpers.clientContext(fileUrl);
     return cctxPromise.then(function (cctx) {
-        var webUrl = data.d.GetContextWebInformation.WebFullUrl;
         var web = cctx.get_web();
-        var page = web.getFileByServerRelativeUrl(fileUrl.split(window.location.hostname)[1]);
+        var page = web.getFileByServerRelativeUrl(
+          fileUrl.split(global.location.hostname)[1]);
 
         if (dir === 'in') {
           page.checkIn();
@@ -76,16 +76,10 @@ sputils.list.getListItemById('Announcements', 1)
     });
   }
 
-  function checkFileOutThenIn(fileUrl) {
-    var checkIn = checkFile.bind(null, 'in', fileUrl);
-    return checkFile('out', fileUrl)
-      .then(checkIn, checkIn);
-  }
-
-
   sputils.list = {
     getListByName: getListByName,
     postListByName: postListByName,
-    getListItemById: getListItemById
+    getListItemById: getListItemById,
+    checkFile: checkFile
   };
 })();

@@ -52,6 +52,16 @@ rurl === '/a/path/to.html';
     return parts[1] || '/';
   }
 
+/**
+@function sputils.helpers.urlQuery
+@param {Optional<string>} a query string
+@returns {Object} an object representing the dictionary of the query string.
+@example
+console.log(location.search); // => '?a=1&b=some value'
+var qsHash = urlQuery();
+// qsHash ~=~ {a:1, b: 'some value'};
+urlQuery('?a=1&b=some value'); // ~=~ qsHash
+**/
   function urlQuery(optArg) {
     var result = {};
     var qs = (optArg || sputils.lib.getval('location.search')).replace('?', '');
