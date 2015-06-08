@@ -41,6 +41,10 @@ describe('SPUTILS LIB', function () {
 
       var getval = sputils.lib.getval;
       expect(getval('p.q')).to.equal(window.p.q);
+
+
+      var gv = getval.bind(null, 'p.q');
+      expect(gv()).to.equal(window.p.q);
     });
 
     it('should be dynamic', function () {
@@ -52,6 +56,23 @@ describe('SPUTILS LIB', function () {
       var getval = sputils.lib.getval;
       var res = getval('a.b.d.2.long prop name', testObjects);
       expect(res).to.equal(9);
+    });
+  });
+
+  describe('tap', function () {
+    it('should produce a side effect', function () {
+      var tap = sputils.lib.tap;
+      var a = 0;
+      function inc() {
+        a++;
+      }
+
+      var identityWithSideEffect = tap(inc);
+
+      var id = {};
+      expect(a).to.equal(0);
+      expect(identityWithSideEffect(id)).to.equal(id);
+      expect(a).to.equal(1);
     });
   });
 });

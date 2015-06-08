@@ -65,5 +65,6 @@ var getval = function recur(subscript, root) {
 };
 
 sputils.lib = {
-  getval: getval
+  getval: getval,
+  tap: tap
 };

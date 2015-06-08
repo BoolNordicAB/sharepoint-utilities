@@ -42,24 +42,27 @@ var rurl = sputils.helpers.abs2rel(aurl);
 rurl === '/a/path/to.html';
   **/
   function abs2rel(absUrl) {
-    var hostname = sputils.lib.getval('location.hostname', global) || '';
+    var hostname = sputils.lib.getval('location.hostname');
 
     // splitting on the hostname should yield an array with 2 elements
     // the 1st element should be empty string and the second the rel path.
     // coalesce into an array with the result being a '/'
-    var parts = (absUrl || '').split(hostname) || ['', '/'];
+    var parts = (absUrl || '').split(hostname);
 
-    return parts[1];
+    return parts[1] || '/';
   }
 
   function urlQuery(optArg) {
     var result = {};
-    var qs = (optArg || global.location.search).replace('?', '');
+    var qs = (optArg || sputils.lib.getval('location.search')).replace('?', '');
     var parts = qs.split('&');
+    parts = fjs.filter(function (a) {
+      return a !== '';
+    }, parts);
     fjs.each(function (part) {
       var kvp = part.split('=');
-      result[kvp[0]] = result[kvp[1]];
-    });
+      result[kvp[0]] = kvp[1];
+    }, parts);
     return result;
   }
 
@@ -101,6 +104,7 @@ cctxPromise.then(function (cctx) {
   sputils.helpers = {
     withSharePointDependencies: withSharePointDependencies,
     abs2rel: abs2rel,
-    clientContext: clientContext
+    clientContext: clientContext,
+    urlQuery: urlQuery
   };
 })();

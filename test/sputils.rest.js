@@ -4,8 +4,38 @@ describe('SharePoint REST API Wrapper', function () {
     expect(sputils).to.have.ownProperty('rest');
   });
 
+  function thrower() {
+    throw new Error();
+  }
+
   beforeEach(function () {
     initialize_dom();
+  });
+
+  describe('requestFormDigest', function () {
+    it('should fetch the form digest value', function (done) {
+      var a = document.getElementById('__REQUESTDIGEST');
+      a.parentNode.removeChild(a);
+      var idVal = '#123';
+
+      fetch = function (url, cfg) {
+        return new Promise(function(resolve, reject) {
+          resolve({
+            d: {
+              GetContextWebInformation: {
+                FormDigestValue: idVal
+              }
+            }
+          });
+        });
+      };
+
+      sputils.rest.withRequestDigest(true).then(function (rd) {
+        done();
+        expect(rd).to.equal(idVal);
+        initialize_dom();
+      }, thrower);
+    });
   });
 
   describe('get', function () {
