@@ -1,6 +1,8 @@
 sharepoint-utilities
 ====================
 
+[![Build Status](https://travis-ci.org/BoolNordicAB/sharepoint-utilities.svg?branch=master)](https://travis-ci.org/BoolNordicAB/sharepoint-utilities)
+
 The intent of this project is to gather best practice in JavaScript interaction with SharePoint. The goal is to provide a unified API through which developers can work. Although there is much to read on the best practices of server side SP development, the same can not be said for client side.
 
 Pull requests are welcome, but please follow the instructions listed further down.
