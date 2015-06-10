@@ -106,7 +106,7 @@ describe('SharePoint List API Wrapper', function () {
 
         this.executeQueryAsync = function (resolve, reject) {
           resolve({ });
-        }
+        };
 
         this.get_web = function () {
           return {
