@@ -33,20 +33,6 @@ describe('SPUTILS LIB', function () {
       expect(getval('a.b.c.es', testObjects)).to.equal('');
     });
 
-    it('should use the global object as root if no root is supplied', function () {
-      window.p = { q: 1 };
-
-      var res = sputils.lib.getval('p.q');
-      expect(res).to.equal(window.p.q);
-
-      var getval = sputils.lib.getval;
-      expect(getval('p.q')).to.equal(window.p.q);
-
-
-      var gv = getval.bind(null, 'p.q');
-      expect(gv()).to.equal(window.p.q);
-    });
-
     it('should be dynamic', function () {
       testObjects.getval = sputils.lib.getval;
       expect(testObjects.getval('a.b')).to.equal(testObjects.a.b);
