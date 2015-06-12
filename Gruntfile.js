@@ -55,7 +55,7 @@ module.exports = function (grunt) {
     },
     watch: {
       files: ['<%= jshint.files %>'],
-      tasks: ['jshint', 'karma']
+      tasks: ['jscs', 'jshint', 'build']
     },
     jsdoc: {
       dist: {
@@ -67,13 +67,22 @@ module.exports = function (grunt) {
     },
     jscs: {
       main: ["src/**/*.js"]
+    },
+    clean: {
+      docs: ['doc'],
+      dist: ['dist']
     }
   });
 
-  grunt.registerTask('build', [
-    'concat',
-    'uglify',
+  grunt.registerTask('docs', [
+    'clean:docs',
     'jsdoc'
+  ]);
+
+  grunt.registerTask('build', [
+    'clean:dist',
+    'concat',
+    'uglify'
   ]);
 
   grunt.registerTask('travis', [
