@@ -1,13 +1,4 @@
-/** @namespace sputils.rest */
-
 (function () {
-
-  /*
-
-    SETUP
-
-  */
-
   // This is used to cache results
   // from grabbing the request digest.
   var requestDigest;
@@ -38,12 +29,12 @@
   // --
   // Returns a promise resolving to the digest string.
   var withRequestDigest = function (refresh) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       if (requestDigest && refresh !== true) {
         resolve(requestDigest);
       } else {
-        var rd = global.document.getElementById("__REQUESTDIGEST");
-        if (rd !== null && rd.value !== "InvalidFormDigest") {
+        var rd = global.document.getElementById('__REQUESTDIGEST');
+        if (rd !== null && rd.value !== 'InvalidFormDigest') {
           requestDigest = rd.value;
           resolve(requestDigest);
         } else {
@@ -62,15 +53,15 @@
 
   // Returns a promise resolving to the ajax defaults.
   var getDefaults = function (url, config) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       var defaults = {
         // If the URL is not absolute, get the missing part
         // from _spPageContextInfo
         url: url.indexOf('http') > -1 ? url : _spPageContextInfo.webAbsoluteUrl + url,
-        method: "GET",
-        credentials: "include",
+        method: 'GET',
+        credentials: 'include',
         headers: {
-          "accept": "application/json;odata=verbose"
+          'accept': 'application/json;odata=verbose'
         }
       };
 
@@ -93,12 +84,12 @@
         var headers = fjs.assign(
           getval('headers', config) || {},
           getval('headers', defaults) || {},
-          { "X-RequestDigest": digest });
+          {'X-RequestDigest': digest});
 
         var added = {
-          method: "POST",
+          method: 'POST',
           body: data,
-          contentType: "application/json;odata=verbose"
+          contentType: 'application/json;odata=verbose'
         };
 
         var cfg = fjs.assign(config || {}, added, defaults);
@@ -108,18 +99,18 @@
   };
 
   /**
-  Rest API get helper. Uses sane defaults to speak to the API. Additional
-  configuration can be passed with the config argument.
-  @function sputils.rest.get
-  @param {string} url an SP endpoint
-  @param {object} config additional configuration
-  @returns {object} a promise that resolves to the response data
-  @example
-  sputils.rest.get("/_api/web/lists").then(function (data) {
-  $.each(data.d.results, function (idx,el) {
-    console.log(el);
-  });
-});
+  * Rest API get helper. Uses sane defaults to speak to the API. Additional
+  * configuration can be passed with the config argument.
+  * @function sputils.rest.get
+  * @param {string} url an SP endpoint
+  * @param {object} config additional configuration
+  * @returns {object} a promise that resolves to the response data
+  * @example
+  * sputils.rest.get('/_api/web/lists').then(function (data) {
+  *   $.each(data.d.results, function (idx,el) {
+  *     console.log(el);
+  *   });
+  * });
   */
   var get = function (url, config) {
     url = url || '/';
@@ -129,28 +120,20 @@
       });
   };
 
-  /*
-
-  EXAMPLE USE:
-
-
-
-  */
-
   /**
-  Rest API post helper. Uses sane defaults to speak to the API. Additional
-  configuration can be passed with the config argument.
-  @function sputils.rest.post
-  @param {string} url an SP endpoint
-  @param {object} data the payload
-  @param {object} config additional configuration
-  @returns {object} a promise that resolves to the response data
-  @example
-  var data = {"Title":"REST API FTW",
-            "__metadata": { "type": "SP.Data.AnnouncementsListItem"}};
-
-sputils.rest.post("/_api/Web/Lists/getByTitle('Announcements')/items/", data)
-  .then(function (data) { console.log(data) });
+  * Rest API post helper. Uses sane defaults to speak to the API. Additional
+  * configuration can be passed with the config argument.
+  * @function sputils.rest.post
+  * @param {string} url an SP endpoint
+  * @param {object} data the payload
+  * @param {object} config additional configuration
+  * @returns {object} a promise that resolves to the response data
+  * @example
+  * var data = {'Title':'REST API FTW',
+  *             '__metadata': { 'type': 'SP.Data.AnnouncementsListItem'}};
+  *
+  * sputils.rest.post('/_api/Web/Lists/getByTitle('Announcements')/items/', data)
+  *   .then(function (data) { console.log(data) });
   */
   var post = function (url, data, config) {
     data = typeof data === 'string' ? data : JSON.stringify(data);
@@ -160,20 +143,20 @@ sputils.rest.post("/_api/Web/Lists/getByTitle('Announcements')/items/", data)
   };
 
   /**
-  Results from the standard SharePoint REST APIs come
-  wrapped in objects. This convenience function unwraps
-  them for you. See example use.
-  @function sputils.rest.unwrapResults
-  @param {object} object raw SP API response data
-  @returns {object} unwrapped SP API data
-  @example
-  sputils.rest.get("/_api/web/lists")
-  .then(sputils.rest.unwrapResults)
-  .then(function (data) {
-    $.each(data, function (idx,el) {
-      console.log(el);
-    });
-  });
+  * Results from the standard SharePoint REST APIs come
+  * wrapped in objects. This convenience function unwraps
+  * them for you. See example use.
+  * @function sputils.rest.unwrapResults
+  * @param {object} object raw SP API response data
+  * @returns {object} unwrapped SP API data
+  * @example
+  * sputils.rest.get('/_api/web/lists')
+  *   .then(sputils.rest.unwrapResults)
+  *   .then(function (data) {
+  *     $.each(data, function (idx,el) {
+  *       console.log(el);
+  *     });
+  *   });
   */
   var unwrapResults = function (object) {
     return object.d.results || object.d;
@@ -185,7 +168,7 @@ sputils.rest.post("/_api/Web/Lists/getByTitle('Announcements')/items/", data)
     return typeof result.json === 'function' ? result.json() : result;
   };
 
-
+  /** @namespace */
   sputils.rest = {
     get: get,
     post: post,

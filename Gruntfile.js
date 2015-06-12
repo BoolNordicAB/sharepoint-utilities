@@ -64,6 +64,9 @@ module.exports = function (grunt) {
           destination: 'doc'
         }
       }
+    },
+    jscs: {
+      main: ["src/**/*.js"]
     }
   });
 
@@ -73,8 +76,15 @@ module.exports = function (grunt) {
     'jsdoc'
   ]);
 
+  grunt.registerTask('travis', [
+    'jshint',
+    'jscs',
+    'karma'
+  ]);
+
   grunt.registerTask('default', [
     'jshint',
+    'jscs',
     'build',
     'karma'
   ]);

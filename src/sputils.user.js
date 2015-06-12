@@ -1,8 +1,6 @@
-/** @namespace sputils.user */
-
 (function () {
   var loginAsAnotherUser = function () {
-    window.location.href = "/_layouts/closeconnection.aspx?loginasanotheruser=true";
+    window.location.href = '/_layouts/closeconnection.aspx?loginasanotheruser=true';
   };
 
   /* EXAMPLE USE
@@ -12,7 +10,7 @@
   */
 
   var logoutUser = function () {
-    window.location.href = "/_layouts/closeconnection.aspx";
+    window.location.href = '/_layouts/closeconnection.aspx';
   };
 
   /* EXAMPLE USE
@@ -23,8 +21,7 @@
 
   // Returns a promise with the current spuser object.
   var getCurrentUser = function () {
-    return new Promise(function(resolve, reject) {
-
+    return new Promise(function (resolve, reject) {
       var clientContext = new SP.ClientContext.get_current();
       var currentWeb = clientContext.get_web();
       var currentUser = web.get_currentUser();
@@ -66,6 +63,7 @@
 
   */
 
+  /** @namespace */
   sputils.user = {
     loginAsAnotherUser: loginAsAnotherUser,
     logoutUser: logoutUser,

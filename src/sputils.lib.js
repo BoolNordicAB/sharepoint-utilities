@@ -1,10 +1,10 @@
 /** @namespace sputils.lib */
 
 /**
-"taps" a function to produce a side effect
-but wrap it in an identity fn.
-
-@function sputils.lib.tap
+* "taps" a function to produce a side effect
+* but wrap it in an identity fn.
+*
+* @function sputils.lib.tap
 **/
 var tap = function (fn) {
   return function (value) {
@@ -15,32 +15,32 @@ var tap = function (fn) {
 
 
 /**
-Get a value deeply from an object without crashing on nulls.
-
-This function is dynamic, so can be bound or just assigned to an
-object.
-
-Can be used to "index" arrays.
-
-@function sputils.lib.getval
-@param {string} subscript - the subscript string, i.e. 'a.b.c.prop'
-@param {Optional<object>} root - the root object. Defaults to this.
-@returns {string} the value of the prop, if exists else undefined
-@example
-var obj = {a:{b:{c:{}}}}
-var c = sputils.lib.getval('a.b.c', obj);
-c === obj.a.b.c;
-var none = sputils.lib.getval('a.b.1.notHere', obj);
-none === void 0;
-
-// dynamic binding
-testObjects.getval = sputils.lib.getval;
-expect(testObjects.getval('a.b')).to.equal(testObjects.a.b);
-
-// any kind of property name is allowed, excepting period.
-var getval = sputils.lib.getval;
-var res = getval('a.b.d.2.long prop name', testObjects);
-expect(res).to.equal(testObjects.a.b.d[2]['long prop name']);
+* Get a value deeply from an object without crashing on nulls.
+*
+* This function is dynamic, so can be bound or just assigned to an
+* object.
+*
+* Can be used to "index" arrays.
+*
+* @function sputils.lib.getval
+* @param {string} subscript - the subscript string, i.e. 'a.b.c.prop'
+* @param {Optional<object>} root - the root object. Defaults to this.
+* @returns {string} the value of the prop, if exists else undefined
+* @example
+* var obj = {a:{b:{c:{}}}}
+* var c = sputils.lib.getval('a.b.c', obj);
+* c === obj.a.b.c;
+* var none = sputils.lib.getval('a.b.1.notHere', obj);
+* none === void 0;
+*
+* // dynamic binding
+* testObjects.getval = sputils.lib.getval;
+* expect(testObjects.getval('a.b')).to.equal(testObjects.a.b);
+*
+* // any kind of property name is allowed, excepting period.
+* var getval = sputils.lib.getval;
+* var res = getval('a.b.d.2.long prop name', testObjects);
+* expect(res).to.equal(testObjects.a.b.d[2]['long prop name']);
 **/
 var getval = function recur(subscript, root) {
   if (this === sputils.lib) {

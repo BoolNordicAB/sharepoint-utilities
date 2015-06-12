@@ -1,5 +1,3 @@
-/** @namespace sputils.helpers */
-
 (function () {
   var resolveDependency = function (dep) {
     var file = dep.file,
@@ -31,15 +29,15 @@
 
 
   /**
-  Get the relative (to the root) portion of an absolute url.
-
-  @function sputils.helpers.abs2rel
-  @param {string} - the absolute url
-  @returns {string} - the relative url
-  @example
-var aurl = 'http://example.com/a/path/to.html';
-var rurl = sputils.helpers.abs2rel(aurl);
-rurl === '/a/path/to.html';
+  * Get the relative (to the root) portion of an absolute url.
+  *
+  * @function sputils.helpers.abs2rel
+  * @param {string} - the absolute url
+  * @returns {string} - the relative url
+  * @example
+  * var aurl = 'http://example.com/a/path/to.html';
+  * var rurl = sputils.helpers.abs2rel(aurl);
+  * rurl === '/a/path/to.html';
   **/
   function abs2rel(absUrl) {
     var hostname = sputils.lib.getval('location.hostname');
@@ -52,16 +50,16 @@ rurl === '/a/path/to.html';
     return parts[1] || '/';
   }
 
-/**
-@function sputils.helpers.urlQuery
-@param {Optional<string>} a query string
-@returns {Object} an object representing the dictionary of the query string.
-@example
-console.log(location.search); // => '?a=1&b=some value'
-var qsHash = urlQuery();
-// qsHash ~=~ {a:1, b: 'some value'};
-urlQuery('?a=1&b=some value'); // ~=~ qsHash
-**/
+  /**
+  * @function sputils.helpers.urlQuery
+  * @param {Optional<string>} a query string
+  * @returns {Object} an object representing the dictionary of the query string.
+  * @example
+  * console.log(location.search); // => '?a=1&b=some value'
+  * var qsHash = urlQuery();
+  * // qsHash ~=~ {a:1, b: 'some value'};
+  * urlQuery('?a=1&b=some value'); // ~=~ qsHash
+  **/
   function urlQuery(optArg) {
     var result = {};
     var qs = (optArg || sputils.lib.getval('location.search')).replace('?', '');
@@ -77,25 +75,25 @@ urlQuery('?a=1&b=some value'); // ~=~ qsHash
   }
 
   /**
-  Get a promise for a client context that could be on another
-  site/web.
-
-  This client context is augmented to contain extra info in the
-  `_info` property.
-
-  @function sputils.helpers.clientContextForWeb
-  @param {string} - the absolute url of the listitem, file or other asset.
-  @returns {Promise<SP.ClientContext>} - the promise of a client context
-  @example
-console.log(location);// => http://contoso.com/sub1
-var fileUrl = 'http://contoso.com/sub21231/Shared Documents/file1.docx';
-var cctxPromise = sputils.helpers.clientContext(fileUrl);
-cctxPromise.then(function (cctx) {
-  var webUrl = cctx._info.WebFullUrl;
-  var web = cctx.get_web();
-  var file = web.getFileByServerRelativeUrl(sputils.helpers.abs2rel(fileUrl));
-  // ...
-});
+  * Get a promise for a client context that could be on another
+  * site/web.
+  *
+  * This client context is augmented to contain extra info in the
+  * `_info` property.
+  *
+  * @function sputils.helpers.clientContextForWeb
+  * @param {string} - the absolute url of the listitem, file or other asset.
+  * @returns {Promise<SP.ClientContext>} - the promise of a client context
+  * @example
+  * console.log(location);// => http://contoso.com/sub1
+  * var fileUrl = 'http://contoso.com/sub21231/Shared Documents/file1.docx';
+  * var cctxPromise = sputils.helpers.clientContext(fileUrl);
+  * cctxPromise.then(function (cctx) {
+  *   var webUrl = cctx._info.WebFullUrl;
+  *   var web = cctx.get_web();
+  *   var file = web.getFileByServerRelativeUrl(sputils.helpers.abs2rel(fileUrl));
+  *   // ...
+  * });
   **/
   function clientContext(absoluteFileOrWebUrl) {
     var url = absoluteFileOrWebUrl.substring(
@@ -110,7 +108,7 @@ cctxPromise.then(function (cctx) {
     });
   }
 
-
+  /** @namespace */
   sputils.helpers = {
     withSharePointDependencies: withSharePointDependencies,
     abs2rel: abs2rel,

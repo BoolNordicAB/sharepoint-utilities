@@ -1,7 +1,5 @@
-/** @namespace sputils.termstore */
-
 (function () {
-  var TermsTree = function(termSet) {
+  var TermsTree = function (termSet) {
     this.termSet = termSet;
 
     this.getSortOrder = function () {
@@ -32,7 +30,7 @@
       return this.term.get_isRoot();
     };
 
-    this.getGuid = function() {
+    this.getGuid = function () {
       return this.term.get_id();
     };
 
@@ -89,7 +87,7 @@
     return mainTree;
   };
 
-  var getDefaultTermStore = function(context) {
+  var getDefaultTermStore = function (context) {
     var session = SP.Taxonomy.TaxonomySession.getTaxonomySession(context);
 
     return session.getDefaultSiteCollectionTermStore();
@@ -144,16 +142,16 @@
   };
 
   /**
-  Returns a promise which resolves with
-  an object containing all the terms
-  corresponding to the given termset id.
-  @function sputils.termstore.getTerms
-  @param {string} id a termset guid
-  @returns {object}
+  * Returns a promise which resolves with
+  * an object containing all the terms
+  * corresponding to the given termset id.
+  * @function sputils.termstore.getTerms
+  * @param {string} id a termset guid
+  * @returns {object}
   */
-  var getTerms = function(id) {
+  var getTerms = function (id) {
     return new Promise(function (resolve, reject) {
-      withTaxonomy().then(function() {
+      withTaxonomy().then(function () {
         var context = SP.ClientContext.get_current(),
             termStore = getDefaultTermStore(context),
             termSet = termStore.getTermSet(id),
@@ -172,28 +170,28 @@
   };
 
   /**
-  Returns a promise which resolves
-  to an array. Each element
-  is a taxonomy term object.
-  @function sputils.termstore.getTermsList
-  @param {string} id a termset guid
-  @returns {array}
+  * Returns a promise which resolves
+  * to an array. Each element
+  * is a taxonomy term object.
+  * @function sputils.termstore.getTermsList
+  * @param {string} id a termset guid
+  * @returns {array}
   */
-  var getTermsList = function(id) {
+  var getTermsList = function (id) {
     return getTerms(id)
       .then(generateList);
   };
 
   /**
-  Returns a promise which resolves
-  to a tree object. Each node has
-  a children property which is sorted
-  according to customSortOrder.
-  @function sputils.termstore.getTermsTree
-  @param {string} id a termset guid
-  @returns {object}
+  * Returns a promise which resolves
+  * to a tree object. Each node has
+  * a children property which is sorted
+  * according to customSortOrder.
+  * @function sputils.termstore.getTermsTree
+  * @param {string} id a termset guid
+  * @returns {object}
   */
-  var getTermsTree = function(id) {
+  var getTermsTree = function (id) {
     return getTerms(id)
       // The terms are unordered and without
       // a useful way of interpreting the hierarchy,
@@ -203,6 +201,7 @@
       .then(sortTree);
   };
 
+  /** @namespace */
   sputils.termstore = {
     getTerms: getTerms,
     getTermsList: getTermsList,
