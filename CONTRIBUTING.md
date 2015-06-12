@@ -12,8 +12,8 @@ Thank you for your interest in contributing! Note that pull requests will only b
 ## Pull requests
 
 * Add as much information as you can, including screenshots and logs.
-* Code must follow the [style guide][jsstyleguide].
-* Code must be well documented and the comments have to follow the style guide.
+* Code must be well documented and the comments have to follow the style guide, as enforced by jscs.
+* Code must pass tests, jshint and jscs.
 * End all files with new lines.
 
 ## Commit messages
@@ -22,5 +22,3 @@ Thank you for your interest in contributing! Note that pull requests will only b
 * Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
 * Describe the pull request in the commit message.
 * Reference the issue in the commit message.
-
-[jsstyleguide]: https://github.com/styleguide/javascript
