@@ -1,7 +1,7 @@
 (function () {
   /**
   * Returns the list items from the given list name.
-  * @function sputils.lists.getListByName
+  * @function sputils.list.getListByName
   * @param {string} name a list name
   * @returns {array}
   * @example
@@ -18,7 +18,7 @@
 
   /**
   * Modifies list items in the given list.
-  * @function sputils.lists.postListByName
+  * @function sputils.list.postListByName
   * @param {string} name a list name
   * @param {object} data the payload
   * @param {object} config the config
@@ -38,7 +38,7 @@
 
   /**
   * Returns the list item with the specified id.
-  * @function sputils.lists.getListItemById
+  * @function sputils.list.getListItemById
   * @param {string} name a list name
   * @param {object} data the payload
   * @param {object} config the config
@@ -54,6 +54,7 @@
       .then(sputils.rest.unwrapResults);
   };
 
+  /** @namespace sputils.list.files */
   var files = (function () {
     function checkFile(dir, fileUrl) {
       var cctxPromise = sputils.helpers.clientContext(fileUrl);
@@ -84,8 +85,8 @@
     return {
       /**
       * Initiates a checkIn operation on the file located at the supplied URL.
-      * @function sputils.lists.files.checkIn
-      * @param {string} url: the URL of the file
+      * @function sputils.list.files.checkIn
+      * @param {string} url - the URL of the file
       * @returns {Promise} the promise of fulfilling the operation
       * @example
       *
@@ -95,13 +96,13 @@
       checkIn: checkIn,
       /**
       * Initiates a checkOut operation on the file located at the supplied URL.
-      * @function sputils.lists.files.checkOut
-      * @param {string} url: the URL of the file
+      * @function sputils.list.files.checkOut
+      * @param {string} url - the URL of the file
       * @returns {Promise} the promise of fulfilling the operation
       * @example
       *
       * sputils.list.files.checkOut('/pages/default.aspx')
-      *   .then(function () { console.log('page was checked in') });
+      *   .then(function () { console.log('page was checked out') });
       */
       checkOut: checkOut
     };
