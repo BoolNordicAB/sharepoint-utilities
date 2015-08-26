@@ -70,7 +70,7 @@ module.exports = function (grunt) {
     },
     clean: {
       docs: ['doc'],
-      dist: ['dist']
+      dist: ['dist/*']
     }
   });
 
