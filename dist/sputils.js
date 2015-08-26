@@ -1429,8 +1429,29 @@ sputils.lib = {
       return checkFile('out', url);
     }
 
+    // public API for this submodule.
     return {
+      /**
+      * Initiates a checkIn operation on the file located at the supplied URL.
+      * @function sputils.lists.files.checkIn
+      * @param {string} url: the URL of the file
+      * @returns {Promise} the promise of fulfilling the operation
+      * @example
+      *
+      * sputils.list.files.checkIn('/pages/default.aspx')
+      *   .then(function () { console.log('page was checked in') });
+      */
       checkIn: checkIn,
+      /**
+      * Initiates a checkOut operation on the file located at the supplied URL.
+      * @function sputils.lists.files.checkOut
+      * @param {string} url: the URL of the file
+      * @returns {Promise} the promise of fulfilling the operation
+      * @example
+      *
+      * sputils.list.files.checkOut('/pages/default.aspx')
+      *   .then(function () { console.log('page was checked in') });
+      */
       checkOut: checkOut
     };
   })();
@@ -1748,17 +1769,33 @@ sputils.lib = {
     getCurrentUserPersonalSiteUrl: getCurrentUserPersonalSiteUrl
   };
 })();
-;
-(function () {
-  // cf. https://msdn.microsoft.com/en-us/library/office/jj163876.aspx
+;(function () {
+  /**
+  * @private
+  * @const search.POST_URL_PATH the sub-path used for POST requests */
   var POST_URL_PATH = '/_api/search/postquery';
+  /**
+  * @private
+  * @const search.GET_URL_PATH the sub-path used for GET requests */
   var GET_URL_PATH = '/_api/search/query';
+
+  /**
+  * @private
+  * @returns {object} __metadata for use in POST requests' bodies to search API */
   var __metadata = function () {
     return {
-      type: 'Microsoft.Office.Server.Search.REST.SearchRequest'
+      __metadata: {
+        type: 'Microsoft.Office.Server.Search.REST.SearchRequest'
+      }
     };
   };
 
+  /**
+  * An example search configuration
+  * @function sputils.search.searchCfgExample
+  * @see {@link https://msdn.microsoft.com/en-us/library/office/jj163876.aspx}
+  * @returns {object} a new object instance of a SearchConfigurationExample
+  */
   var searchCfgExample = function () {
     return {
       // A string that contains the text for the search query.
@@ -1891,6 +1928,27 @@ sputils.lib = {
     };
   };
 
+  /**
+  * Make a search request with a POST method. Useful if complex data needs
+  * to be sent to the server.
+  * <pre>
+  * Use POST requests in the following scenarios:
+  * - When you'll exceed the URL length restriction with a GET request.
+  * - When you can't specify the query parameters in a simple URL.
+  *   For example, if you have to pass parameter values that contain
+  *   a complex type array, or comma-separated strings, you have more
+  *   flexibility when constructing the POST request.
+  * - When you use the ReorderingRules parameter because it is supported only with POST requests.
+  * </pre>
+  * @function sputils.search.postSearch
+  * @param {object} cfg the search configuration.
+  * @see sputils.search.searchCfgExample or SharePoint Search Query Tool
+  * @param {string} [webUrl] the url of the web to use as the context.
+  * @returns {Promise<object>} the search result
+  * @example
+  * sputils.search.postSearch({Querytext: 'ContentType:0x01*'})
+  *   .then(function (result) { console.log(result) });
+  */
   var postSearch = function (cfg, webUrl) {
     return sputils.rest.post(
       (webUrl || _spPageContextInfo.siteServerRelativeUrl) + POST_URL_PATH,
