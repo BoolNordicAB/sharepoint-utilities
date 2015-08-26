@@ -83,58 +83,60 @@ describe('SharePoint List API Wrapper', function () {
   });
 
 
-  describe('checkFile', function () {
-    it('should check a file out or in', function (done) {
-      var fileUrl = window.location.hostname + '/subweb1/list1/doc.txt';
-      var checkIns = 0;
-      var checkOuts = 0;
-      fetch = function () {
-        return stdPromise({
-          d: {
-            GetContextWebInformation: {
-              WebFullUrl: window.location.hostname + '/subweb1'
+  describe('files', function () {
+    describe('checkOut/In', function () {
+      it('should check files out and in', function (done) {
+        var fileUrl = window.location.hostname + '/subweb1/list1/doc.txt';
+        var checkIns = 0;
+        var checkOuts = 0;
+        fetch = function () {
+          return stdPromise({
+            d: {
+              GetContextWebInformation: {
+                WebFullUrl: window.location.hostname + '/subweb1'
+              }
             }
-          }
-        });
-      };
-
-      function Ctor(url) {
-        // check that code uses `new`
-        var is = this instanceof Ctor;
-        expect(is).to.equal(true);
-        expect(url).to.equal(window.location.hostname + '/subweb1');
-
-        this.executeQueryAsync = function (resolve, reject) {
-          resolve({ });
+          });
         };
 
-        this.get_web = function () {
-          return {
-            getFileByServerRelativeUrl: function (relUrl) {
-              expect(relUrl).to.equal('/subweb1/list1/doc.txt');
-              return {
-                checkIn: function () {
-                  checkIns++;
-                },
-                checkOut: function () {
-                  checkOuts++;
-                }
-              };
-            }
+        function Ctor(url) {
+          // check that code uses `new`
+          var is = this instanceof Ctor;
+          expect(is).to.equal(true);
+          expect(url).to.equal(window.location.hostname + '/subweb1');
+
+          this.executeQueryAsync = function (resolve, reject) {
+            resolve({ });
           };
+
+          this.get_web = function () {
+            return {
+              getFileByServerRelativeUrl: function (relUrl) {
+                expect(relUrl).to.equal('/subweb1/list1/doc.txt');
+                return {
+                  checkIn: function () {
+                    checkIns++;
+                  },
+                  checkOut: function () {
+                    checkOuts++;
+                  }
+                };
+              }
+            };
+          };
+        }
+
+        SP = {
+          ClientContext: Ctor
         };
-      }
 
-      SP = {
-        ClientContext: Ctor
-      };
-
-      sputils.list.checkFile('out', fileUrl).then(function () {
-        expect(checkOuts).to.equal(1);
-        return sputils.list.checkFile('in', fileUrl);
-      }).then(function () {
-        expect(checkIns).to.equal(1);
-        done();
+        sputils.list.files.checkOut(fileUrl).then(function () {
+          expect(checkOuts).to.equal(1);
+          return sputils.list.files.checkIn(fileUrl);
+        }).then(function () {
+          expect(checkIns).to.equal(1);
+          done();
+        });
       });
     });
   });

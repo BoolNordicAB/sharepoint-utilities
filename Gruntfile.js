@@ -69,7 +69,7 @@ module.exports = function (grunt) {
       main: ["src/**/*.js"]
     },
     clean: {
-      docs: ['doc'],
+      docs: ['doc/**/*'],
       dist: ['dist/*']
     }
   });

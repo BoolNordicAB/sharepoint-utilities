@@ -1403,29 +1403,44 @@ sputils.lib = {
       .then(sputils.rest.unwrapResults);
   };
 
-  function checkFile(dir, fileUrl) {
-    var cctxPromise = sputils.helpers.clientContext(fileUrl);
-    return cctxPromise.then(function (cctx) {
-      var web = cctx.get_web();
-      var page = web.getFileByServerRelativeUrl(
-        fileUrl.split(global.location.hostname)[1]);
+  var files = (function () {
+    function checkFile(dir, fileUrl) {
+      var cctxPromise = sputils.helpers.clientContext(fileUrl);
+      return cctxPromise.then(function (cctx) {
+        var web = cctx.get_web();
+        var page = web.getFileByServerRelativeUrl(
+          fileUrl.split(global.location.hostname)[1]);
 
-      if (dir === 'in') {
-        page.checkIn();
-      } else if (dir === 'out') {
-        page.checkOut();
-      }
+        if (dir === 'in') {
+          page.checkIn();
+        } else if (dir === 'out') {
+          page.checkOut();
+        }
 
-      return new Promise(cctx.executeQueryAsync);
-    });
-  }
+        return new Promise(cctx.executeQueryAsync);
+      });
+    }
+
+    function checkIn(url) {
+      return checkFile('in', url);
+    }
+
+    function checkOut(url) {
+      return checkFile('out', url);
+    }
+
+    return {
+      checkIn: checkIn,
+      checkOut: checkOut
+    };
+  })();
 
   /** @namespace */
   sputils.list = {
     getListByName: getListByName,
     postListByName: postListByName,
     getListItemById: getListItemById,
-    checkFile: checkFile
+    files: files
   };
 })();
 ;(function () {
