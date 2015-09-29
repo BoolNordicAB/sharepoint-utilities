@@ -8,7 +8,7 @@
 **/
 var tap = function (fn) {
   return function (value) {
-    fn();
+    fn(value);
     return value;
   };
 };
