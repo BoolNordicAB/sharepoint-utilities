@@ -1350,7 +1350,7 @@ sputils.lib = {
 ;(function () {
   /**
   * Returns the list items from the given list name.
-  * @function sputils.lists.getListByName
+  * @function sputils.list.getListByName
   * @param {string} name a list name
   * @returns {array}
   * @example
@@ -1367,7 +1367,7 @@ sputils.lib = {
 
   /**
   * Modifies list items in the given list.
-  * @function sputils.lists.postListByName
+  * @function sputils.list.postListByName
   * @param {string} name a list name
   * @param {object} data the payload
   * @param {object} config the config
@@ -1387,7 +1387,7 @@ sputils.lib = {
 
   /**
   * Returns the list item with the specified id.
-  * @function sputils.lists.getListItemById
+  * @function sputils.list.getListItemById
   * @param {string} name a list name
   * @param {object} data the payload
   * @param {object} config the config
@@ -1403,6 +1403,7 @@ sputils.lib = {
       .then(sputils.rest.unwrapResults);
   };
 
+  /** @namespace sputils.list.files */
   var files = (function () {
     function checkFile(dir, fileUrl) {
       var cctxPromise = sputils.helpers.clientContext(fileUrl);
@@ -1433,8 +1434,8 @@ sputils.lib = {
     return {
       /**
       * Initiates a checkIn operation on the file located at the supplied URL.
-      * @function sputils.lists.files.checkIn
-      * @param {string} url: the URL of the file
+      * @function sputils.list.files.checkIn
+      * @param {string} url - the URL of the file
       * @returns {Promise} the promise of fulfilling the operation
       * @example
       *
@@ -1444,13 +1445,13 @@ sputils.lib = {
       checkIn: checkIn,
       /**
       * Initiates a checkOut operation on the file located at the supplied URL.
-      * @function sputils.lists.files.checkOut
-      * @param {string} url: the URL of the file
+      * @function sputils.list.files.checkOut
+      * @param {string} url - the URL of the file
       * @returns {Promise} the promise of fulfilling the operation
       * @example
       *
       * sputils.list.files.checkOut('/pages/default.aspx')
-      *   .then(function () { console.log('page was checked in') });
+      *   .then(function () { console.log('page was checked out') });
       */
       checkOut: checkOut
     };
@@ -1959,6 +1960,295 @@ sputils.lib = {
   sputils.search = {
     searchCfgExample: searchCfgExample,
     postSearch: postSearch
+  };
+})();
+;(function () {
+  'use strict';
+
+  /**
+   * A getter for the array of strings that can be directly used with moment.tz
+   * to add links for the names of the timezones that SharePoint has.
+   * I.e. after registering the links with moment.tz, one would be able to send
+   * the string representation that SharePoint has to identify a timezone
+   * to moment.tz and expect it to work.
+   * @function sputils.thirdParty.moment.tz.timezoneMap
+   * @example
+   * // add the links to moment.tz
+   * moment.tz.link(sputils.thirdParty.moment.tz.links());
+   * // get the timezone for the web
+   * sputils.rest.get('_api/Web/RegionalSettings/TimeZone')
+   *   .then(function (result) {
+   *     var spTzName = result.d.Description; // unwrap
+   *     var momentInstance = moment.tz(spTzName); // create the moment.tz instance
+   *     var repr = momentInstance.format('LLLL z');
+   *     console.log(repr);
+   *   });
+   */
+  var momentTzLinks = function () {
+    var mappings = [
+      'Africa/Cairo|(GMT+02:00) Cairo',
+      'Africa/Cairo|(UTC+02:00) Cairo',
+      'Asia/Damascus|(GMT+02:00) Damascus',
+      'Asia/Damascus|(UTC+02:00) Damascus',
+      'Africa/Johannesburg|(GMT+02:00) Harare, Pretoria',
+      'Africa/Johannesburg|(UTC+02:00) Harare, Pretoria',
+      'Africa/Bangui|(GMT+01:00) West Central Africa',
+      'Africa/Bangui|(UTC+01:00) West Central Africa',
+      'Africa/Addis_Ababa|(GMT+03:00) Nairobi',
+      'Africa/Addis_Ababa|(UTC+03:00) Nairobi',
+      'Africa/Windhoek|(GMT+02:00) Windhoek', // I think that +2h is wrong but SP has this declaration https://msdn.microsoft.com/library/microsoft.sharepoint.spregionalsettings.timezones.aspx
+      'Africa/Windhoek|(UTC+02:00) Windhoek',
+      'Africa/Windhoek|(GMT+01:00) Windhoek',
+      'Africa/Windhoek|(UTC+01:00) Windhoek',
+      'America/Anchorage|(GMT-09:00) Alaska',
+      'America/Anchorage|(UTC-09:00) Alaska',
+      'America/Bogota|(GMT-05:00) Bogota, Lima, Quito, Rio Branco',
+      'America/Bogota|(UTC-05:00) Bogota, Lima, Quito, Rio Branco',
+      'America/Bogota|(GMT-05:00) Bogota, Lima, Quito',
+      'America/Bogota|(UTC-05:00) Bogota, Lima, Quito',
+      'America/Cayenne|(GMT-03:00) Buenos Aires, Georgetown',
+      'America/Cayenne|(UTC-03:00) Buenos Aires, Georgetown',
+      'America/Cayenne|(GMT-03:00) Cayenne, Fortaleza',
+      'America/Cayenne|(UTC-03:00) Cayenne, Fortaleza',
+      'America/Argentina/Buenos_Aires|(GMT-03:00) Buenos Aires',
+      'America/Argentina/Buenos_Aires|(UTC-03:00) Buenos Aires',
+      'America/Chicago|(GMT-06:00) Central Time (US and Canada)',
+      'America/Chicago|(UTC-06:00) Central Time (US and Canada)',
+      'America/Chihuahua|(GMT-07:00) Chihuahua, La Paz, Mazatlan',
+      'America/Chihuahua|(UTC-07:00) Chihuahua, La Paz, Mazatlan',
+      'America/Boise|(GMT-07:00) Mountain Time (US and Canada)',
+      'America/Boise|(UTC-07:00) Mountain Time (US and Canada)',
+      'America/Godthab|(GMT-03:00) Greenland',
+      'America/Godthab|(UTC-03:00) Greenland',
+      'America/Montevideo|(GMT-03:00) Montevideo',
+      'America/Montevideo|(UTC-03:00) Montevideo',
+      'America/Bahia|(GMT-03:00) Salvador',
+      'America/Bahia|(UTC-03:00) Salvador',
+      'Etc/GMT-2|(GMT-02:00) Coordinated Universal Time-02',
+      'Etc/GMT-2|(UTC-02:00) Coordinated Universal Time-02',
+      'America/Belize|(GMT-06:00) Central America',
+      'America/Belize|(UTC-06:00) Central America',
+      'America/Glace_Bay|(GMT-04:00) Atlantic Time (Canada)',
+      'America/Glace_Bay|(UTC-04:00) Atlantic Time (Canada)',
+      'America/Detroit|(GMT-05:00) Indiana (East)',
+      'America/Detroit|(UTC-05:00) Indiana (East)',
+      'America/La_Paz|(GMT-04:00) Caracas, La Paz',
+      'America/La_Paz|(UTC-04:00) Caracas, La Paz',
+      'America/La_Paz|(GMT-04:00) Georgetown, La Paz, Manaus, San Juan',
+      'America/La_Paz|(UTC-04:00) Georgetown, La Paz, Manaus, San Juan',
+      'America/Caracas|(GMT-04:30) Caracas',
+      'America/Caracas|(UTC-04:30) Caracas',
+      'America/Asuncion|(GMT-04:00) Asuncion',
+      'America/Asuncion|(UTC-04:00) Asuncion',
+      'America/Campo_Grande|(GMT-04:00) Cuiaba',
+      'America/Campo_Grande|(UTC-04:00) Cuiaba',
+      'America/Dawson|(GMT-08:00) Pacific Time (US and Canada)',
+      'America/Dawson|(UTC-08:00) Pacific Time (US and Canada)',
+      'America/Boa_Vista|(GMT-04:00) Manaus',
+      'America/Boa_Vista|(UTC-04:00) Manaus',
+      'America/Merida|(GMT-06:00) Guadalajara, Mexico City, Monterrey',
+      'America/Merida|(UTC-06:00) Guadalajara, Mexico City, Monterrey',
+      'America/Detroit|(GMT-05:00) Eastern Time (US and Canada)',
+      'America/Detroit|(UTC-05:00) Eastern Time (US and Canada)',
+      'America/Creston|(GMT-07:00) Arizona',
+      'America/Creston|(UTC-07:00) Arizona',
+      'America/Belize|(GMT-06:00) Saskatchewan',
+      'America/Belize|(UTC-06:00) Saskatchewan',
+      'America/Santa_Isabel|(GMT-08:00) Tijuana, Baja California',
+      'America/Santa_Isabel|(UTC-08:00) Tijuana, Baja California',
+      'America/Santa_Isabel|(GMT-08:00) Baja California',
+      'America/Santa_Isabel|(UTC-08:00) Baja California',
+      'America/Santiago|(GMT-04:00) Santiago',
+      'America/Santiago|(UTC-04:00) Santiago',
+      'America/Sao_Paulo|(GMT-03:00) Brasilia',
+      'America/Sao_Paulo|(UTC-03:00) Brasilia',
+      'America/St_Johns|(GMT-03:30) Newfoundland',
+      'America/St_Johns|(UTC-03:30) Newfoundland',
+      'Asia/Almaty|(GMT+06:00) Astana, Dhaka',
+      'Asia/Almaty|(UTC+06:00) Astana, Dhaka',
+      'Asia/Almaty|(GMT+06:00) Astana',
+      'Asia/Almaty|(UTC+06:00) Astana',
+      'Asia/Dacca|(GMT+06:00) Dhaka',
+      'Asia/Dacca|(UTC+06:00) Dhaka',
+      'Asia/Amman|(GMT+02:00) Amman',
+      'Asia/Amman|(UTC+02:00) Amman',
+      'Asia/Aden|(GMT+03:00) Baghdad',
+      'Asia/Aden|(UTC+03:00) Baghdad',
+      'Europe/Kaliningrad|(GMT+03:00) Kaliningrad, Minsk',
+      'Europe/Kaliningrad|(UTC+03:00) Kaliningrad, Minsk',
+      'Asia/Baku|(GMT+04:00) Baku',
+      'Asia/Baku|(UTC+04:00) Baku',
+      'Asia/Bangkok|(GMT+07:00) Bangkok, Hanoi, Jakarta',
+      'Asia/Bangkok|(UTC+07:00) Bangkok, Hanoi, Jakarta',
+      'Asia/Beirut|(GMT+02:00) Beirut',
+      'Asia/Beirut|(UTC+02:00) Beirut',
+      'Asia/Calcutta|(GMT+05:30) Sri Jayawardenepura',
+      'Asia/Calcutta|(UTC+05:30) Sri Jayawardenepura',
+      'Asia/Dubai|(GMT+04:00) Abu Dhabi, Muscat',
+      'Asia/Dubai|(UTC+04:00) Abu Dhabi, Muscat',
+      'Asia/Irkutsk|(GMT+08:00) Irkutsk, Ulaan Bataar',
+      'Asia/Irkutsk|(UTC+08:00) Irkutsk, Ulaan Bataar',
+      'Asia/Irkutsk|(GMT+09:00) Irkutsk',
+      'Asia/Irkutsk|(UTC+09:00) Irkutsk',
+      'Asia/Jerusalem|(GMT+02:00) Jerusalem',
+      'Asia/Jerusalem|(UTC+02:00) Jerusalem',
+      'Asia/Kabul|(GMT+04:30) Kabul',
+      'Asia/Kabul|(UTC+04:30) Kabul',
+      'Asia/Kathmandu|(GMT+05:45) Kathmandu',
+      'Asia/Kathmandu|(UTC+05:45) Kathmandu',
+      'Asia/Calcutta|(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi',
+      'Asia/Calcutta|(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi',
+      'Asia/Krasnoyarsk|(GMT+07:00) Krasnoyarsk',
+      'Asia/Krasnoyarsk|(UTC+07:00) Krasnoyarsk',
+      'Asia/Krasnoyarsk|(GMT+08:00) Krasnoyarsk ',
+      'Asia/Krasnoyarsk|(UTC+08:00) Krasnoyarsk ',
+      'Asia/Magadan|(GMT+11:00) Magadan, Solomon Is., New Caledonia',
+      'Asia/Magadan|(UTC+11:00) Magadan, Solomon Is., New Caledonia',
+      'Asia/Magadan|(GMT+12:00) Magadan',
+      'Asia/Magadan|(UTC+12:00) Magadan',
+      'Asia/Kamchatka|(GMT+12:00) Petropavlovsk-Kamchatsky - Old',
+      'Asia/Kamchatka|(UTC+12:00) Petropavlovsk-Kamchatsky - Old',
+      'Pacific/Guadalcanal|(GMT+11:00) Solomon Is., New Caledonia',
+      'Pacific/Guadalcanal|(UTC+11:00) Solomon Is., New Caledonia',
+      'Asia/Almaty|(GMT+06:00) Almaty, Novosibirsk',
+      'Asia/Almaty|(UTC+06:00) Almaty, Novosibirsk',
+      'Asia/Novosibirsk|(GMT+07:00) Novosibirsk',
+      'Asia/Novosibirsk|(UTC+07:00) Novosibirsk',
+      'Asia/Rangoon|(GMT+06:30) Yangon (Rangoon)',
+      'Asia/Rangoon|(UTC+06:30) Yangon (Rangoon)',
+      'Asia/Aden|(GMT+03:00) Kuwait, Riyadh',
+      'Asia/Aden|(UTC+03:00) Kuwait, Riyadh',
+      'Asia/Pyongyang|(GMT+09:00) Seoul',
+      'Asia/Pyongyang|(UTC+09:00) Seoul',
+      'Asia/Chongqing|(GMT+08:00) Beijing, Chongqing, Hong Kong S.A.R., Urumqi',
+      'Asia/Chongqing|(UTC+08:00) Beijing, Chongqing, Hong Kong S.A.R., Urumqi',
+      'Asia/Chongqing|(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi',
+      'Asia/Chongqing|(UTC+08:00) Beijing, Chongqing, Hong Kong, Urumqi',
+      'Asia/Singapore|(GMT+08:00) Kuala Lumpur, Singapore',
+      'Asia/Singapore|(UTC+08:00) Kuala Lumpur, Singapore',
+      'Asia/Chongqing|(GMT+08:00) Taipei',
+      'Asia/Chongqing|(UTC+08:00) Taipei',
+      'Asia/Ulaanbaatar|(GMT+08:00) Ulaanbaatar',
+      'Asia/Ulaanbaatar|(UTC+08:00) Ulaanbaatar',
+      'Asia/Samarkand|(GMT+05:00) Islamabad, Karachi, Tashkent',
+      'Asia/Samarkand|(UTC+05:00) Islamabad, Karachi, Tashkent',
+      'Asia/Karachi|(GMT+05:00) Islamabad, Karachi',
+      'Asia/Karachi|(UTC+05:00) Islamabad, Karachi',
+      'Asia/Samarkand|(GMT+05:00) Tashkent',
+      'Asia/Samarkand|(UTC+05:00) Tashkent',
+      'Asia/Tbilisi|(GMT+03:00) Tbilisi',
+      'Asia/Tbilisi|(UTC+03:00) Tbilisi',
+      'Asia/Tehran|(GMT+03:30) Tehran',
+      'Asia/Tehran|(UTC+03:30) Tehran',
+      'Asia/Tokyo|(GMT+09:00) Osaka, Sapporo, Tokyo',
+      'Asia/Tokyo|(UTC+09:00) Osaka, Sapporo, Tokyo',
+      'Asia/Vladivostok|(GMT+10:00) Vladivostok',
+      'Asia/Vladivostok|(UTC+10:00) Vladivostok',
+      'Asia/Vladivostok|(GMT+11:00) Vladivostok',
+      'Asia/Vladivostok|(UTC+11:00) Vladivostok',
+      'Asia/Yakutsk|(GMT+09:00) Yakutsk',
+      'Asia/Yakutsk|(UTC+09:00) Yakutsk',
+      'Asia/Yakutsk|(GMT+10:00) Yakutsk',
+      'Asia/Yakutsk|(UTC+10:00) Yakutsk',
+      'Asia/Yekaterinburg|(GMT+05:00) Ekaterinburg',
+      'Asia/Yekaterinburg|(UTC+05:00) Ekaterinburg',
+      'Asia/Yekaterinburg|GMT+06:00) Ekaterinburg',
+      'Asia/Yekaterinburg|UTC+06:00) Ekaterinburg',
+      'Asia/Yerevan|(GMT+04:00) Yerevan',
+      'Asia/Yerevan|(UTC+04:00) Yerevan',
+      'Atlantic/Azores|(GMT-01:00) Azores',
+      'Atlantic/Azores|(UTC-01:00) Azores',
+      'Atlantic/Cape_Verde|(GMT-01:00) Cape Verde Is.',
+      'Atlantic/Cape_Verde|(UTC-01:00) Cape Verde Is.',
+      'Africa/Abidjan|(GMT) Casablanca, Monrovia, Reykjavik',
+      'Africa/Abidjan|(UTC) Casablanca, Monrovia, Reykjavik',
+      'Africa/Abidjan|(GMT) Monrovia, Reykjavik',
+      'Africa/Abidjan|(UTC) Monrovia, Reykjavik',
+      'Africa/Abidjan|(GMT) Casablanca',
+      'Africa/Abidjan|(UTC) Casablanca',
+      'Etc/UTC|(GMT) Coordinated Universal Time',
+      'Etc/UTC|(UTC) Coordinated Universal Time',
+      'Australia/Adelaide|(GMT+09:30) Adelaide',
+      'Australia/Adelaide|(UTC+09:30) Adelaide',
+      'Australia/Brisbane|(GMT+10:00) Brisbane',
+      'Australia/Brisbane|(UTC+10:00) Brisbane',
+      'Australia/Darwin|(GMT+09:30) Darwin',
+      'Australia/Darwin|(UTC+09:30) Darwin',
+      'Australia/ACT|(GMT+10:00) Hobart',
+      'Australia/ACT|(UTC+10:00) Hobart',
+      'Australia/Perth|(GMT+08:00) Perth',
+      'Australia/Perth|(UTC+08:00) Perth',
+      'Australia/ACT|(GMT+10:00) Canberra, Melbourne, Sydney',
+      'Australia/ACT|(UTC+10:00) Canberra, Melbourne, Sydney',
+      'Etc/GMT+12|(GMT-12:00) International Date Line West',
+      'Etc/GMT+12|(UTC-12:00) International Date Line West',
+      'Etc/GMT+2|(GMT-02:00) Mid-Atlantic',
+      'Etc/GMT+2|(UTC-02:00) Mid-Atlantic',
+      'Africa/Ceuta|(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna',
+      'Africa/Ceuta|(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna',
+      'Asia/Nicosia|(GMT+02:00) Athens, Bucharest, Istanbul',
+      'Asia/Nicosia|(UTC+02:00) Athens, Bucharest, Istanbul',
+      'Africa/Ceuta|(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague',
+      'Africa/Ceuta|(UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague',
+      'Asia/Nicosia|(GMT+02:00) Minsk',
+      'Asia/Nicosia|(UTC+02:00) Minsk',
+      'Asia/Nicosia|(GMT+02:00) Minsk (old)',
+      'Asia/Nicosia|(UTC+02:00) Minsk (old)',
+      'Asia/Nicosia|(GMT+02:00) E. Europe',
+      'Asia/Nicosia|(UTC+02:00) E. Europe',
+      'Asia/Nicosia|(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius',
+      'Asia/Nicosia|(UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius',
+      'Asia/Istanbul|(GMT+02:00) Istanbul',
+      'Asia/Istanbul|(UTC+02:00) Istanbul',
+      'Europe/Belfast|(GMT) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London',
+      'Europe/Belfast|(UTC) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London',
+      'Europe/Belfast|(GMT) Dublin, Edinburgh, Lisbon, London',
+      'Europe/Belfast|(UTC) Dublin, Edinburgh, Lisbon, London',
+      'Europe/Moscow|(GMT+03:00) Moscow, St. Petersburg, Volgograd',
+      'Europe/Moscow|(UTC+03:00) Moscow, St. Petersburg, Volgograd',
+      'Europe/Moscow|(GMT+04:00) Moscow, St. Petersburg, Volgograd', // Is in reality +3h so that is how it will be mapped. +3h is new since Sept 2014 https://support.microsoft.com/en-us/kb/2998527
+      'Europe/Moscow|(UTC+04:00) Moscow, St. Petersburg, Volgograd',
+      'Indian/Mauritius|(GMT+04:00) Port Louis',
+      'Indian/Mauritius|(UTC+04:00) Port Louis',
+      'Asia/Tbilisi|(GMT+04:00) Tbilisi',
+      'Asia/Tbilisi|(UTC+04:00) Tbilisi',
+      'Africa/Ceuta|(GMT+01:00) Brussels, Copenhagen, Madrid, Paris',
+      'Africa/Ceuta|(UTC+01:00) Brussels, Copenhagen, Madrid, Paris',
+      'Africa/Ceuta|(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb',
+      'Africa/Ceuta|(UTC+01:00) Sarajevo, Skopje, Warsaw, Zagreb',
+      'Pacific/Apia|(GMT-11:00) Midway Island, Samoa',
+      'Pacific/Apia|(UTC-11:00) Midway Island, Samoa',
+      'Pacific/Apia|(GMT+13:00) Samoa',
+      'Pacific/Apia|(UTC+13:00) Samoa',
+      'Etc/GMT-11|(GMT-11:00) Coordinated Universal Time-11',
+      'Etc/GMT-11|(UTC-11:00) Coordinated Universal Time-11',
+      'Etc/GMT+12|(UTC+12:00) Coordinated Universal Time+12',
+      'Etc/GMT+12|(GMT+12:00) Coordinated Universal Time+12',
+      'Antarctica/McMurdo|(GMT+12:00) Auckland, Wellington',
+      'Antarctica/McMurdo|(UTC+12:00) Auckland, Wellington',
+      'Pacific/Fiji|(GMT+12:00) Fiji Is., Kamchatka, Marshall Is.',
+      'Pacific/Fiji|(UTC+12:00) Fiji Is., Kamchatka, Marshall Is.',
+      'Pacific/Fiji|(GMT+12:00) Fiji',
+      'Pacific/Fiji|(UTC+12:00) Fiji',
+      'HST|(GMT-10:00) Hawaii',
+      'HST|(UTC-10:00) Hawaii',
+      'Pacific/Port_Moresby|(GMT+10:00) Guam, Port Moresby',
+      'Pacific/Port_Moresby|(UTC+10:00) Guam, Port Moresby',
+      'Pacific/Tongatapu|(GMT+13:00) Nuku\'alofa',
+      'Pacific/Tongatapu|(UTC+13:00) Nuku\'alofa'
+    ];
+    return mappings;
+  };
+
+  /** @namespace */
+  sputils.thirdParty = {
+    /** @namespace */
+    moment: {
+      /** @namespace */
+      tz: {
+        links: momentTzLinks
+      }
+    }
   };
 })();
 ;sputils.fjs = fjs;
