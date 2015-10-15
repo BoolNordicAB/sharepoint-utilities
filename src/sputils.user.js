@@ -1,25 +1,33 @@
 (function () {
+  /**
+  * @function sputils.user.loginAsAnotherUser
+  * @returns {void}
+  * @example
+  * sputils.user.loginAsAnotherUser();
+  */
   var loginAsAnotherUser = function () {
-    window.location.href = '/_layouts/closeconnection.aspx?loginasanotheruser=true';
+    global.location.href = '/_layouts/closeconnection.aspx?loginasanotheruser=true';
   };
 
-  /* EXAMPLE USE
-
-  sputils.loginAsAnotherUser();
-
+  /**
+  * @function sputils.user.logoutUser
+  * @returns {void}
+  * @example
+  * sputils.user.logoutUser();
   */
-
   var logoutUser = function () {
-    window.location.href = '/_layouts/closeconnection.aspx';
+    global.location.href = '/_layouts/closeconnection.aspx';
   };
 
-  /* EXAMPLE USE
 
-  sputils.logoutUser();
-
+  /**
+  * Returns a promise with the current spuser object.
+  * @function sputils.user.getCurrentUser
+  * @returns {Promise<object>} the promise with the user object
+  * @example
+  * sputils.user.getCurrentUser().then(function (data) {
+  *   console.log(data);
   */
-
-  // Returns a promise with the current spuser object.
   var getCurrentUser = function () {
     return new Promise(function (resolve, reject) {
       var clientContext = new SP.ClientContext.get_current();
@@ -38,15 +46,15 @@
     });
   };
 
-  /* EXAMPLE USE
-
-  sputils.getCurrentUser().then(function (data) {
-    console.log(data);
-  });
-
+  /**
+  * Returns full url to profile page of current user
+  * @function sputils.user.getCurrentUserPersonalSiteUrl
+  * @param {object} config - an object containing config for the REST call
+  * @returns {Promise<object>}
+  * @example
+  *  sputils.user.getCurrentUserPersonalSiteUrl()
+  *    .then(function (data) { console.log(data) });
   */
-
-  // Returns full url to profile page of current user
   var getCurrentUserPersonalSiteUrl = function (config) {
     var url =
       '/_api/SP.UserProfiles.PeopleManager/GetMyProperties?$select=UserUrl';
@@ -55,13 +63,6 @@
         return data.d.UserUrl;
       });
   };
-
-  /* EXAMPLE USE
-
-  sputils.userprofile.getCurrentUserPersonalSiteUrl()
-    .then(function (data) { console.log(data) });
-
-  */
 
   /** @namespace */
   sputils.user = {

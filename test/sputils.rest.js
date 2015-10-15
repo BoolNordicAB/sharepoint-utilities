@@ -4,8 +4,10 @@ describe('SharePoint REST API Wrapper', function () {
     expect(sputils).to.have.ownProperty('rest');
   });
 
-  function thrower() {
-    throw new Error();
+  function thrower(done) {
+    return function () {
+      throw new Error();
+    };
   }
 
   beforeEach(function () {
@@ -33,8 +35,7 @@ describe('SharePoint REST API Wrapper', function () {
       sputils.rest.withRequestDigest(true).then(function (rd) {
         done();
         expect(rd).to.equal(idVal);
-        initialize_dom();
-      }, thrower);
+      }, thrower(done));
     });
   });
 
@@ -85,20 +86,18 @@ describe('SharePoint REST API Wrapper', function () {
           .to.have.deep.property('headers.accept',
                                  'application/json;odata=verbose');
         expect(config)
-          .to.have.deep.property('headers.X-RequestDigest',
-                                 'TestValue');
+          .to.have.deep.property('headers.X-RequestDigest');
         expect(config)
           .to.have.property('method', 'POST');
         expect(config)
           .to.have.property('body', '{"test":"test"}');
-
         return stdPromise();
       };
 
       sputils.rest.post("/", {"test":"test"})
         .then(function (res) {
           done();
-        });
+        }, thrower(done));
     });
   });
 });

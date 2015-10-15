@@ -1,5 +1,33 @@
 function $_global_sputils () {
 'use strict';
+
+/*!
+https://github.com/BoolNordicAB/sharepoint-utilities
+**/
+
+// The MIT License (MIT)
+//
+// Copyright (c) 2015 contributors (see CONTRIBUTORS file)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+
 // intentionally partial definitions
 
 (function (global, undefined) {
@@ -990,7 +1018,7 @@ Promise.reject = function(reason){
 **/
 var tap = function (fn) {
   return function (value) {
-    fn();
+    fn(value);
     return value;
   };
 };
@@ -1208,11 +1236,12 @@ sputils.lib = {
           requestDigest = rd.value;
           resolve(requestDigest);
         } else {
+          var tapCache = tap(function (digest) {
+            // `tap` will pass the digest to the next handler
+            requestDigest = digest;
+          });
           requestFormDigest()
-            .then(tap(function (digest) {
-              // `tap` will pass the digest to the next handler
-              requestDigest = digest;
-            })).then(resolve);
+            .then(tapCache).then(resolve);
         }
       }
     });
@@ -1410,7 +1439,7 @@ sputils.lib = {
       return cctxPromise.then(function (cctx) {
         var web = cctx.get_web();
         var page = web.getFileByServerRelativeUrl(
-          fileUrl.split(global.location.hostname)[1]);
+          sputils.helpers.abs2rel(fileUrl));
 
         if (dir === 'in') {
           page.checkIn();
@@ -1698,27 +1727,35 @@ sputils.lib = {
   };
 })();
 ;(function () {
+  /**
+  * @function sputils.user.loginAsAnotherUser
+  * @returns {void}
+  * @example
+  * sputils.user.loginAsAnotherUser();
+  */
   var loginAsAnotherUser = function () {
-    window.location.href = '/_layouts/closeconnection.aspx?loginasanotheruser=true';
+    global.location.href = '/_layouts/closeconnection.aspx?loginasanotheruser=true';
   };
 
-  /* EXAMPLE USE
-
-  sputils.loginAsAnotherUser();
-
+  /**
+  * @function sputils.user.logoutUser
+  * @returns {void}
+  * @example
+  * sputils.user.logoutUser();
   */
-
   var logoutUser = function () {
-    window.location.href = '/_layouts/closeconnection.aspx';
+    global.location.href = '/_layouts/closeconnection.aspx';
   };
 
-  /* EXAMPLE USE
 
-  sputils.logoutUser();
-
+  /**
+  * Returns a promise with the current spuser object.
+  * @function sputils.user.getCurrentUser
+  * @returns {Promise<object>} the promise with the user object
+  * @example
+  * sputils.user.getCurrentUser().then(function (data) {
+  *   console.log(data);
   */
-
-  // Returns a promise with the current spuser object.
   var getCurrentUser = function () {
     return new Promise(function (resolve, reject) {
       var clientContext = new SP.ClientContext.get_current();
@@ -1737,15 +1774,15 @@ sputils.lib = {
     });
   };
 
-  /* EXAMPLE USE
-
-  sputils.getCurrentUser().then(function (data) {
-    console.log(data);
-  });
-
+  /**
+  * Returns full url to profile page of current user
+  * @function sputils.user.getCurrentUserPersonalSiteUrl
+  * @param {object} config - an object containing config for the REST call
+  * @returns {Promise<object>}
+  * @example
+  *  sputils.user.getCurrentUserPersonalSiteUrl()
+  *    .then(function (data) { console.log(data) });
   */
-
-  // Returns full url to profile page of current user
   var getCurrentUserPersonalSiteUrl = function (config) {
     var url =
       '/_api/SP.UserProfiles.PeopleManager/GetMyProperties?$select=UserUrl';
@@ -1754,13 +1791,6 @@ sputils.lib = {
         return data.d.UserUrl;
       });
   };
-
-  /* EXAMPLE USE
-
-  sputils.userprofile.getCurrentUserPersonalSiteUrl()
-    .then(function (data) { console.log(data) });
-
-  */
 
   /** @namespace */
   sputils.user = {

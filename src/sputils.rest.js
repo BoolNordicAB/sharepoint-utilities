@@ -38,11 +38,12 @@
           requestDigest = rd.value;
           resolve(requestDigest);
         } else {
+          var tapCache = tap(function (digest) {
+            // `tap` will pass the digest to the next handler
+            requestDigest = digest;
+          });
           requestFormDigest()
-            .then(tap(function (digest) {
-              // `tap` will pass the digest to the next handler
-              requestDigest = digest;
-            })).then(resolve);
+            .then(tapCache).then(resolve);
         }
       }
     });

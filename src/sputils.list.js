@@ -61,7 +61,7 @@
       return cctxPromise.then(function (cctx) {
         var web = cctx.get_web();
         var page = web.getFileByServerRelativeUrl(
-          fileUrl.split(global.location.hostname)[1]);
+          sputils.helpers.abs2rel(fileUrl));
 
         if (dir === 'in') {
           page.checkIn();
