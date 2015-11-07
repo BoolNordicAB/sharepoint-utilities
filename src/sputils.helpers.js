@@ -39,7 +39,7 @@
   * var rurl = sputils.helpers.abs2rel(aurl);
   * rurl === '/a/path/to.html';
   **/
-  function abs2rel(absUrl) {
+  var abs2rel = function (absUrl) {
     var hostname = sputils.lib.getval('location.hostname');
 
     // splitting on the hostname should yield an array with 2 elements
@@ -48,7 +48,7 @@
     var parts = (absUrl || '').split(hostname);
 
     return parts[1] || '/';
-  }
+  };
 
   /**
   * @function sputils.helpers.urlQuery
@@ -60,7 +60,7 @@
   * // qsHash ~=~ {a:1, b: 'some value'};
   * urlQuery('?a=1&b=some value'); // ~=~ qsHash
   **/
-  function urlQuery(optArg) {
+  var urlQuery = function (optArg) {
     var result = {};
     var qs = (optArg || sputils.lib.getval('location.search')).replace('?', '');
     var parts = qs.split('&');
@@ -72,7 +72,7 @@
       result[kvp[0]] = kvp[1];
     }, parts);
     return result;
-  }
+  };
 
   /**
   * Get a promise for a client context that could be on another
@@ -95,7 +95,7 @@
   *   // ...
   * });
   **/
-  function clientContext(absoluteFileOrWebUrl) {
+  var clientContext = function (absoluteFileOrWebUrl) {
     var url = absoluteFileOrWebUrl.substring(
       0, absoluteFileOrWebUrl.lastIndexOf('/')) ;
 
@@ -106,7 +106,7 @@
 
       return cctx;
     });
-  }
+  };
 
   /** @namespace */
   sputils.helpers = {
