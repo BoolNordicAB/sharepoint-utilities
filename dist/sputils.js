@@ -1097,10 +1097,11 @@ sputils.lib = {
   * Takes a list of strings which correspond
   * to SP JS dependencies. Each dependency is
   * registered and loaded.
+  *
   * @function sputils.helpers.withSharePointDependencies
   * @param {Object} - a dictionary containing values for the following keys:
-  *                   {string} `file` and {string} `namespace`
-  * @returns {Promise<Null>} - resolved when all deps are loaded.
+  *                   {file, namespace}
+  * @returns {Promise<void>} - resolved when all deps are loaded.
   */
   var withSharePointDependencies = function (deps) {
     return new Promise(function (resolve, reject) {

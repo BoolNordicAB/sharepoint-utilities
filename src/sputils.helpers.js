@@ -13,7 +13,7 @@
   /**
   * Returns a promise which resolves when
   * all the specified dependencies are loaded.
-  * 
+  *
   * Takes a list of strings which correspond
   * to SP JS dependencies. Each dependency is
   * registered and loaded.
