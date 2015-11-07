@@ -9,12 +9,20 @@
     });
   };
 
-  // Returns a promise which resolves when
-  // all the specified dependencies are loaded.
-  //
-  // Takes a list of strings which correspond
-  // to SP JS dependencies. Each dependency is
-  // registered and loaded.
+
+  /**
+  * Returns a promise which resolves when
+  * all the specified dependencies are loaded.
+  * 
+  * Takes a list of strings which correspond
+  * to SP JS dependencies. Each dependency is
+  * registered and loaded.
+  *
+  * @function sputils.helpers.withSharePointDependencies
+  * @param {Object} - a dictionary containing values for the following keys:
+  *                   {file, namespace}
+  * @returns {Promise<void>} - resolved when all deps are loaded.
+  */
   var withSharePointDependencies = function (deps) {
     return new Promise(function (resolve, reject) {
       // sp.js is a dependency for our resolveDependency
