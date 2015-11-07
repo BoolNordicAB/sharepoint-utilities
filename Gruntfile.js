@@ -11,6 +11,7 @@ module.exports = function (grunt) {
     'src/sputils.helpers.js',
     'src/sputils.rest.js',
     'src/sputils.list.js',
+    'src/sputils.list.files.js',
     'src/sputils.conversion.js',
     'src/sputils.termstore.js',
     'src/sputils.user.js',
