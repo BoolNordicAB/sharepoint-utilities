@@ -6,5 +6,13 @@ describe('UI stuff', function () {
       sputils.ui.selectElementText(span);
       // more test needed, prolly.
     });
+
+    it('should select the text in the element', function () {
+      window.getSelection = null;
+      var span = document.createElement('span');
+      span.innerHTML = 'teststring';
+      sputils.ui.selectElementText(span);
+      // more test needed, prolly.
+    });
   });
 });
