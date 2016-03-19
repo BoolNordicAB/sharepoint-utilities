@@ -18,6 +18,7 @@ module.exports = function (grunt) {
     'src/sputils.search.js',
     'src/sputils.userprofile.js',
     'src/sputils.thirdparty.js',
+    'src/sputils.ui.js',
     'build/sputils._post.js'
   ];
 
