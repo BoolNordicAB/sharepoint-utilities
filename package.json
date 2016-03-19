@@ -1,11 +1,12 @@
 {
   "name": "sputils",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/BoolNordicAB/sharepoint-utilities"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
     "grunt": "~0.4.1",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-concat": "~0.5.0",
@@ -15,6 +16,7 @@
     "grunt-jscs": "^1.8.0",
     "grunt-jsdoc": "^0.6.7",
     "grunt-karma": "~0.11.0",
+    "husky": "^0.11.4",
     "jscs-jsdoc": "^1.1.0",
     "karma": "^0.12.31",
     "karma-chai": "^0.1.0",
@@ -22,9 +24,13 @@
     "karma-mocha": "^0.1.10",
     "karma-phantomjs-launcher": "^0.2.0",
     "matchdep": "~0.3.0",
+    "mocha": "^2.4.5",
     "phantomjs": "^1.9.17"
   },
   "scripts": {
-    "test": "grunt travis"
+    "pretest": "bower install",
+    "test": "grunt travis",
+    "precommit": "npm test",
+    "prepush": "npm test"
   }
 }
