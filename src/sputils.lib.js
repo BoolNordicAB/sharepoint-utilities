@@ -1,6 +1,39 @@
 /** @namespace sputils.lib */
 
 /**
+ * `Cctx` is a usability wrapper for a SharePoint ClientContext
+ * @example
+ * new Cctx(sharepointClientContext)
+ */
+function Cctx(spClientContext) {
+  this._cctx = spClientContext;
+}
+
+Cctx.prototype = {
+  /**
+   * wrapper around the clientContext.executeQueryAsync, that
+   * returns a promise.
+   * @returns {Promise<Void>}
+   */
+  executeQuery: function () {
+    var c = this._cctx;
+    return new Promise(function (resolve, reject) {
+      c.executeQueryAsync(resolve, function fail(cctx, failInfo) {
+        var msg = [
+          'ClientContext.executeQueryAsync failed',
+          failInfo.get_message(),
+          '',
+          'CorrelationId:',
+          failInfo.get_errorTraceCorrelationId()
+        ].join('\n');
+        var err = new Error(msg);
+        reject(err);
+      });
+    });
+  }
+};
+
+/**
 * "taps" a function to produce a side effect
 * but wrap it in an identity fn.
 *

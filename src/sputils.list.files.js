@@ -13,7 +13,7 @@
         page.checkOut();
       }
 
-      return new Promise(cctx.executeQueryAsync);
+      return new Cctx(cctx).executeQuery();
     });
   };
 

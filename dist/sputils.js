@@ -1011,6 +1011,39 @@ Promise.reject = function(reason){
 ;/** @namespace sputils.lib */
 
 /**
+ * `Cctx` is a usability wrapper for a SharePoint ClientContext
+ * @example
+ * new Cctx(sharepointClientContext)
+ */
+function Cctx(spClientContext) {
+  this._cctx = spClientContext;
+}
+
+Cctx.prototype = {
+  /**
+   * wrapper around the clientContext.executeQueryAsync, that
+   * returns a promise.
+   * @returns {Promise<Void>}
+   */
+  executeQuery: function () {
+    var c = this._cctx;
+    return new Promise(function (resolve, reject) {
+      c.executeQueryAsync(resolve, function fail(cctx, failInfo) {
+        var msg = [
+          'ClientContext.executeQueryAsync failed',
+          failInfo.get_message(),
+          '',
+          'CorrelationId:',
+          failInfo.get_errorTraceCorrelationId()
+        ].join('\n');
+        var err = new Error(msg);
+        reject(err);
+      });
+    });
+  }
+};
+
+/**
 * "taps" a function to produce a side effect
 * but wrap it in an identity fn.
 *
@@ -1360,9 +1393,9 @@ sputils.lib = {
   * sputils.rest.get('/_api/web/lists')
   *   .then(sputils.rest.unwrapResults)
   *   .then(function (data) {
-  *     $.each(data, function (idx,el) {
+  *     sputils.fjs.each(function (el, idx) {
   *       console.log(el);
-  *     });
+  *     }, data);
   *   });
   */
   var unwrapResults = function (object) {
@@ -1432,7 +1465,7 @@ sputils.lib = {
   * @example
   *
   * sputils.list.getListItemById('Announcements', 1)
-  *   .then(function (data) { console.log(data.d.results) });
+  *   .then(function (data) { console.log(data) });
   */
   var getListItemById = function (listName, itemId, config) {
     var url = '/_api/Web/Lists/getByTitle(\'' + listName + '\')/items/getbyid(' + itemId + ')';
@@ -1524,14 +1557,25 @@ sputils.lib = {
   };
 })();
 ;(function () {
+  // a function that creates common properties on a Node-like
+  // object. A Node-like object has children, and sortedChildren
+  var initNode = function (n) {
+    // indexed by name, no guaranteed order
+    n.children = {};
+    // indexed by order (by custom sort order if defined)
+    n.sortedChildren = [];
+  };
+
   var TermsTree = function (termSet) {
     this.termSet = termSet;
 
-    this.getSortOrder = function () {
-      return this.termSet.get_customSortOrder();
-    };
+    initNode(this);
+  };
 
-    this.children = {};
+  TermsTree.prototype = {
+    getSortOrder: function () {
+      return this.termSet.get_customSortOrder();
+    }
   };
 
   // A data structure wrapping SP.Term objects
@@ -1539,31 +1583,41 @@ sputils.lib = {
   var Node = function (term) {
     this.term = term;
 
-    this.getName = function () {
+    initNode(this);
+  };
+
+  Node.prototype = {
+    getName: function () {
       return this.term.get_name();
-    };
+    },
 
-    this.getUrl = function () {
-      return this.term.get_localCustomProperties()._Sys_Nav_SimpleLinkUrl;
-    };
+    getUrl: function () {
+      return this.term.get_localCustomProperties()
+        ._Sys_Nav_SimpleLinkUrl;
+    },
 
-    this.getSortOrder = function () {
+    getSortOrder: function () {
       return this.term.get_customSortOrder();
-    };
+    },
 
-    this.getIsRoot = function () {
+    getIsRoot: function () {
       return this.term.get_isRoot();
-    };
+    },
 
-    this.getGuid = function () {
+    getGuid: function () {
       return this.term.get_id();
-    };
+    },
 
-    this.getLocalCustomProperty = function (propertyName) {
+    getLocalCustomProperty: function (propertyName) {
       return this.term.get_localCustomProperties()[propertyName];
-    };
+    },
 
-    this.children = {};
+    toString: function () {
+      return this.getName();
+    },
+    toLocaleString: function () {
+      return this.getName();
+    }
   };
 
   var generateList = function (terms) {
@@ -1629,14 +1683,21 @@ sputils.lib = {
   var sortTerms = function (parent) {
     var sortOrder = parent.getSortOrder();
     function accordingToSortOrder(childA, childB) {
-      var a = sortOrder.indexOf(childA.getGuid()),
-          b = sortOrder.indexOf(childB.getGuid());
+      var getGuid = function (x) {
+        return x.getGuid().toString();
+      };
+      var a = sortOrder.indexOf(getGuid(childA)),
+          b = sortOrder.indexOf(getGuid(childB));
 
       // numerically, ascending
       return a - b;
       // numerically, descending
       // return b - a;
     }
+
+    var secondEl = fjs.pluck(1);
+    var cArr = secondEl(fjs.toArray(parent.children));
+    parent.sortedChildren = cArr;
 
     if (sortOrder) {
       // Sort order is a string of guids
@@ -1645,12 +1706,12 @@ sputils.lib = {
 
       // Replace children with an array sorted
       // according to the sortOrder.
-      parent.children.sort(accordingToSortOrder);
+      cArr.sort(accordingToSortOrder);
     } else {
       // sortBy with no second parameter
       // sorts on identity (just compares the values)
       // lexicographically, i.e. "alphabetically".
-      parent.children.sort();
+      cArr.sort();
     }
   };
 
@@ -1659,8 +1720,8 @@ sputils.lib = {
   var sortTree = function (tree) {
     sortTerms(tree);
 
-    if (tree.children) {
-      fjs.each(sortTree, tree.children);
+    if (tree.sortedChildren.length) {
+      fjs.each(sortTree, tree.sortedChildren);
     }
 
     return tree;
@@ -1675,22 +1736,21 @@ sputils.lib = {
   * @returns {object}
   */
   var getTerms = function (id) {
-    return new Promise(function (resolve, reject) {
-      withTaxonomy().then(function () {
-        var context = SP.ClientContext.get_current(),
-            termStore = getDefaultTermStore(context),
-            termSet = termStore.getTermSet(id),
-            terms = termSet.getAllTerms();
+    return withTaxonomy().then(function () {
+      var context = SP.ClientContext.get_current(),
+          termStore = getDefaultTermStore(context),
+          termSet = termStore.getTermSet(id),
+          terms = termSet.getAllTerms();
 
-        context.load(terms);
-        context.load(termSet);
-        context.executeQueryAsync(function () {
+      context.load(terms);
+      context.load(termSet);
+      return new Cctx(context).executeQuery()
+        .then(function () {
           // Add the termSet on the terms
           // object so we can access it later.
           terms._termSet = termSet;
-          return resolve(terms);
-        }, reject);
-      });
+          return terms;
+        });
     });
   };
 
@@ -2325,3 +2385,8 @@ sputils.lib = {
 })(window);
 }
 $_global_sputils();
+
+
+sputils.termstore.getTermsTree('f2dc4f9e-c2ff-4d1c-b651-6db28142ed36').then(function (data) {
+  console.log(data);
+});

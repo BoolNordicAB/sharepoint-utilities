@@ -1,12 +1,23 @@
 (function () {
+  // a function that creates common properties on a Node-like
+  // object. A Node-like object has children, and sortedChildren
+  var initNode = function (n) {
+    // indexed by name, no guaranteed order
+    n.children = {};
+    // indexed by order (by custom sort order if defined)
+    n.sortedChildren = [];
+  };
+
   var TermsTree = function (termSet) {
     this.termSet = termSet;
 
-    this.getSortOrder = function () {
-      return this.termSet.get_customSortOrder();
-    };
+    initNode(this);
+  };
 
-    this.children = {};
+  TermsTree.prototype = {
+    getSortOrder: function () {
+      return this.termSet.get_customSortOrder();
+    }
   };
 
   // A data structure wrapping SP.Term objects
@@ -14,31 +25,41 @@
   var Node = function (term) {
     this.term = term;
 
-    this.getName = function () {
+    initNode(this);
+  };
+
+  Node.prototype = {
+    getName: function () {
       return this.term.get_name();
-    };
+    },
 
-    this.getUrl = function () {
-      return this.term.get_localCustomProperties()._Sys_Nav_SimpleLinkUrl;
-    };
+    getUrl: function () {
+      return this.term.get_localCustomProperties()
+        ._Sys_Nav_SimpleLinkUrl;
+    },
 
-    this.getSortOrder = function () {
+    getSortOrder: function () {
       return this.term.get_customSortOrder();
-    };
+    },
 
-    this.getIsRoot = function () {
+    getIsRoot: function () {
       return this.term.get_isRoot();
-    };
+    },
 
-    this.getGuid = function () {
+    getGuid: function () {
       return this.term.get_id();
-    };
+    },
 
-    this.getLocalCustomProperty = function (propertyName) {
+    getLocalCustomProperty: function (propertyName) {
       return this.term.get_localCustomProperties()[propertyName];
-    };
+    },
 
-    this.children = {};
+    toString: function () {
+      return this.getName();
+    },
+    toLocaleString: function () {
+      return this.getName();
+    }
   };
 
   var generateList = function (terms) {
@@ -104,14 +125,21 @@
   var sortTerms = function (parent) {
     var sortOrder = parent.getSortOrder();
     function accordingToSortOrder(childA, childB) {
-      var a = sortOrder.indexOf(childA.getGuid()),
-          b = sortOrder.indexOf(childB.getGuid());
+      var getGuid = function (x) {
+        return x.getGuid().toString();
+      };
+      var a = sortOrder.indexOf(getGuid(childA)),
+          b = sortOrder.indexOf(getGuid(childB));
 
       // numerically, ascending
       return a - b;
       // numerically, descending
       // return b - a;
     }
+
+    var secondEl = fjs.pluck(1);
+    var cArr = secondEl(fjs.toArray(parent.children));
+    parent.sortedChildren = cArr;
 
     if (sortOrder) {
       // Sort order is a string of guids
@@ -120,12 +148,12 @@
 
       // Replace children with an array sorted
       // according to the sortOrder.
-      parent.children.sort(accordingToSortOrder);
+      cArr.sort(accordingToSortOrder);
     } else {
       // sortBy with no second parameter
       // sorts on identity (just compares the values)
       // lexicographically, i.e. "alphabetically".
-      parent.children.sort();
+      cArr.sort();
     }
   };
 
@@ -134,8 +162,8 @@
   var sortTree = function (tree) {
     sortTerms(tree);
 
-    if (tree.children) {
-      fjs.each(sortTree, tree.children);
+    if (tree.sortedChildren.length) {
+      fjs.each(sortTree, tree.sortedChildren);
     }
 
     return tree;
@@ -150,22 +178,21 @@
   * @returns {object}
   */
   var getTerms = function (id) {
-    return new Promise(function (resolve, reject) {
-      withTaxonomy().then(function () {
-        var context = SP.ClientContext.get_current(),
-            termStore = getDefaultTermStore(context),
-            termSet = termStore.getTermSet(id),
-            terms = termSet.getAllTerms();
+    return withTaxonomy().then(function () {
+      var context = SP.ClientContext.get_current(),
+          termStore = getDefaultTermStore(context),
+          termSet = termStore.getTermSet(id),
+          terms = termSet.getAllTerms();
 
-        context.load(terms);
-        context.load(termSet);
-        context.executeQueryAsync(function () {
+      context.load(terms);
+      context.load(termSet);
+      return new Cctx(context).executeQuery()
+        .then(function () {
           // Add the termSet on the terms
           // object so we can access it later.
           terms._termSet = termSet;
-          return resolve(terms);
-        }, reject);
-      });
+          return terms;
+        });
     });
   };
 

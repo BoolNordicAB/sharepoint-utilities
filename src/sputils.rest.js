@@ -154,9 +154,9 @@
   * sputils.rest.get('/_api/web/lists')
   *   .then(sputils.rest.unwrapResults)
   *   .then(function (data) {
-  *     $.each(data, function (idx,el) {
+  *     sputils.fjs.each(function (el, idx) {
   *       console.log(el);
-  *     });
+  *     }, data);
   *   });
   */
   var unwrapResults = function (object) {

@@ -46,7 +46,7 @@
   * @example
   *
   * sputils.list.getListItemById('Announcements', 1)
-  *   .then(function (data) { console.log(data.d.results) });
+  *   .then(function (data) { console.log(data) });
   */
   var getListItemById = function (listName, itemId, config) {
     var url = '/_api/Web/Lists/getByTitle(\'' + listName + '\')/items/getbyid(' + itemId + ')';

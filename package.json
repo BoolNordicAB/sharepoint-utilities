@@ -30,7 +30,10 @@
   "scripts": {
     "pretest": "bower install",
     "test": "grunt travis",
-    "precommit": "npm test && grunt build && grunt docs",
+    "prebuild": "npm test",
+    "build": "grunt build",
+    "postbuild": "grunt docs",
+    "precommit": "npm run build",
     "prepush": "npm test"
   }
 }
