@@ -14,7 +14,7 @@ module.exports = function(config) {
     files: [
       'node_modules/chai/chai.js',
       'test/utilities/*.js',
-      'bower_components/functional.js/functional.js',
+      'lib/functional.js',
       'bower_components/es6-promise-polyfill/promise.js',
       'bower_components/fetch/fetch.js',
       'src/**/*.js',
