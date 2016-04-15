@@ -1495,7 +1495,7 @@ sputils.lib = {
         page.checkOut();
       }
 
-      return new Promise(cctx.executeQueryAsync);
+      return new Cctx(cctx).executeQuery();
     });
   };
 
@@ -2385,8 +2385,3 @@ sputils.lib = {
 })(window);
 }
 $_global_sputils();
-
-
-sputils.termstore.getTermsTree('f2dc4f9e-c2ff-4d1c-b651-6db28142ed36').then(function (data) {
-  console.log(data);
-});
