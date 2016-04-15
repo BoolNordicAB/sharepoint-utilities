@@ -49,16 +49,12 @@ Setup
 
 Specific to the project:
 
-    $ npm install
-
-    $ bower install
-
-    $ grunt
+    $ npm run build
 
 Building
 --------
 
-Running `grunt build` will create two build artifacts in the dist/ folder: sputils.js and sputils.min.js.
+Running `npm run build` will create two build artifacts in the dist/ folder: sputils.js and sputils.min.js.
 
 Pull requests
 -------------
