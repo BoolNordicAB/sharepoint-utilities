@@ -23,13 +23,12 @@ describe('SharePoint User Profile Helpers', function () {
   });
 
   describe('getCurrentUser ', function () {
-
-    it('returns a promise which is resolved with the current user', function(done) {
+    var initMocks = function (opts) {
       var counter = 0;
       var inc = function () {
         counter++;
       };
-      ///[ MOCKS
+
       var user = {};
       var web = {
         get_currentUser: function () {
@@ -48,7 +47,11 @@ describe('SharePoint User Profile Helpers', function () {
               },
               executeQueryAsync: function (ok, err) {
                 inc();
-                ok();
+                if (opts.success) {
+                  ok();
+                } else {
+                  err();
+                }
               },
               get_web: function () {
                 inc();
@@ -58,11 +61,33 @@ describe('SharePoint User Profile Helpers', function () {
           }
         }
       };
-      ///]
+
+      return {
+        user: user,
+        getCounter: function () {
+          return counter;
+        }
+      };
+    };
+
+    it('returns a promise which is resolved with the current user', function(done) {
+      var testData = initMocks({success: true});
 
       var p = sputils.user.getCurrentUser().then(function(result) {
-        result.should.equal(user);
-        counter.should.equal(4);
+        result.should.equal(testData.user);
+        testData.getCounter().should.equal(4);
+      });
+
+      p.then(done, done);
+    });
+
+    it('rejects the Promise when something bad happens', function (done) {
+      var testData = initMocks({success: false});
+
+      var p = sputils.user.getCurrentUser().then(function() {
+        throw new Error('should not happen');
+      }, function (err) {
+        void err.should.be.ok;
       });
 
       p.then(done, done);
