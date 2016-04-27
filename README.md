@@ -6,7 +6,16 @@ sharepoint-utilities
 # General
 
 [Documentation](https://boolnordicab.github.io/sharepoint-utilities/doc)
+
+---
+
 [Test coverage](https://boolnordicab.github.io/sharepoint-utilities/coverage/report-html)
+
+---
+
+[Development version (unminified)](https://boolnordicab.github.io/sharepoint-utilities/dist/sputils.js)
+[Production version (minified and mangled)](https://boolnordicab.github.io/sharepoint-utilities/dist/sputils.min.js)
+
 
 The intent of this project is to gather best practice in JavaScript interaction with SharePoint. The goal is to provide a unified API through which developers can work. Although there is much to read on the best practices of server side SP development, the same can not be said for client side.
 
