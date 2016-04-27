@@ -17,6 +17,37 @@ describe('SPUTILS LIB', function () {
     }
   };
 
+  describe('Cctx', function () {
+    var message = 'MESSAGE';
+    var guid = 'GUID';
+    var spClientContext = {
+      executeQueryAsync: function (ok, err) {
+        err(spClientContext, {
+          get_message: function () {
+            return message;
+          },
+          get_errorTraceCorrelationId: function () {
+            return guid;
+          }
+        });
+      }
+    };
+
+    it('should handle errors nicely', function (done) {
+      var ctx = new Cctx(spClientContext);
+
+      var p = ctx.executeQuery().then(function () {
+        throw new Error('no');
+      }, function (err) {
+        err.constructor.should.equal(Error);
+        void err.message.indexOf(message).should.be.ok;
+        void err.message.indexOf(guid).should.be.ok;
+      });
+
+      p.then(done, done);
+    });
+  });
+
   describe('getval()', function () {
     it('Fetch a deep property without crashing on nulls and undefined.', function () {
       var nul = sputils.lib.getval('a.b.c.e', testObjects);

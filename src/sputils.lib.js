@@ -1,6 +1,10 @@
 /** @namespace sputils.lib */
 
 /**
+ * @ignore
+ * @constructor
+ * @desc
+ * Internal API, for the time being.
  * `Cctx` is a usability wrapper for a SharePoint ClientContext
  * @example
  * new Cctx(sharepointClientContext)

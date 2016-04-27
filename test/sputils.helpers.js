@@ -108,7 +108,7 @@ describe('Helpers', function () {
         expect(a).to.deep.equal(deps[0]);
         expect(b).to.deep.equal(deps[1]);
         done();
-      });
+      }, done);
     });
   });
 });

@@ -115,7 +115,7 @@
   };
 
   // Returns a promise which resolves when SP Taxonomy is loaded
-  var withTaxonomy = function () {
+  var withTaxonomyDeps = function () {
     return sputils.helpers.withSharePointDependencies([{
       file: 'sp.taxonomy.js',
       namespace: 'SP.Taxonomy'
@@ -178,7 +178,7 @@
   * @returns {object}
   */
   var getTerms = function (id) {
-    return withTaxonomy().then(function () {
+    return withTaxonomyDeps().then(function () {
       var context = SP.ClientContext.get_current(),
           termStore = getDefaultTermStore(context),
           termSet = termStore.getTermSet(id),
@@ -233,6 +233,6 @@
     getTerms: getTerms,
     getTermsList: getTermsList,
     getTermsTree: getTermsTree,
-    withTaxonomy: withTaxonomy
+    withTaxonomyDeps: withTaxonomyDeps
   };
 })();
