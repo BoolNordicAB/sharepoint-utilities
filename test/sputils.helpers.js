@@ -6,6 +6,7 @@ describe('Helpers', function () {
   });
 
   beforeEach(function () {
+    global = window;
   });
 
   describe('urlQuery', function () {

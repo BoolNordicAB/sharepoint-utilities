@@ -31,13 +31,14 @@
   var getCurrentUser = function () {
     return new Promise(function (resolve, reject) {
       var clientContext = new SP.ClientContext.get_current();
-      var currentWeb = clientContext.get_web();
+      var web = clientContext.get_web();
       var currentUser = web.get_currentUser();
 
       // Load currentUser to the context in order to retrieve the user data.
       clientContext.load(currentUser);
 
-      // Execute the query. Takes two functions: success and failed that returns the SPUser object or an error message.
+      // Execute the query. Takes two functions: success and failed
+      // that returns the SPUser object or an error message.
       clientContext.executeQueryAsync(function () {
         resolve(currentUser);
       }, function (sender, args) {
