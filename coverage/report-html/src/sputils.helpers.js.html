@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/sputils.helpers.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../prettify.css">
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">src/sputils.helpers.js</span></h1>
+    <h2>
+        Statements: <span class="metric">100% <small>(32 / 32)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">100% <small>(6 / 6)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(12 / 12)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(32 / 32)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">src/</a> &#187; sputils.helpers.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">(function () {
+  var resolveDependency = function (dep) {
+    var file = dep.file,
+        namespace = dep.namespace;
+&nbsp;
+    return new Promise(function (resolve, reject) {
+      SP.SOD.registerSod(file, SP.Utilities.Utility.getLayoutsPageUrl(file));
+      SP.SOD.executeFunc(file, namespace, resolve);
+    });
+  };
+&nbsp;
+&nbsp;
+  /**
+  * Returns a promise which resolves when
+  * all the specified dependencies are loaded.
+  *
+  * Takes a list of strings which correspond
+  * to SP JS dependencies. Each dependency is
+  * registered and loaded.
+  *
+  * @function sputils.helpers.withSharePointDependencies
+  * @param {Object} - a dictionary containing values for the following keys:
+  *                   {file, namespace}
+  * @returns {Promise&lt;void&gt;} - resolved when all deps are loaded.
+  */
+  var withSharePointDependencies = function (deps) {
+    return new Promise(function (resolve, reject) {
+      // sp.js is a dependency for our resolveDependency
+      // function, so we load it separately before
+      // the rest.
+      SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
+        var promises = deps.map(resolveDependency);
+        Promise.all(promises).then(resolve);
+      });
+    });
+  };
+&nbsp;
+&nbsp;
+  /**
+  * Get the relative (to the root) portion of an absolute url.
+  *
+  * @function sputils.helpers.abs2rel
+  * @param {string} - the absolute url
+  * @returns {string} - the relative url
+  * @example
+  * var aurl = 'http://example.com/a/path/to.html';
+  * var rurl = sputils.helpers.abs2rel(aurl);
+  * rurl === '/a/path/to.html';
+  **/
+  var abs2rel = function (absUrl) {
+    var hostname = sputils.lib.getval('location.hostname');
+&nbsp;
+    // splitting on the hostname should yield an array with 2 elements
+    // the 1st element should be empty string and the second the rel path.
+    // coalesce into an array with the result being a '/'
+    var parts = (absUrl || '').split(hostname);
+&nbsp;
+    return parts[1] || '/';
+  };
+&nbsp;
+  /**
+  * @function sputils.helpers.urlQuery
+  * @param {Optional&lt;string&gt;} a query string
+  * @returns {Object} an object representing the dictionary of the query string.
+  * @example
+  * console.log(location.search); // =&gt; '?a=1&amp;b=some value'
+  * var qsHash = urlQuery();
+  * // qsHash ~=~ {a:1, b: 'some value'};
+  * urlQuery('?a=1&amp;b=some value'); // ~=~ qsHash
+  **/
+  var urlQuery = function (optArg) {
+    var result = {};
+    var qs = (optArg || sputils.lib.getval('location.search')).replace('?', '');
+    var parts = qs.split('&amp;');
+    parts = fjs.filter(function (a) {
+      return a !== '';
+    }, parts);
+    fjs.each(function (part) {
+      var kvp = part.split('=');
+      result[kvp[0]] = kvp[1];
+    }, parts);
+    return result;
+  };
+&nbsp;
+  /**
+  * Get a promise for a client context that could be on another
+  * site/web.
+  *
+  * This client context is augmented to contain extra info in the
+  * `_info` property.
+  *
+  * @function sputils.helpers.clientContextForWeb
+  * @param {string} - the absolute url of the listitem, file or other asset.
+  * @returns {Promise&lt;SP.ClientContext&gt;} - the promise of a client context
+  * @example
+  * console.log(location);// =&gt; http://contoso.com/sub1
+  * var fileUrl = 'http://contoso.com/sub21231/Shared Documents/file1.docx';
+  * var cctxPromise = sputils.helpers.clientContext(fileUrl);
+  * cctxPromise.then(function (cctx) {
+  *   var webUrl = cctx._info.WebFullUrl;
+  *   var web = cctx.get_web();
+  *   var file = web.getFileByServerRelativeUrl(sputils.helpers.abs2rel(fileUrl));
+  *   // ...
+  * });
+  **/
+  var clientContext = function (absoluteFileOrWebUrl) {
+    var url = absoluteFileOrWebUrl.substring(
+      0, absoluteFileOrWebUrl.lastIndexOf('/')) ;
+&nbsp;
+    return sputils.rest.contextInfo(url).then(function (info) {
+      // create the context and set the extra prop.
+      var cctx = new SP.ClientContext(info.WebFullUrl);
+      cctx._info = info;
+&nbsp;
+      return cctx;
+    });
+  };
+&nbsp;
+  /** @namespace */
+  sputils.helpers = {
+    withSharePointDependencies: withSharePointDependencies,
+    abs2rel: abs2rel,
+    clientContext: clientContext,
+    urlQuery: urlQuery
+  };
+})();
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Apr 27 2016 16:03:07 GMT+0200 (CEST)</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/sputils.rest.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../prettify.css">
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">src/sputils.rest.js</span></h1>
+    <h2>
+        Statements: <span class="metric">100% <small>(45 / 45)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">88.46% <small>(23 / 26)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(18 / 18)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(45 / 45)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">src/</a> &#187; sputils.rest.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">12</span>
+<span class="cline-any cline-yes">12</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">(function () {
+  // This is used to cache results
+  // from grabbing the request digest.
+  var requestDigest;
+&nbsp;
+  // Simple AJAX request for fetching the request digest
+  // from /_api/contextinfo. This is used as a fallback
+  // for the one embedded in the SharePoint page.
+&nbsp;
+  // Returns a promise resolving to the digest string.
+  var requestFormDigest = function () {
+    return contextInfo()
+      .then(function (info) {
+        return info.FormDigestValue;
+      });
+  };
+&nbsp;
+  function contextInfo(webUrl) {
+    var CONTEXT_INFO_API = '/_api/contextinfo';
+    return post(webUrl + CONTEXT_INFO_API)
+      .then(function (data) {
+        return data.d.GetContextWebInformation;
+      });
+  }
+&nbsp;
+  // Utility for grabbing the digest off the page in
+  // an asynchronous manner. Solves the issue of script
+  // running before page has loaded proper.
+  // --
+  // Returns a promise resolving to the digest string.
+  var withRequestDigest = function (refresh) {
+    return new Promise(function (resolve, reject) {
+      if (requestDigest &amp;&amp; refresh !== true) {
+        resolve(requestDigest);
+      } else {
+        var rd = global.document.getElementById('__REQUESTDIGEST');
+        if (rd !== null &amp;&amp; rd.value !== 'InvalidFormDigest') {
+          requestDigest = rd.value;
+          resolve(requestDigest);
+        } else {
+          var tapCache = tap(function (digest) {
+            // `tap` will pass the digest to the next handler
+            requestDigest = digest;
+          });
+          requestFormDigest()
+            .then(tapCache).then(resolve);
+        }
+      }
+    });
+  };
+&nbsp;
+  // Gets the default config object for ajax requests.
+  // Is asynchronous for consistency.
+&nbsp;
+  // Returns a promise resolving to the ajax defaults.
+  var getDefaults = function (url, config) {
+    return new Promise(function (resolve, reject) {
+      var defaults = {
+        // If the URL is not absolute, get the missing part
+        // from _spPageContextInfo
+        url: url.indexOf('http') &gt; -1 ? url : _spPageContextInfo.webAbsoluteUrl + url,
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'accept': 'application/json;odata=verbose'
+        }
+      };
+&nbsp;
+      // fjs assign has the destination last (because curry), i.e. data flow:
+      // config =&gt; defaults
+      resolve(fjs.assign(config || {}, defaults));
+    });
+  };
+&nbsp;
+  // Gets the default config object for ajax post requests,
+  // which includes the getConfig and the request digest.
+&nbsp;
+  // Returns a promise resolving to the ajax post defaults.
+  var postDefaults = function (url, data, config) {
+    return Promise.all([getDefaults(url), withRequestDigest()])
+      .then(function (results) {
+        var defaults = results[0],
+            digest = results[1];
+&nbsp;
+        var headers = fjs.assign(
+          getval('headers', config) || {},
+          getval('headers', defaults) || <span class="branch-1 cbranch-no" title="branch not covered" >{},</span>
+          {'X-RequestDigest': digest});
+&nbsp;
+        var added = {
+          method: 'POST',
+          body: data,
+          contentType: 'application/json;odata=verbose'
+        };
+&nbsp;
+        var cfg = fjs.assign(config || {}, added, defaults);
+        cfg.headers = headers;
+        return cfg;
+      });
+  };
+&nbsp;
+  /**
+  * Rest API get helper. Uses sane defaults to speak to the API. Additional
+  * configuration can be passed with the config argument.
+  * @function sputils.rest.get
+  * @param {string} url an SP endpoint
+  * @param {object} config additional configuration
+  * @returns {object} a promise that resolves to the response data
+  * @example
+  * sputils.rest.get('/_api/web/lists').then(function (data) {
+  *   $.each(data.d.results, function (idx,el) {
+  *     console.log(el);
+  *   });
+  * });
+  */
+  var get = function (url, config) {
+    url = url || <span class="branch-1 cbranch-no" title="branch not covered" >'/';</span>
+    return getDefaults(url, config)
+      .then(function (defaults) {
+        return fetch(defaults.url, defaults).then(jsonify);
+      });
+  };
+&nbsp;
+  /**
+  * Rest API post helper. Uses sane defaults to speak to the API. Additional
+  * configuration can be passed with the config argument.
+  * @function sputils.rest.post
+  * @param {string} url an SP endpoint
+  * @param {object} data the payload
+  * @param {object} config additional configuration
+  * @returns {object} a promise that resolves to the response data
+  * @example
+  * var data = {'Title':'REST API FTW',
+  *             '__metadata': { 'type': 'SP.Data.AnnouncementsListItem'}};
+  *
+  * sputils.rest.post('/_api/Web/Lists/getByTitle('Announcements')/items/', data)
+  *   .then(function (data) { console.log(data) });
+  */
+  var post = function (url, data, config) {
+    data = typeof data === 'string' ? <span class="branch-0 cbranch-no" title="branch not covered" >data </span>: JSON.stringify(data);
+    return postDefaults(url, data, config).then(function (defaults) {
+      return fetch(url, defaults).then(jsonify);
+    });
+  };
+&nbsp;
+  /**
+  * Results from the standard SharePoint REST APIs come
+  * wrapped in objects. This convenience function unwraps
+  * them for you. See example use.
+  * @function sputils.rest.unwrapResults
+  * @param {object} object raw SP API response data
+  * @returns {object} unwrapped SP API data
+  * @example
+  * sputils.rest.get('/_api/web/lists')
+  *   .then(sputils.rest.unwrapResults)
+  *   .then(function (data) {
+  *     sputils.fjs.each(function (el, idx) {
+  *       console.log(el);
+  *     }, data);
+  *   });
+  */
+  var unwrapResults = function (object) {
+    return object.d.results || object.d;
+  };
+&nbsp;
+  // If the given argument has a json method
+  // we call it, otherwise just return the argument.
+  var jsonify = function (result) {
+    return typeof result.json === 'function' ? result.json() : result;
+  };
+&nbsp;
+  /** @namespace */
+  sputils.rest = {
+    get: get,
+    post: post,
+    withRequestDigest: withRequestDigest,
+    unwrapResults: unwrapResults,
+    contextInfo: contextInfo
+  };
+})();
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Apr 27 2016 16:03:07 GMT+0200 (CEST)</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>
