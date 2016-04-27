@@ -175,7 +175,7 @@
   * corresponding to the given termset id.
   * @function sputils.termstore.getTerms
   * @param {string} id a termset guid
-  * @returns {object}
+  * @returns {Promise<SP.TermCollection>}
   */
   var getTerms = function (id) {
     return withTaxonomyDeps().then(function () {
@@ -202,7 +202,7 @@
   * is a taxonomy term object.
   * @function sputils.termstore.getTermsList
   * @param {string} id a termset guid
-  * @returns {array}
+  * @returns {Promise<Array>}
   */
   var getTermsList = function (id) {
     return getTerms(id)
@@ -216,7 +216,7 @@
   * according to customSortOrder.
   * @function sputils.termstore.getTermsTree
   * @param {string} id a termset guid
-  * @returns {object}
+  * @returns {Promise<TermsTree>}
   */
   var getTermsTree = function (id) {
     return getTerms(id)

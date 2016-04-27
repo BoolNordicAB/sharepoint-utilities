@@ -6,12 +6,51 @@ describe('Termstore', function () {
 
   var origWithSharePointDependencies;
   var termSetId = 'unique_id#001';
-  var terms = [
+  var termsAsArray;
+  var terms;
+  var sortOrder = '0;1';
 
-  ];
+  function MockTerm(props) {
+    fjs.assign(props, this);
+  }
+
+  MockTerm.prototype = {
+    get_customSortOrder: function () {
+      return sortOrder;
+    },
+    getGuid: function () {
+      return this.guid;
+    },
+    get_pathOfTerm: function () {
+      return this.path;
+    }
+  };
 
   beforeEach(function () {
     // yes, mocking SP libs is a full time job :P
+    termsAsArray = [
+      new MockTerm({ guid: '0', path: 'root' }),
+      new MockTerm({ guid: '1', path: 'root;a' }),
+    ];
+    terms = {
+      data: termsAsArray,
+      // I can't believe I am doing this...
+      // talk about over-engineering.
+      // a simple for-loop just didn't cut it!
+      getEnumerator: function () {
+        var idx = -1;
+        return {
+          get_current: function () {
+            return terms.data[idx];
+          },
+          moveNext: function () {
+            idx++;
+            return idx < terms.data.length;
+          }
+        };
+      }
+    };
+
     var cctx = {
       load: noop,
       executeQueryAsync: function (ok, err) {
@@ -19,6 +58,9 @@ describe('Termstore', function () {
       }
     };
     var termSet = {
+      get_customSortOrder: function () {
+        return sortOrder;
+      },
       getAllTerms: function () {
         return terms;
       }
@@ -80,7 +122,6 @@ describe('Termstore', function () {
   });
 
   describe('getTerms', function () {
-
     it('should return all terms in the termSet with the supplied ID',
        function (done) {
          var p = sputils.termstore.getTerms(termSetId).then(function (result) {
@@ -89,5 +130,27 @@ describe('Termstore', function () {
 
          p.then(done, done);
        });
+  });
+
+  describe('getTermsList', function () {
+    it('should result in the array representation of the terms', function (done) {
+
+      var p = sputils.termstore.getTermsList(termSetId).then(function (termsArray) {
+        termsArray.should.deep.equal(termsAsArray);
+      });
+
+      p.then(done, done);
+    });
+  });
+
+  describe('getTermsTree', function () {
+    it('should result in a "tree" representation of the terms', function (done) {
+
+      var p = sputils.termstore.getTermsTree(termSetId).then(function (termsTree) {
+        void termsTree.should.be.ok;
+      });
+
+      p.then(done, done);
+    });
   });
 });
