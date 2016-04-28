@@ -1,23 +1,17 @@
-sharepoint-utilities
-====================
-
 [![Build Status](https://travis-ci.org/BoolNordicAB/sharepoint-utilities.svg?branch=master)](https://travis-ci.org/BoolNordicAB/sharepoint-utilities)
 
-# General
+## Resources
 
 [Documentation](https://boolnordicab.github.io/sharepoint-utilities/doc)
 
----
 
 [Test coverage](https://boolnordicab.github.io/sharepoint-utilities/coverage/report-html)
 
----
 
 ## Distribution files
 
 [Development version (unminified)](https://boolnordicab.github.io/sharepoint-utilities/dist/sputils.js)
 
----
 
 [Production version (minified and mangled)](https://boolnordicab.github.io/sharepoint-utilities/dist/sputils.min.js)
 
