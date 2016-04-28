@@ -150,7 +150,21 @@
 105
 106
 107
-108</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+108
+109
+110
+111
+112
+113
+114
+115
+116</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -172,6 +186,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7×</span>
 <span class="cline-any cline-yes">7×</span>
 <span class="cline-any cline-yes">7×</span>
@@ -184,6 +199,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -257,7 +273,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/** @namespace sputils.lib */
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
+ * @namespace sputils.lib
+ * @summary
+ * symbols defined here are available inside internally in sputils as is, and
+ * do not need full qualification. E.g. using `tap` in the module `sputils.user`
+ * would not require one to type `sputils.lib.tap`, but simply `tap` will do.
+ */
 &nbsp;
 /**
  * @ignore
@@ -274,9 +296,10 @@ function Cctx(spClientContext) {
 &nbsp;
 Cctx.prototype = {
   /**
-   * wrapper around the clientContext.executeQueryAsync, that
-   * returns a promise.
-   * @returns {Promise&lt;Void&gt;}
+   * @method Cctx.prototype.executeQuery
+   * @summary
+   * wrapper around the clientContext.executeQueryAsync, that returns a promise.
+   * @returns {Promise&lt;Void&gt;} resolves when the query has been executed.
    */
   executeQuery: function () {
     var c = this._cctx;
@@ -297,11 +320,12 @@ Cctx.prototype = {
 };
 &nbsp;
 /**
-* "taps" a function to produce a side effect
-* but wrap it in an identity fn.
-*
-* @function sputils.lib.tap
-**/
+ * "taps" a function to produce a side effect
+ * but wrap it in an identity fn, which simply
+ * returns the argument which was passed to it.
+ *
+ * @function sputils.lib.tap
+ **/
 var tap = function (fn) {
   return function (value) {
     fn(value);
@@ -311,33 +335,33 @@ var tap = function (fn) {
 &nbsp;
 &nbsp;
 /**
-* Get a value deeply from an object without crashing on nulls.
-*
-* This function is dynamic, so can be bound or just assigned to an
-* object.
-*
-* Can be used to "index" arrays.
-*
-* @function sputils.lib.getval
-* @param {string} subscript - the subscript string, i.e. 'a.b.c.prop'
-* @param {Optional&lt;object&gt;} root - the root object. Defaults to this.
-* @returns {string} the value of the prop, if exists else undefined
-* @example
-* var obj = {a:{b:{c:{}}}}
-* var c = sputils.lib.getval('a.b.c', obj);
-* c === obj.a.b.c;
-* var none = sputils.lib.getval('a.b.1.notHere', obj);
-* none === void 0;
-*
-* // dynamic binding
-* testObjects.getval = sputils.lib.getval;
-* expect(testObjects.getval('a.b')).to.equal(testObjects.a.b);
-*
-* // any kind of property name is allowed, excepting period.
-* var getval = sputils.lib.getval;
-* var res = getval('a.b.d.2.long prop name', testObjects);
-* expect(res).to.equal(testObjects.a.b.d[2]['long prop name']);
-**/
+ * Get a value deeply from an object without crashing on nulls.
+ *
+ * This function is dynamic, so can be bound or just assigned to an
+ * object.
+ *
+ * Can be used to "index" arrays.
+ *
+ * @function sputils.lib.getval
+ * @param {string} subscript - the subscript string, i.e. 'a.b.c.prop'
+ * @param {Optional&lt;object&gt;} root - the root object. Defaults to this.
+ * @returns {string} the value of the prop, if exists else undefined
+ * @example
+ * var obj = {a:{b:{c:{}}}}
+ * var c = sputils.lib.getval('a.b.c', obj);
+ * c === obj.a.b.c;
+ * var none = sputils.lib.getval('a.b.1.notHere', obj);
+ * none === void 0;
+ *
+ * // dynamic binding
+ * testObjects.getval = sputils.lib.getval;
+ * expect(testObjects.getval('a.b')).to.equal(testObjects.a.b);
+ *
+ * // any kind of property name is allowed, excepting period.
+ * var getval = sputils.lib.getval;
+ * var res = getval('a.b.d.2.long prop name', testObjects);
+ * expect(res).to.equal(testObjects.a.b.d[2]['long prop name']);
+ **/
 var getval = function recur(subscript, root) {
   if (this === sputils.lib) {
     return recur.call(global, subscript, root);
@@ -370,7 +394,7 @@ sputils.lib = {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Apr 28 2016 02:06:46 GMT+0200 (CEST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Apr 28 2016 15:23:24 GMT+0200 (CEST)
 </div>
 </div>
 <script src="../prettify.js"></script>

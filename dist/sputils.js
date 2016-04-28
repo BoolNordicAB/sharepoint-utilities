@@ -1008,7 +1008,13 @@ Promise.reject = function(reason){
   }
   self.fetch.polyfill = true
 })();
-;/** @namespace sputils.lib */
+;/**
+ * @namespace sputils.lib
+ * @summary
+ * symbols defined here are available inside internally in sputils as is, and
+ * do not need full qualification. E.g. using `tap` in the module `sputils.user`
+ * would not require one to type `sputils.lib.tap`, but simply `tap` will do.
+ */
 
 /**
  * @ignore
@@ -1025,9 +1031,10 @@ function Cctx(spClientContext) {
 
 Cctx.prototype = {
   /**
-   * wrapper around the clientContext.executeQueryAsync, that
-   * returns a promise.
-   * @returns {Promise<Void>}
+   * @method Cctx.prototype.executeQuery
+   * @summary
+   * wrapper around the clientContext.executeQueryAsync, that returns a promise.
+   * @returns {Promise<Void>} resolves when the query has been executed.
    */
   executeQuery: function () {
     var c = this._cctx;
@@ -1048,11 +1055,12 @@ Cctx.prototype = {
 };
 
 /**
-* "taps" a function to produce a side effect
-* but wrap it in an identity fn.
-*
-* @function sputils.lib.tap
-**/
+ * "taps" a function to produce a side effect
+ * but wrap it in an identity fn, which simply
+ * returns the argument which was passed to it.
+ *
+ * @function sputils.lib.tap
+ **/
 var tap = function (fn) {
   return function (value) {
     fn(value);
@@ -1062,33 +1070,33 @@ var tap = function (fn) {
 
 
 /**
-* Get a value deeply from an object without crashing on nulls.
-*
-* This function is dynamic, so can be bound or just assigned to an
-* object.
-*
-* Can be used to "index" arrays.
-*
-* @function sputils.lib.getval
-* @param {string} subscript - the subscript string, i.e. 'a.b.c.prop'
-* @param {Optional<object>} root - the root object. Defaults to this.
-* @returns {string} the value of the prop, if exists else undefined
-* @example
-* var obj = {a:{b:{c:{}}}}
-* var c = sputils.lib.getval('a.b.c', obj);
-* c === obj.a.b.c;
-* var none = sputils.lib.getval('a.b.1.notHere', obj);
-* none === void 0;
-*
-* // dynamic binding
-* testObjects.getval = sputils.lib.getval;
-* expect(testObjects.getval('a.b')).to.equal(testObjects.a.b);
-*
-* // any kind of property name is allowed, excepting period.
-* var getval = sputils.lib.getval;
-* var res = getval('a.b.d.2.long prop name', testObjects);
-* expect(res).to.equal(testObjects.a.b.d[2]['long prop name']);
-**/
+ * Get a value deeply from an object without crashing on nulls.
+ *
+ * This function is dynamic, so can be bound or just assigned to an
+ * object.
+ *
+ * Can be used to "index" arrays.
+ *
+ * @function sputils.lib.getval
+ * @param {string} subscript - the subscript string, i.e. 'a.b.c.prop'
+ * @param {Optional<object>} root - the root object. Defaults to this.
+ * @returns {string} the value of the prop, if exists else undefined
+ * @example
+ * var obj = {a:{b:{c:{}}}}
+ * var c = sputils.lib.getval('a.b.c', obj);
+ * c === obj.a.b.c;
+ * var none = sputils.lib.getval('a.b.1.notHere', obj);
+ * none === void 0;
+ *
+ * // dynamic binding
+ * testObjects.getval = sputils.lib.getval;
+ * expect(testObjects.getval('a.b')).to.equal(testObjects.a.b);
+ *
+ * // any kind of property name is allowed, excepting period.
+ * var getval = sputils.lib.getval;
+ * var res = getval('a.b.d.2.long prop name', testObjects);
+ * expect(res).to.equal(testObjects.a.b.d[2]['long prop name']);
+ **/
 var getval = function recur(subscript, root) {
   if (this === sputils.lib) {
     return recur.call(global, subscript, root);
@@ -1116,6 +1124,22 @@ sputils.lib = {
   tap: tap
 };
 ;(function () {
+  /**
+   * @ignore
+   * @summary
+   * Uses SP builtin dependency management to load a specific dependency.
+   * @function sputils.helpers.resolveDependency
+   * @param {object} dep
+   * <pre>
+   * {
+   *   file: {string},
+   *   namespace: {string}
+   * }
+   * - `file` is the filename of the module, e.g. sp.taxonomy.js
+   * - `namespace` is the namespace provided by the SP module, e.g. SP.Taxonomy
+   * </pre>
+   * @returns {Promise<Void>} - resolved when the SP dependency is loaded.
+   */
   var resolveDependency = function (dep) {
     var file = dep.file,
         namespace = dep.namespace;
@@ -1128,18 +1152,23 @@ sputils.lib = {
 
 
   /**
-  * Returns a promise which resolves when
-  * all the specified dependencies are loaded.
-  *
-  * Takes a list of strings which correspond
-  * to SP JS dependencies. Each dependency is
-  * registered and loaded.
-  *
-  * @function sputils.helpers.withSharePointDependencies
-  * @param {Object} - a dictionary containing values for the following keys:
-  *                   {file, namespace}
-  * @returns {Promise<void>} - resolved when all deps are loaded.
-  */
+   * Returns a promise which resolves when
+   * all the specified dependencies are loaded.
+   *
+   * Takes a list of strings which correspond
+   * to SP JS dependencies. Each dependency is
+   * registered and loaded.
+   *
+   * Uses SP builtin dependency management to load a specific dependency.
+   *
+   * @function sputils.helpers.withSharePointDependencies
+   * @param {Array<dep>} deps
+   * An array containing hashes with the following keys: {file, namespace}
+   * <pre>
+   * [ { file: string, namespace: string } ]
+   * </pre>
+   * @returns {Promise<Void>} - resolved when all deps are loaded.
+   */
   var withSharePointDependencies = function (deps) {
     return new Promise(function (resolve, reject) {
       // sp.js is a dependency for our resolveDependency
@@ -1176,16 +1205,18 @@ sputils.lib = {
   };
 
   /**
-  * @function sputils.helpers.urlQuery
-  * @param {Optional<string>} a query string
-  * @returns {Object} an object representing the dictionary of the query string.
-  * @example
-  * console.log(location.search); // => '?a=1&b=some value'
-  * var qsHash = urlQuery();
-  * // qsHash ~=~ {a:1, b: 'some value'};
-  * urlQuery('?a=1&b=some value'); // ~=~ qsHash
-  **/
-  var urlQuery = function (optArg) {
+   * @function sputils.helpers.parseQueryString
+   * @param {Optional<string>} optArg
+   * a query string, as in the form of "?k1=v1&k2=v2"
+   * @returns {Object}
+   * an object representing the dictionary of the query string.
+   * @example
+   * console.log(location.search); // => '?a=1&b=some value'
+   * var qsHash = parseQueryString(); // no argument, will use the current browsing context's location.search
+   * // qsHash ~=~ {a:1, b: 'some value'};
+   * parseQueryString('?a=1&b=some value'); // ~=~ qsHash
+   **/
+  var parseQueryString = function (optArg) {
     var result = {};
     var qs = (optArg || sputils.lib.getval('location.search')).replace('?', '');
     var parts = qs.split('&');
@@ -1207,7 +1238,7 @@ sputils.lib = {
   * `_info` property.
   *
   * @function sputils.helpers.clientContextForWeb
-  * @param {string} - the absolute url of the listitem, file or other asset.
+  * @param {string} absoluteUrl the absolute url of the listitem, file or other asset.
   * @returns {Promise<SP.ClientContext>} - the promise of a client context
   * @example
   * console.log(location);// => http://contoso.com/sub1
@@ -1220,9 +1251,10 @@ sputils.lib = {
   *   // ...
   * });
   **/
-  var clientContext = function (absoluteFileOrWebUrl) {
-    var url = absoluteFileOrWebUrl.substring(
-      0, absoluteFileOrWebUrl.lastIndexOf('/')) ;
+  var clientContext = function (absoluteUrl) {
+    // TODO: handle URLs to sites/webs
+    var url = absoluteUrl.substring(
+      0, absoluteUrl.lastIndexOf('/')) ;
 
     return sputils.rest.contextInfo(url).then(function (info) {
       // create the context and set the extra prop.
@@ -1238,7 +1270,7 @@ sputils.lib = {
     withSharePointDependencies: withSharePointDependencies,
     abs2rel: abs2rel,
     clientContext: clientContext,
-    urlQuery: urlQuery
+    parseQueryString: parseQueryString
   };
 })();
 ;(function () {
@@ -1343,19 +1375,19 @@ sputils.lib = {
   };
 
   /**
-  * Rest API get helper. Uses sane defaults to speak to the API. Additional
-  * configuration can be passed with the config argument.
-  * @function sputils.rest.get
-  * @param {string} url an SP endpoint
-  * @param {object} config additional configuration
-  * @returns {object} a promise that resolves to the response data
-  * @example
-  * sputils.rest.get('/_api/web/lists').then(function (data) {
-  *   $.each(data.d.results, function (idx,el) {
-  *     console.log(el);
-  *   });
-  * });
-  */
+   * Rest API get helper. Uses sane defaults to speak to the API. Additional
+   * configuration can be passed with the config argument.
+   * @function sputils.rest.get
+   * @param {string} url an SP endpoint
+   * @param {object} config additional configuration
+   * @returns {Promise<object>} a promise that resolves to the response data
+   * @example
+   * sputils.rest.get('/_api/web/lists').then(function (data) {
+   *   $.each(data.d.results, function (idx,el) {
+   *     console.log(el);
+   *   });
+   * });
+   */
   var get = function (url, config) {
     url = url || '/';
     return getDefaults(url, config)
@@ -1365,20 +1397,23 @@ sputils.lib = {
   };
 
   /**
-  * Rest API post helper. Uses sane defaults to speak to the API. Additional
-  * configuration can be passed with the config argument.
-  * @function sputils.rest.post
-  * @param {string} url an SP endpoint
-  * @param {object} data the payload
-  * @param {object} config additional configuration
-  * @returns {object} a promise that resolves to the response data
-  * @example
-  * var data = {'Title':'REST API FTW',
-  *             '__metadata': { 'type': 'SP.Data.AnnouncementsListItem'}};
-  *
-  * sputils.rest.post('/_api/Web/Lists/getByTitle('Announcements')/items/', data)
-  *   .then(function (data) { console.log(data) });
-  */
+   * Rest API post helper. Uses sane defaults to speak to the API. Additional
+   * configuration can be passed with the config argument.
+   * @function sputils.rest.post
+   * @param {string} url an SP endpoint
+   * @param {object} data the payload
+   * @param {object} config additional configuration
+   * @returns {Promise<object>} a promise that resolves to the response data
+   * @example
+   *
+   * var data = {
+   *   Title: 'REST API FTW',
+   *   __metadata: { type: 'SP.Data.AnnouncementsListItem'}
+   * };
+   *
+   * sputils.rest.post("/_api/Web/Lists/getByTitle('Announcements')/", data)
+   *   .then(function (data) { console.log(data) });
+   */
   var post = function (url, data, config) {
     data = typeof data === 'string' ? data : JSON.stringify(data);
     return postDefaults(url, data, config).then(function (defaults) {
@@ -1387,21 +1422,21 @@ sputils.lib = {
   };
 
   /**
-  * Results from the standard SharePoint REST APIs come
-  * wrapped in objects. This convenience function unwraps
-  * them for you. See example use.
-  * @function sputils.rest.unwrapResults
-  * @param {object} object raw SP API response data
-  * @returns {object} unwrapped SP API data
-  * @example
-  * sputils.rest.get('/_api/web/lists')
-  *   .then(sputils.rest.unwrapResults)
-  *   .then(function (data) {
-  *     sputils.fjs.each(function (el, idx) {
-  *       console.log(el);
-  *     }, data);
-  *   });
-  */
+   * Results from the standard SharePoint REST APIs come
+   * wrapped in objects. This convenience function unwraps
+   * them for you. See example use.
+   * @function sputils.rest.unwrapResults
+   * @param {object} object raw SP API response data
+   * @returns {Promise<object>} unwrapped SP API data
+   * @example
+   * sputils.rest.get('/_api/web/lists')
+   *   .then(sputils.rest.unwrapResults)
+   *   .then(function (data) {
+   *     sputils.fjs.each(function (el, idx) {
+   *       console.log(el);
+   *     }, data);
+   *   });
+   */
   var unwrapResults = function (object) {
     return object.d.results || object.d;
   };
@@ -1422,70 +1457,103 @@ sputils.lib = {
   };
 })();
 ;(function () {
-  /**
-  * Returns the list items from the given list name.
-  * @function sputils.list.getListByName
-  * @param {string} name a list name
-  * @returns {array}
-  * @example
-  *
-  * sputils.list.getListByName('Announcements')
-  *   .then(function (data) { console.log(data.d.results) });
-  *
-  */
-  var getListByName = function (name, config) {
-    var url = '/_api/Web/Lists/getByTitle(\'' + name + '\')/items/';
+  var listByNameGetItems = function (name, config) {
+    var url = "/_api/Web/Lists/getByTitle('%NAME')/items/".replace('%NAME', name);
     return sputils.rest.get(url, config)
       .then(sputils.rest.unwrapResults);
   };
 
-  /**
-  * Modifies list items in the given list.
-  * @function sputils.list.postListByName
-  * @param {string} name a list name
-  * @param {object} data the payload
-  * @param {object} config the config
-  * @returns {object} Promise
-  * @example
-  *
-  * var data = {"Title": "listlessly POSTing",
-  *             "__metadata": { type: "SP.Data.AnnouncementsListItem"} };
-  * sputils.list.postListByName("Announcements", data)
-  *   .then(function (data) { console.log(data); });
-  */
-  var postListByName = function (name, data, config) {
-    var url = '/_api/Web/Lists/getByTitle(\'' + name + '\')/items/';
+  var listByNamePostItems = function (name, data, config) {
+    var url = "/_api/Web/Lists/getByTitle('%NAME')/items/".replace('%NAME', name);
     return sputils.rest.post(url, data, config)
       .then(sputils.rest.unwrapResults);
   };
 
-  /**
-  * Returns the list item with the specified id.
-  * @function sputils.list.getListItemById
-  * @param {string} name a list name
-  * @param {object} data the payload
-  * @param {object} config the config
-  * @returns {array} List items
-  * @example
-  *
-  * sputils.list.getListItemById('Announcements', 1)
-  *   .then(function (data) { console.log(data) });
-  */
-  var getListItemById = function (listName, itemId, config) {
-    var url = '/_api/Web/Lists/getByTitle(\'' + listName + '\')/items/getbyid(' + itemId + ')';
+  var listByNameGetItemById = function (name, itemId, config) {
+    var url = "/_api/Web/Lists/getByTitle('%NAME')/items/getbyid(%ID)"
+          .replace('%NAME', name)
+          .replace('%ID', itemId);
     return sputils.rest.get(url, config)
       .then(sputils.rest.unwrapResults);
   };
 
+  /**
+   * exposes operations on a list qualified by name.
+   * @function sputils.list.byName
+   * @param {string} name a list name
+   * @returns {object} an object exposing operations possible on the list.
+   *
+   * @example
+   *
+   * var list = sputils.list.byName('announcements');
+   * list.getItems().then(...);
+   */
+  var byName = function (name) {
+    return {
+      /**
+       * Returns the list items from the given list name.
+       * @function sputils.list.byName(name).getItems
+       * @memberof! sputils.list
+       * @param {Optional<object>} config the http config
+       * @returns {Promise<array>} the array containing the list items.
+       *
+       * @example
+       *
+       * sputils.list.byName('Announcements').getItems()
+       *   .then(function (data) { console.log(data.d.results) });
+       *
+       */
+      getItems: function (config) {
+        return listByNameGetItems(name, config);
+      },
+
+      /**
+       * Returns the list item with the specified id.
+       * @function sputils.list.byName(name).getItemById
+       * @memberof! sputils.list
+       * @param {object} data the payload
+       * @param {Optional<object>} config the http config
+       * @returns {Promise<object>} List item
+       *
+       * @example
+       *
+       * sputils.list.byName('Announcements').getItemById(1)
+       *   .then(function (data) { console.log(data) });
+       */
+      getItemById: function (id, config) {
+        return listByNameGetItemById(name, id, config);
+      },
+
+      /**
+       * Modifies list items in the given list.
+       * @function sputils.list.byName(name).postItems
+       * @memberof! sputils.list
+       * @param {object} data the payload
+       * @param {object} config the http config
+       * @returns {Promise<object>}
+       *
+       * @example
+       *
+       * var data = {
+       *   __metadata: { type: "SP.Data.AnnouncementsListItem"}
+       *   Title: "listlessly POSTing",
+       * };
+       * sputils.list.byName("Announcements").postItems(data)
+       *   .then(function (data) { console.log(data); });
+       */
+      postItems: function (data, config) {
+        return listByNamePostItems(name, data, config);
+      }
+    };
+  };
+
   /** @namespace */
   sputils.list = fjs.assign(sputils.list || {}, {
-    getListByName: getListByName,
-    postListByName: postListByName,
-    getListItemById: getListItemById
+    byName: byName
   });
 })();
 ;(function () {
-  /** @namespace sputils.list.files */
+  /** @namespace sputils.list.items */
   var checkFile = function (dir, fileUrl) {
     var cctxPromise = sputils.helpers.clientContext(fileUrl);
     return cctxPromise.then(function (cctx) {
@@ -1513,26 +1581,26 @@ sputils.lib = {
 
   // public API for this submodule.
   sputils.list = fjs.assign(sputils.list || {}, {
-    files: {
+    items: {
       /**
        * Initiates a checkIn operation on the file located at the supplied URL.
-       * @function sputils.list.files.checkIn
+       * @function sputils.list.items.checkIn
        * @param {string} url - the URL of the file
        * @returns {Promise} the promise of fulfilling the operation
        * @example
        *
-       * sputils.list.files.checkIn('/pages/default.aspx')
+       * sputils.list.items.checkIn('/pages/default.aspx')
        *   .then(function () { console.log('page was checked in') });
        */
       checkIn: checkIn,
       /**
        * Initiates a checkOut operation on the file located at the supplied URL.
-       * @function sputils.list.files.checkOut
+       * @function sputils.list.items.checkOut
        * @param {string} url - the URL of the file
        * @returns {Promise} the promise of fulfilling the operation
        * @example
        *
-       * sputils.list.files.checkOut('/pages/default.aspx')
+       * sputils.list.items.checkOut('/pages/default.aspx')
        *   .then(function () { console.log('page was checked out') });
        */
       checkOut: checkOut
@@ -1541,15 +1609,16 @@ sputils.lib = {
 })();
 ;(function () {
   /**
-  * Get the user name from the claims token string
-  * @function sputils.conversion.getUserNameFromClaim
-  * @param {string} claimsString - the claims string
-  * @returns {string} username
-  * @example
-  * var claimsToken = 'i:0ǵ.t|ipdomain|jdoe';
-  * var username = sputils.conversion.getUserNameFromClaim(claimsToken);
-  * console.log(username); // => 'jdoe'
-  **/
+   * @summary
+   * Extracts the user name from a claims-token string
+   * @function sputils.conversion.getUserNameFromClaim
+   * @param {string} claimsString - the claims string
+   * @returns {string} username
+   * @example
+   * var claimsToken = 'i:0ǵ.t|ipdomain|jdoe';
+   * var username = sputils.conversion.getUserNameFromClaim(claimsToken);
+   * console.log(username); // => 'jdoe'
+   */
   var getUserNameFromClaim = function (claimsString) {
     var splitUserName = claimsString.split('|');
     return splitUserName[splitUserName.length - 1];
@@ -1732,13 +1801,13 @@ sputils.lib = {
   };
 
   /**
-  * Returns a promise which resolves with
-  * an object containing all the terms
-  * corresponding to the given termset id.
-  * @function sputils.termstore.getTerms
-  * @param {string} id a termset guid
-  * @returns {Promise<SP.TermCollection>}
-  */
+   * Returns a promise which resolves with
+   * an object containing all the terms
+   * corresponding to the given termset id.
+   * @function sputils.termstore.getTerms
+   * @param {string} id a termset guid
+   * @returns {Promise<SP.TermCollection>}
+   */
   var getTerms = function (id) {
     return withTaxonomyDeps().then(function () {
       var context = SP.ClientContext.get_current(),
@@ -1759,13 +1828,13 @@ sputils.lib = {
   };
 
   /**
-  * Returns a promise which resolves
-  * to an array. Each element
-  * is a taxonomy term object.
-  * @function sputils.termstore.getTermsList
-  * @param {string} id a termset guid
-  * @returns {Promise<Array>}
-  */
+   * Returns a promise which resolves
+   * to an array. Each element
+   * is a taxonomy term object.
+   * @function sputils.termstore.getTermsList
+   * @param {string} id a termset guid
+   * @returns {Promise<Array>}
+   */
   var getTermsList = function (id) {
     var wrapObjects = function (list) {
       return fjs.map(function (spTerm) {
@@ -1779,21 +1848,21 @@ sputils.lib = {
   };
 
   /**
-  * Returns a promise which resolves
-  * to a tree object. Each node has
-  * a children property which is sorted
-  * according to customSortOrder.
-  * @function sputils.termstore.getTermsTree
-  * @param {string} id a termset guid
-  * @returns {Promise<TermsTree>}
-  */
+   * Returns a promise which resolves
+   * to a tree object. Each node has
+   * a children property which is sorted
+   * according to customSortOrder.
+   * @function sputils.termstore.getTermsTree
+   * @param {string} id a termset guid
+   * @returns {Promise<TermsTree>}
+   */
   var getTermsTree = function (id) {
     return getTerms(id)
-      // The terms are unordered and without
-      // a useful way of interpreting the hierarchy,
-      // so we turn them into a tree.
+    // The terms are unordered and without
+    // a useful way of interpreting the hierarchy,
+    // so we turn them into a tree.
       .then(generateTree)
-      // And then sorted according to customSortOrder
+    // And then sorted according to customSortOrder
       .then(sortTree);
   };
 
@@ -1807,34 +1876,34 @@ sputils.lib = {
 })();
 ;(function () {
   /**
-  * @function sputils.user.loginAsAnotherUser
-  * @returns {void}
-  * @example
-  * sputils.user.loginAsAnotherUser();
-  */
+   * @function sputils.user.loginAsAnotherUser
+   * @returns {void}
+   * @example
+   * sputils.user.loginAsAnotherUser();
+   */
   var loginAsAnotherUser = function () {
     global.location.href = '/_layouts/closeconnection.aspx?loginasanotheruser=true';
   };
 
   /**
-  * @function sputils.user.logoutUser
-  * @returns {void}
-  * @example
-  * sputils.user.logoutUser();
-  */
+   * @function sputils.user.logoutUser
+   * @returns {void}
+   * @example
+   * sputils.user.logoutUser();
+   */
   var logoutUser = function () {
     global.location.href = '/_layouts/closeconnection.aspx';
   };
 
 
   /**
-  * Returns a promise with the current spuser object.
-  * @function sputils.user.getCurrentUser
-  * @returns {Promise<object>} the promise with the user object
-  * @example
-  * sputils.user.getCurrentUser().then(function (data) {
-  *   console.log(data);
-  */
+   * Returns a promise with the current spuser object.
+   * @function sputils.user.getCurrentUser
+   * @returns {Promise<object>} the promise with the user object
+   * @example
+   * sputils.user.getCurrentUser().then(function (data) {
+   *   console.log(data);
+   */
   var getCurrentUser = function () {
     return new Promise(function (resolve, reject) {
       var clientContext = new SP.ClientContext.get_current();
@@ -1855,17 +1924,17 @@ sputils.lib = {
   };
 
   /**
-  * Returns full url to profile page of current user
-  * @function sputils.user.getCurrentUserPersonalSiteUrl
-  * @param {object} config - an object containing config for the REST call
-  * @returns {Promise<object>}
-  * @example
-  *  sputils.user.getCurrentUserPersonalSiteUrl()
-  *    .then(function (data) { console.log(data) });
-  */
+   * Returns full url to profile page of current user
+   * @function sputils.user.getCurrentUserPersonalSiteUrl
+   * @param {object} config - an object containing config for the REST call
+   * @returns {Promise<object>}
+   * @example
+   *  sputils.user.getCurrentUserPersonalSiteUrl()
+   *    .then(function (data) { console.log(data) });
+   */
   var getCurrentUserPersonalSiteUrl = function (config) {
     var url =
-      '/_api/SP.UserProfiles.PeopleManager/GetMyProperties?$select=UserUrl';
+          '/_api/SP.UserProfiles.PeopleManager/GetMyProperties?$select=UserUrl';
     return sputils.rest.get(url, config)
       .then(function (data) {
         return data.d.UserUrl;
@@ -1882,17 +1951,18 @@ sputils.lib = {
 })();
 ;(function () {
   /**
-  * @private
-  * @const search.POST_URL_PATH the sub-path used for POST requests */
+   * @private
+   * @const search.POST_URL_PATH the sub-path used for POST requests */
   var POST_URL_PATH = '/_api/search/postquery';
   /**
-  * @private
-  * @const search.GET_URL_PATH the sub-path used for GET requests */
+   * @private
+   * @const search.GET_URL_PATH the sub-path used for GET requests */
   var GET_URL_PATH = '/_api/search/query';
 
   /**
-  * @private
-  * @returns {object} __metadata for use in POST requests' bodies to search API */
+   * @private
+   * @returns {object}
+   * __metadata for use in POST requests' bodies to search API */
   var __metadata = function () {
     return {
       __metadata: {
@@ -1902,11 +1972,11 @@ sputils.lib = {
   };
 
   /**
-  * An example search configuration
-  * @function sputils.search.searchCfgExample
-  * @see {@link https://msdn.microsoft.com/en-us/library/office/jj163876.aspx}
-  * @returns {object} a new object instance of a SearchConfigurationExample
-  */
+   * An example search configuration
+   * @function sputils.search.searchCfgExample
+   * @see {@link https://msdn.microsoft.com/en-us/library/office/jj163876.aspx}
+   * @returns {object} a new object instance of a SearchConfigurationExample
+   */
   var searchCfgExample = function () {
     return {
       // A string that contains the text for the search query.
@@ -2040,26 +2110,26 @@ sputils.lib = {
   };
 
   /**
-  * Make a search request with a POST method. Useful if complex data needs
-  * to be sent to the server.
-  * <pre>
-  * Use POST requests in the following scenarios:
-  * - When you'll exceed the URL length restriction with a GET request.
-  * - When you can't specify the query parameters in a simple URL.
-  *   For example, if you have to pass parameter values that contain
-  *   a complex type array, or comma-separated strings, you have more
-  *   flexibility when constructing the POST request.
-  * - When you use the ReorderingRules parameter because it is supported only with POST requests.
-  * </pre>
-  * @function sputils.search.postSearch
-  * @param {object} cfg the search configuration.
-  * @see sputils.search.searchCfgExample or SharePoint Search Query Tool
-  * @param {string} [webUrl] the url of the web to use as the context.
-  * @returns {Promise<object>} the search result
-  * @example
-  * sputils.search.postSearch({Querytext: 'ContentType:0x01*'})
-  *   .then(function (result) { console.log(result) });
-  */
+   * Make a search request with a POST method. Useful if complex data needs
+   * to be sent to the server.
+   * <pre>
+   * Use POST requests in the following scenarios:
+   * - When you'll exceed the URL length restriction with a GET request.
+   * - When you can't specify the query parameters in a simple URL.
+   *   For example, if you have to pass parameter values that contain
+   *   a complex type array, or comma-separated strings, you have more
+   *   flexibility when constructing the POST request.
+   * - When you use the ReorderingRules parameter because it is supported only with POST requests.
+   * </pre>
+   * @function sputils.search.postSearch
+   * @param {object} cfg the search configuration.
+   * @see sputils.search.searchCfgExample or SharePoint Search Query Tool
+   * @param {string} [webUrl] the url of the web to use as the context.
+   * @returns {Promise<object>} the search result
+   * @example
+   * sputils.search.postSearch({Querytext: 'ContentType:0x01*'})
+   *   .then(function (result) { console.log(result) });
+   */
   var postSearch = function (cfg, webUrl) {
     return sputils.rest.post(
       (webUrl || _spPageContextInfo.siteServerRelativeUrl) + POST_URL_PATH,

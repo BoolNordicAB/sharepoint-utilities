@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Namespace: lib</title>
+    <title>JSDoc: Namespace: items</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Namespace: lib</h1>
+    <h1 class="page-title">Namespace: items</h1>
 
     
 
@@ -28,7 +28,8 @@
 
 <header>
     
-        <h2>lib</h2>
+        <h2>
+            <span class="ancestors"><a href="sputils.list.html">.list</a>.</span>items</h2>
         
     
 </header>
@@ -70,7 +71,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="sputils.lib.js.html">sputils.lib.js</a>, <a href="sputils.lib.js.html#line1">line 1</a>
+        <a href="sputils.list.items.js.html">sputils.list.items.js</a>, <a href="sputils.list.items.js.html#line2">line 2</a>
     </li></ul></dd>
     
 
@@ -106,19 +107,14 @@
 
     
 
-    <h4 class="name" id=".getval"><span class="type-signature">(static) </span>getval<span class="signature">(subscript, root)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".checkIn"><span class="type-signature">(static) </span>checkIn<span class="signature">(url)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
 
     
 
 
 
 <div class="description">
-    Get a value deeply from an object without crashing on nulls.
-
-This function is dynamic, so can be bound or just assigned to an
-object.
-
-Can be used to "index" arrays.
+    Initiates a checkIn operation on the file located at the supplied URL.
 </div>
 
 
@@ -154,7 +150,7 @@ Can be used to "index" arrays.
 
         <tr>
             
-                <td class="name"><code>subscript</code></td>
+                <td class="name"><code>url</code></td>
             
 
             <td class="type">
@@ -170,30 +166,7 @@ Can be used to "index" arrays.
 
             
 
-            <td class="description last">the subscript string, i.e. 'a.b.c.prop'</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>root</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Optional.&lt;object></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the root object. Defaults to this.</td>
+            <td class="description last">the URL of the file</td>
         </tr>
 
     
@@ -234,7 +207,7 @@ Can be used to "index" arrays.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="sputils.lib.js.html">sputils.lib.js</a>, <a href="sputils.lib.js.html#line62">line 62</a>
+        <a href="sputils.list.items.js.html">sputils.list.items.js</a>, <a href="sputils.list.items.js.html#line31">line 31</a>
     </li></ul></dd>
     
 
@@ -261,7 +234,7 @@ Can be used to "index" arrays.
 
         
 <div class="param-desc">
-    the value of the prop, if exists else undefined
+    the promise of fulfilling the operation
 </div>
 
 
@@ -272,7 +245,7 @@ Can be used to "index" arrays.
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">Promise</span>
 
 
     </dd>
@@ -283,20 +256,8 @@ Can be used to "index" arrays.
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var obj = {a:{b:{c:{}}}}
-var c = sputils.lib.getval('a.b.c', obj);
-c === obj.a.b.c;
-var none = sputils.lib.getval('a.b.1.notHere', obj);
-none === void 0;
-
-// dynamic binding
-testObjects.getval = sputils.lib.getval;
-expect(testObjects.getval('a.b')).to.equal(testObjects.a.b);
-
-// any kind of property name is allowed, excepting period.
-var getval = sputils.lib.getval;
-var res = getval('a.b.d.2.long prop name', testObjects);
-expect(res).to.equal(testObjects.a.b.d[2]['long prop name']);</code></pre>
+    <pre class="prettyprint"><code>sputils.list.items.checkIn('/pages/default.aspx')
+  .then(function () { console.log('page was checked in') });</code></pre>
 
 
 
@@ -305,16 +266,14 @@ expect(res).to.equal(testObjects.a.b.d[2]['long prop name']);</code></pre>
 
     
 
-    <h4 class="name" id=".tap"><span class="type-signature">(static) </span>tap<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".checkOut"><span class="type-signature">(static) </span>checkOut<span class="signature">(url)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
 
     
 
 
 
 <div class="description">
-    "taps" a function to produce a side effect
-but wrap it in an identity fn, which simply
-returns the argument which was passed to it.
+    Initiates a checkOut operation on the file located at the supplied URL.
 </div>
 
 
@@ -323,6 +282,55 @@ returns the argument which was passed to it.
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>url</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the URL of the file</td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -358,7 +366,7 @@ returns the argument which was passed to it.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="sputils.lib.js.html">sputils.lib.js</a>, <a href="sputils.lib.js.html#line47">line 47</a>
+        <a href="sputils.list.items.js.html">sputils.list.items.js</a>, <a href="sputils.list.items.js.html#line42">line 42</a>
     </li></ul></dd>
     
 
@@ -381,6 +389,34 @@ returns the argument which was passed to it.
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the promise of fulfilling the operation
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>sputils.list.items.checkOut('/pages/default.aspx')
+  .then(function () { console.log('page was checked out') });</code></pre>
 
 
 

@@ -70,7 +70,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="sputils.list.js.html">sputils.list.js</a>, <a href="sputils.list.js.html#line58">line 58</a>
+        <a href="sputils.list.js.html">sputils.list.js</a>, <a href="sputils.list.js.html#line93">line 93</a>
     </li></ul></dd>
     
 
@@ -98,7 +98,7 @@
         <h3 class="subsection-title">Namespaces</h3>
 
         <dl>
-            <dt><a href="sputils.list.files.html">files</a></dt>
+            <dt><a href="sputils.list.items.html">items</a></dt>
             <dd></dd>
         </dl>
     
@@ -113,14 +113,14 @@
 
     
 
-    <h4 class="name" id=".getListByName"><span class="type-signature">(static) </span>getListByName<span class="signature">(name)</span><span class="type-signature"> &rarr; {array}</span></h4>
+    <h4 class="name" id=".byName"><span class="type-signature">(static) </span>byName<span class="signature">(name)</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
 
 
 
 <div class="description">
-    Returns the list items from the given list name.
+    exposes operations on a list qualified by name.
 </div>
 
 
@@ -213,7 +213,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="sputils.list.js.html">sputils.list.js</a>, <a href="sputils.list.js.html#line2">line 2</a>
+        <a href="sputils.list.js.html">sputils.list.js</a>, <a href="sputils.list.js.html#line22">line 22</a>
     </li></ul></dd>
     
 
@@ -239,6 +239,10 @@
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    an object exposing operations possible on the list.
+</div>
+
 
 
 <dl>
@@ -247,7 +251,7 @@
     </dt>
     <dd>
         
-<span class="param-type">array</span>
+<span class="param-type">object</span>
 
 
     </dd>
@@ -258,8 +262,8 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>sputils.list.getListByName('Announcements')
-  .then(function (data) { console.log(data.d.results) });</code></pre>
+    <pre class="prettyprint"><code>var list = sputils.list.byName('announcements');
+list.getItems().then(...);</code></pre>
 
 
 
@@ -268,7 +272,7 @@
 
     
 
-    <h4 class="name" id=".getListItemById"><span class="type-signature">(static) </span>getListItemById<span class="signature">(name, data, config)</span><span class="type-signature"> &rarr; {array}</span></h4>
+    <h4 class="name" id=".byName(name).getItemById"><span class="type-signature"></span>.byName(name).getItemById<span class="signature">(data, config)</span><span class="type-signature"> &rarr; {Promise.&lt;object>}</span></h4>
 
     
 
@@ -311,29 +315,6 @@
 
         <tr>
             
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">a list name</td>
-        </tr>
-
-    
-
-        <tr>
-            
                 <td class="name"><code>data</code></td>
             
 
@@ -363,7 +344,7 @@
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">Optional.&lt;object></span>
 
 
             
@@ -373,7 +354,7 @@
 
             
 
-            <td class="description last">the config</td>
+            <td class="description last">the http config</td>
         </tr>
 
     
@@ -414,7 +395,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="sputils.list.js.html">sputils.list.js</a>, <a href="sputils.list.js.html#line39">line 39</a>
+        <a href="sputils.list.js.html">sputils.list.js</a>, <a href="sputils.list.js.html#line52">line 52</a>
     </li></ul></dd>
     
 
@@ -441,7 +422,7 @@
 
         
 <div class="param-desc">
-    List items
+    List item
 </div>
 
 
@@ -452,7 +433,7 @@
     </dt>
     <dd>
         
-<span class="param-type">array</span>
+<span class="param-type">Promise.&lt;object></span>
 
 
     </dd>
@@ -463,7 +444,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>sputils.list.getListItemById('Announcements', 1)
+    <pre class="prettyprint"><code>sputils.list.byName('Announcements').getItemById(1)
   .then(function (data) { console.log(data) });</code></pre>
 
 
@@ -473,7 +454,166 @@
 
     
 
-    <h4 class="name" id=".postListByName"><span class="type-signature">(static) </span>postListByName<span class="signature">(name, data, config)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id=".byName(name).getItems"><span class="type-signature"></span>.byName(name).getItems<span class="signature">(config)</span><span class="type-signature"> &rarr; {Promise.&lt;array>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Returns the list items from the given list name.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Optional.&lt;object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the http config</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="sputils.list.js.html">sputils.list.js</a>, <a href="sputils.list.js.html#line35">line 35</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the array containing the list items.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;array></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>sputils.list.byName('Announcements').getItems()
+  .then(function (data) { console.log(data.d.results) });</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".byName(name).postItems"><span class="type-signature"></span>.byName(name).postItems<span class="signature">(data, config)</span><span class="type-signature"> &rarr; {Promise.&lt;object>}</span></h4>
 
     
 
@@ -516,29 +656,6 @@
 
         <tr>
             
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">a list name</td>
-        </tr>
-
-    
-
-        <tr>
-            
                 <td class="name"><code>data</code></td>
             
 
@@ -578,7 +695,7 @@
 
             
 
-            <td class="description last">the config</td>
+            <td class="description last">the http config</td>
         </tr>
 
     
@@ -619,7 +736,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="sputils.list.js.html">sputils.list.js</a>, <a href="sputils.list.js.html#line19">line 19</a>
+        <a href="sputils.list.js.html">sputils.list.js</a>, <a href="sputils.list.js.html#line69">line 69</a>
     </li></ul></dd>
     
 
@@ -645,10 +762,6 @@
 <h5>Returns:</h5>
 
         
-<div class="param-desc">
-    Promise
-</div>
-
 
 
 <dl>
@@ -657,7 +770,7 @@
     </dt>
     <dd>
         
-<span class="param-type">object</span>
+<span class="param-type">Promise.&lt;object></span>
 
 
     </dd>
@@ -668,9 +781,11 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var data = {"Title": "listlessly POSTing",
-            "__metadata": { type: "SP.Data.AnnouncementsListItem"} };
-sputils.list.postListByName("Announcements", data)
+    <pre class="prettyprint"><code>var data = {
+  __metadata: { type: "SP.Data.AnnouncementsListItem"}
+  Title: "listlessly POSTing",
+};
+sputils.list.byName("Announcements").postItems(data)
   .then(function (data) { console.log(data); });</code></pre>
 
 
@@ -691,13 +806,13 @@ sputils.list.postListByName("Announcements", data)
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="sputils.conversion.html">conversion</a></li><li><a href="sputils.helpers.html">helpers</a></li><li><a href="sputils.lib.html">lib</a></li><li><a href="sputils.list.html">list</a></li><li><a href="sputils.list.files.html">files</a></li><li><a href="sputils.rest.html">rest</a></li><li><a href="sputils.search.html">search</a></li><li><a href="sputils.termstore.html">termstore</a></li><li><a href="sputils.thirdParty.html">thirdParty</a></li><li><a href="sputils.thirdParty.moment.html">moment</a></li><li><a href="sputils.thirdParty.moment.tz.html">tz</a></li><li><a href="sputils.ui.html">ui</a></li><li><a href="sputils.user.html">user</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="sputils.conversion.html">conversion</a></li><li><a href="sputils.helpers.html">helpers</a></li><li><a href="sputils.lib.html">lib</a></li><li><a href="sputils.list.html">list</a></li><li><a href="sputils.list.items.html">items</a></li><li><a href="sputils.rest.html">rest</a></li><li><a href="sputils.search.html">search</a></li><li><a href="sputils.termstore.html">termstore</a></li><li><a href="sputils.thirdParty.html">thirdParty</a></li><li><a href="sputils.thirdParty.moment.html">moment</a></li><li><a href="sputils.thirdParty.moment.tz.html">tz</a></li><li><a href="sputils.ui.html">ui</a></li><li><a href="sputils.user.html">user</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Apr 28 2016 02:06:50 GMT+0200 (CEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Apr 28 2016 15:23:28 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

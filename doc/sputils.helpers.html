@@ -70,7 +70,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="sputils.helpers.js.html">sputils.helpers.js</a>, <a href="sputils.helpers.js.html#line120">line 120</a>
+        <a href="sputils.helpers.js.html">sputils.helpers.js</a>, <a href="sputils.helpers.js.html#line144">line 144</a>
     </li></ul></dd>
     
 
@@ -202,7 +202,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="sputils.helpers.js.html">sputils.helpers.js</a>, <a href="sputils.helpers.js.html#line39">line 39</a>
+        <a href="sputils.helpers.js.html">sputils.helpers.js</a>, <a href="sputils.helpers.js.html#line60">line 60</a>
     </li></ul></dd>
     
 
@@ -262,7 +262,7 @@ rurl === '/a/path/to.html';</code></pre>
 
     
 
-    <h4 class="name" id=".clientContextForWeb"><span class="type-signature">(static) </span>clientContextForWeb<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;SP.ClientContext>}</span></h4>
+    <h4 class="name" id=".clientContextForWeb"><span class="type-signature">(static) </span>clientContextForWeb<span class="signature">(absoluteUrl)</span><span class="type-signature"> &rarr; {Promise.&lt;SP.ClientContext>}</span></h4>
 
     
 
@@ -291,6 +291,8 @@ This client context is augmented to contain extra info in the
     <thead>
     <tr>
         
+        <th>Name</th>
+        
 
         <th>Type</th>
 
@@ -306,6 +308,8 @@ This client context is augmented to contain extra info in the
     
 
         <tr>
+            
+                <td class="name"><code>absoluteUrl</code></td>
             
 
             <td class="type">
@@ -362,7 +366,7 @@ This client context is augmented to contain extra info in the
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="sputils.helpers.js.html">sputils.helpers.js</a>, <a href="sputils.helpers.js.html#line85">line 85</a>
+        <a href="sputils.helpers.js.html">sputils.helpers.js</a>, <a href="sputils.helpers.js.html#line108">line 108</a>
     </li></ul></dd>
     
 
@@ -428,7 +432,7 @@ cctxPromise.then(function (cctx) {
 
     
 
-    <h4 class="name" id=".urlQuery"><span class="type-signature">(static) </span>urlQuery<span class="signature">(a)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id=".parseQueryString"><span class="type-signature">(static) </span>parseQueryString<span class="signature">(optArg)</span><span class="type-signature"> &rarr; {Object}</span></h4>
 
     
 
@@ -467,7 +471,7 @@ cctxPromise.then(function (cctx) {
 
         <tr>
             
-                <td class="name"><code>a</code></td>
+                <td class="name"><code>optArg</code></td>
             
 
             <td class="type">
@@ -483,7 +487,7 @@ cctxPromise.then(function (cctx) {
 
             
 
-            <td class="description last">query string</td>
+            <td class="description last">a query string, as in the form of "?k1=v1&k2=v2"</td>
         </tr>
 
     
@@ -524,7 +528,7 @@ cctxPromise.then(function (cctx) {
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="sputils.helpers.js.html">sputils.helpers.js</a>, <a href="sputils.helpers.js.html#line61">line 61</a>
+        <a href="sputils.helpers.js.html">sputils.helpers.js</a>, <a href="sputils.helpers.js.html#line82">line 82</a>
     </li></ul></dd>
     
 
@@ -574,9 +578,9 @@ cctxPromise.then(function (cctx) {
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>console.log(location.search); // => '?a=1&amp;b=some value'
-var qsHash = urlQuery();
+var qsHash = parseQueryString(); // no argument, will use the current browsing context's location.search
 // qsHash ~=~ {a:1, b: 'some value'};
-urlQuery('?a=1&amp;b=some value'); // ~=~ qsHash</code></pre>
+parseQueryString('?a=1&amp;b=some value'); // ~=~ qsHash</code></pre>
 
 
 
@@ -585,7 +589,7 @@ urlQuery('?a=1&amp;b=some value'); // ~=~ qsHash</code></pre>
 
     
 
-    <h4 class="name" id=".withSharePointDependencies"><span class="type-signature">(static) </span>withSharePointDependencies<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span></h4>
+    <h4 class="name" id=".withSharePointDependencies"><span class="type-signature">(static) </span>withSharePointDependencies<span class="signature">(deps)</span><span class="type-signature"> &rarr; {Promise.&lt;Void>}</span></h4>
 
     
 
@@ -598,6 +602,8 @@ all the specified dependencies are loaded.
 Takes a list of strings which correspond
 to SP JS dependencies. Each dependency is
 registered and loaded.
+
+Uses SP builtin dependency management to load a specific dependency.
 </div>
 
 
@@ -615,6 +621,8 @@ registered and loaded.
     <thead>
     <tr>
         
+        <th>Name</th>
+        
 
         <th>Type</th>
 
@@ -631,11 +639,13 @@ registered and loaded.
 
         <tr>
             
+                <td class="name"><code>deps</code></td>
+            
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">Array.&lt;dep></span>
 
 
             
@@ -645,8 +655,10 @@ registered and loaded.
 
             
 
-            <td class="description last">a dictionary containing values for the following keys:
-                  {file, namespace}</td>
+            <td class="description last">An array containing hashes with the following keys: {file, namespace}
+<pre>
+[ { file: string, namespace: string } ]
+</pre></td>
         </tr>
 
     
@@ -687,7 +699,7 @@ registered and loaded.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="sputils.helpers.js.html">sputils.helpers.js</a>, <a href="sputils.helpers.js.html#line13">line 13</a>
+        <a href="sputils.helpers.js.html">sputils.helpers.js</a>, <a href="sputils.helpers.js.html#line29">line 29</a>
     </li></ul></dd>
     
 
@@ -725,7 +737,7 @@ registered and loaded.
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;void></span>
+<span class="param-type">Promise.&lt;Void></span>
 
 
     </dd>
@@ -751,13 +763,13 @@ registered and loaded.
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="sputils.conversion.html">conversion</a></li><li><a href="sputils.helpers.html">helpers</a></li><li><a href="sputils.lib.html">lib</a></li><li><a href="sputils.list.html">list</a></li><li><a href="sputils.list.files.html">files</a></li><li><a href="sputils.rest.html">rest</a></li><li><a href="sputils.search.html">search</a></li><li><a href="sputils.termstore.html">termstore</a></li><li><a href="sputils.thirdParty.html">thirdParty</a></li><li><a href="sputils.thirdParty.moment.html">moment</a></li><li><a href="sputils.thirdParty.moment.tz.html">tz</a></li><li><a href="sputils.ui.html">ui</a></li><li><a href="sputils.user.html">user</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="sputils.conversion.html">conversion</a></li><li><a href="sputils.helpers.html">helpers</a></li><li><a href="sputils.lib.html">lib</a></li><li><a href="sputils.list.html">list</a></li><li><a href="sputils.list.items.html">items</a></li><li><a href="sputils.rest.html">rest</a></li><li><a href="sputils.search.html">search</a></li><li><a href="sputils.termstore.html">termstore</a></li><li><a href="sputils.thirdParty.html">thirdParty</a></li><li><a href="sputils.thirdParty.moment.html">moment</a></li><li><a href="sputils.thirdParty.moment.tz.html">tz</a></li><li><a href="sputils.ui.html">ui</a></li><li><a href="sputils.user.html">user</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Apr 28 2016 02:06:50 GMT+0200 (CEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Apr 28 2016 15:23:28 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>
