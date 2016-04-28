@@ -170,13 +170,13 @@
   };
 
   /**
-  * Returns a promise which resolves with
-  * an object containing all the terms
-  * corresponding to the given termset id.
-  * @function sputils.termstore.getTerms
-  * @param {string} id a termset guid
-  * @returns {Promise<SP.TermCollection>}
-  */
+   * Returns a promise which resolves with
+   * an object containing all the terms
+   * corresponding to the given termset id.
+   * @function sputils.termstore.getTerms
+   * @param {string} id a termset guid
+   * @returns {Promise<SP.TermCollection>}
+   */
   var getTerms = function (id) {
     return withTaxonomyDeps().then(function () {
       var context = SP.ClientContext.get_current(),
@@ -197,13 +197,13 @@
   };
 
   /**
-  * Returns a promise which resolves
-  * to an array. Each element
-  * is a taxonomy term object.
-  * @function sputils.termstore.getTermsList
-  * @param {string} id a termset guid
-  * @returns {Promise<Array>}
-  */
+   * Returns a promise which resolves
+   * to an array. Each element
+   * is a taxonomy term object.
+   * @function sputils.termstore.getTermsList
+   * @param {string} id a termset guid
+   * @returns {Promise<Array>}
+   */
   var getTermsList = function (id) {
     var wrapObjects = function (list) {
       return fjs.map(function (spTerm) {
@@ -217,21 +217,21 @@
   };
 
   /**
-  * Returns a promise which resolves
-  * to a tree object. Each node has
-  * a children property which is sorted
-  * according to customSortOrder.
-  * @function sputils.termstore.getTermsTree
-  * @param {string} id a termset guid
-  * @returns {Promise<TermsTree>}
-  */
+   * Returns a promise which resolves
+   * to a tree object. Each node has
+   * a children property which is sorted
+   * according to customSortOrder.
+   * @function sputils.termstore.getTermsTree
+   * @param {string} id a termset guid
+   * @returns {Promise<TermsTree>}
+   */
   var getTermsTree = function (id) {
     return getTerms(id)
-      // The terms are unordered and without
-      // a useful way of interpreting the hierarchy,
-      // so we turn them into a tree.
+    // The terms are unordered and without
+    // a useful way of interpreting the hierarchy,
+    // so we turn them into a tree.
       .then(generateTree)
-      // And then sorted according to customSortOrder
+    // And then sorted according to customSortOrder
       .then(sortTree);
   };
 

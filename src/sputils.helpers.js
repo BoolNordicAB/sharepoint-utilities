@@ -127,6 +127,7 @@
   * });
   **/
   var clientContext = function (absoluteUrl) {
+    // TODO: handle URLs to sites/webs
     var url = absoluteUrl.substring(
       0, absoluteUrl.lastIndexOf('/')) ;
 
