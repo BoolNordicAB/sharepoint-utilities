@@ -1011,6 +1011,10 @@ Promise.reject = function(reason){
 ;/** @namespace sputils.lib */
 
 /**
+ * @ignore
+ * @constructor
+ * @desc
+ * Internal API, for the time being.
  * `Cctx` is a usability wrapper for a SharePoint ClientContext
  * @example
  * new Cctx(sharepointClientContext)
@@ -1592,8 +1596,7 @@ sputils.lib = {
     },
 
     getUrl: function () {
-      return this.term.get_localCustomProperties()
-        ._Sys_Nav_SimpleLinkUrl;
+      return this.getLocalCustomProperty('_Sys_Nav_SimpleLinkUrl');
     },
 
     getSortOrder: function () {
@@ -1673,13 +1676,14 @@ sputils.lib = {
   };
 
   // Returns a promise which resolves when SP Taxonomy is loaded
-  var withTaxonomy = function () {
+  var withTaxonomyDeps = function () {
     return sputils.helpers.withSharePointDependencies([{
       file: 'sp.taxonomy.js',
       namespace: 'SP.Taxonomy'
     }]);
   };
 
+  // populates the sortedChildren property of the node.
   var sortTerms = function (parent) {
     var sortOrder = parent.getSortOrder();
     function accordingToSortOrder(childA, childB) {
@@ -1733,10 +1737,10 @@ sputils.lib = {
   * corresponding to the given termset id.
   * @function sputils.termstore.getTerms
   * @param {string} id a termset guid
-  * @returns {object}
+  * @returns {Promise<SP.TermCollection>}
   */
   var getTerms = function (id) {
-    return withTaxonomy().then(function () {
+    return withTaxonomyDeps().then(function () {
       var context = SP.ClientContext.get_current(),
           termStore = getDefaultTermStore(context),
           termSet = termStore.getTermSet(id),
@@ -1760,11 +1764,18 @@ sputils.lib = {
   * is a taxonomy term object.
   * @function sputils.termstore.getTermsList
   * @param {string} id a termset guid
-  * @returns {array}
+  * @returns {Promise<Array>}
   */
   var getTermsList = function (id) {
+    var wrapObjects = function (list) {
+      return fjs.map(function (spTerm) {
+        return new Node(spTerm);
+      }, list);
+    };
+
     return getTerms(id)
-      .then(generateList);
+      .then(generateList)
+      .then(wrapObjects);
   };
 
   /**
@@ -1774,7 +1785,7 @@ sputils.lib = {
   * according to customSortOrder.
   * @function sputils.termstore.getTermsTree
   * @param {string} id a termset guid
-  * @returns {object}
+  * @returns {Promise<TermsTree>}
   */
   var getTermsTree = function (id) {
     return getTerms(id)
@@ -1791,7 +1802,7 @@ sputils.lib = {
     getTerms: getTerms,
     getTermsList: getTermsList,
     getTermsTree: getTermsTree,
-    withTaxonomy: withTaxonomy
+    withTaxonomyDeps: withTaxonomyDeps
   };
 })();
 ;(function () {
