@@ -8,7 +8,7 @@ describe('Termstore', function () {
   var termSetId = 'unique_id#001';
   var termsAsArray;
   var terms;
-  var sortOrder = '0;1';
+  var sortOrder = '2:3:0:1';
 
   function MockTerm(props) {
     fjs.assign(props, this);
@@ -18,19 +18,31 @@ describe('Termstore', function () {
     get_customSortOrder: function () {
       return sortOrder;
     },
-    getGuid: function () {
-      return this.guid;
+    get_id: function () {
+      return this.id;
     },
     get_pathOfTerm: function () {
       return this.path;
+    },
+    get_name: function () {
+      return 'NAME#' + this.id;
+    },
+    get_isRoot: function () {
+      var anySemiColonsIn = fjs.any(function (c) {
+        return c === ';';
+      });
+
+      return !anySemiColonsIn(this.path.split(''));
     }
   };
 
   beforeEach(function () {
     // yes, mocking SP libs is a full time job :P
     termsAsArray = [
-      new MockTerm({ guid: '0', path: 'root' }),
-      new MockTerm({ guid: '1', path: 'root;a' }),
+      new MockTerm({ id: '0', path: 'root1' }),
+      new MockTerm({ id: '1', path: 'root1;a' }),
+      new MockTerm({ id: '2', path: 'root2' }),
+      new MockTerm({ id: '3', path: 'root2;b' }),
     ];
     terms = {
       data: termsAsArray,
@@ -136,7 +148,10 @@ describe('Termstore', function () {
     it('should result in the array representation of the terms', function (done) {
 
       var p = sputils.termstore.getTermsList(termSetId).then(function (termsArray) {
-        termsArray.should.deep.equal(termsAsArray);
+        fjs.each(function (node, i) {
+          var origTerm = termsAsArray[i];
+          origTerm.should.equal(node.term);
+        }, termsArray);
       });
 
       p.then(done, done);
@@ -148,6 +163,44 @@ describe('Termstore', function () {
 
       var p = sputils.termstore.getTermsTree(termSetId).then(function (termsTree) {
         void termsTree.should.be.ok;
+
+        // the direct sorted children of the tree should be the "roots"
+        var sc = termsTree.sortedChildren;
+        var byId = function (id) {
+          return function (node) {
+            return node.getGuid() === id.toString();
+          };
+        };
+
+        var root1 = fjs.first(byId(0), sc);
+        var root2 = fjs.first(byId(2), sc);
+
+        // the sortOrder is '2:3:0:1', where 2 and 0 are "roots"
+        sc[0].should.equal(root2);
+        sc[1].should.equal(root1);
+
+        var root1a = fjs.first(byId(1), root1.sortedChildren);
+        var root2b = fjs.first(byId(3), root2.sortedChildren);
+
+        sc[1].sortedChildren[0].should.equal(root1a);
+        sc[0].sortedChildren[0].should.equal(root2b);
+      });
+
+      p.then(done, done);
+    });
+  });
+
+  describe('Wrappers', function () {
+
+    it('should expose a nice(r) API to the taxonomy objects', function (done) {
+
+      var p = sputils.termstore.getTermsList(termSetId).then(function (list) {
+        list.length.should.not.equal(0);
+        var t = list[0]; // not sorted by sortOrder, so will be equivalent to root1
+
+        t.getGuid().should.equal('0');
+        t.getIsRoot().should.equal(true);
+        t.getName().should.equal('NAME#0');
       });
 
       p.then(done, done);

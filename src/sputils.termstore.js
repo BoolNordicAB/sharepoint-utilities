@@ -34,8 +34,7 @@
     },
 
     getUrl: function () {
-      return this.term.get_localCustomProperties()
-        ._Sys_Nav_SimpleLinkUrl;
+      return this.getLocalCustomProperty('_Sys_Nav_SimpleLinkUrl');
     },
 
     getSortOrder: function () {
@@ -122,6 +121,7 @@
     }]);
   };
 
+  // populates the sortedChildren property of the node.
   var sortTerms = function (parent) {
     var sortOrder = parent.getSortOrder();
     function accordingToSortOrder(childA, childB) {
@@ -205,8 +205,15 @@
   * @returns {Promise<Array>}
   */
   var getTermsList = function (id) {
+    var wrapObjects = function (list) {
+      return fjs.map(function (spTerm) {
+        return new Node(spTerm);
+      }, list);
+    };
+
     return getTerms(id)
-      .then(generateList);
+      .then(generateList)
+      .then(wrapObjects);
   };
 
   /**
