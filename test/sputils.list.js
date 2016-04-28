@@ -137,13 +137,14 @@ describe('SharePoint List API Wrapper', function () {
           ClientContext: Ctor
         };
 
-        sputils.list.items.checkOut(fileUrl).then(function () {
+        var p = sputils.list.items.checkOut(fileUrl).then(function () {
           expect(checkOuts).to.equal(1);
           return sputils.list.items.checkIn(fileUrl);
         }).then(function () {
           expect(checkIns).to.equal(1);
-          done();
         });
+
+        p.then(done, done);
       });
     });
   });

@@ -70,10 +70,11 @@ describe('Helpers', function () {
         }
       };
 
-      sputils.helpers.clientContext(webUrl + '/file.txt').then(function (cctx) {
-        done();
+      var p = sputils.helpers.clientContext(webUrl + '/file.txt').then(function (cctx) {
         expect(cctx).to.equal(id);
       });
+
+      p.then(done, done);
     });
   });
 
@@ -102,13 +103,14 @@ describe('Helpers', function () {
         }
       };
 
-      sputils.helpers.withSharePointDependencies(deps).then(function (res) {
+      var p = sputils.helpers.withSharePointDependencies(deps).then(function (res) {
         var a = res[0],
             b = res[1];
         expect(a).to.deep.equal(deps[0]);
         expect(b).to.deep.equal(deps[1]);
-        done();
-      }, done);
+      });
+
+      p.then(done, done);
     });
   });
 });
