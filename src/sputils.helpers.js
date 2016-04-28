@@ -1,4 +1,20 @@
 (function () {
+  /**
+   * @ignore
+   * @summary
+   * Uses SP builtin dependency management to load a specific dependency.
+   * @function sputils.helpers.resolveDependency
+   * @param {object} dep
+   * <pre>
+   * {
+   *   file: {string},
+   *   namespace: {string}
+   * }
+   * - `file` is the filename of the module, e.g. sp.taxonomy.js
+   * - `namespace` is the namespace provided by the SP module, e.g. SP.Taxonomy
+   * </pre>
+   * @returns {Promise<Void>} - resolved when the SP dependency is loaded.
+   */
   var resolveDependency = function (dep) {
     var file = dep.file,
         namespace = dep.namespace;
@@ -11,18 +27,23 @@
 
 
   /**
-  * Returns a promise which resolves when
-  * all the specified dependencies are loaded.
-  *
-  * Takes a list of strings which correspond
-  * to SP JS dependencies. Each dependency is
-  * registered and loaded.
-  *
-  * @function sputils.helpers.withSharePointDependencies
-  * @param {Object} - a dictionary containing values for the following keys:
-  *                   {file, namespace}
-  * @returns {Promise<void>} - resolved when all deps are loaded.
-  */
+   * Returns a promise which resolves when
+   * all the specified dependencies are loaded.
+   *
+   * Takes a list of strings which correspond
+   * to SP JS dependencies. Each dependency is
+   * registered and loaded.
+   *
+   * Uses SP builtin dependency management to load a specific dependency.
+   *
+   * @function sputils.helpers.withSharePointDependencies
+   * @param {Array<dep>} deps
+   * An array containing hashes with the following keys: {file, namespace}
+   * <pre>
+   * [ { file: string, namespace: string } ]
+   * </pre>
+   * @returns {Promise<Void>} - resolved when all deps are loaded.
+   */
   var withSharePointDependencies = function (deps) {
     return new Promise(function (resolve, reject) {
       // sp.js is a dependency for our resolveDependency
@@ -59,16 +80,18 @@
   };
 
   /**
-  * @function sputils.helpers.urlQuery
-  * @param {Optional<string>} a query string
-  * @returns {Object} an object representing the dictionary of the query string.
-  * @example
-  * console.log(location.search); // => '?a=1&b=some value'
-  * var qsHash = urlQuery();
-  * // qsHash ~=~ {a:1, b: 'some value'};
-  * urlQuery('?a=1&b=some value'); // ~=~ qsHash
-  **/
-  var urlQuery = function (optArg) {
+   * @function sputils.helpers.parseQueryString
+   * @param {Optional<string>} optArg
+   * a query string, as in the form of "?k1=v1&k2=v2"
+   * @returns {Object}
+   * an object representing the dictionary of the query string.
+   * @example
+   * console.log(location.search); // => '?a=1&b=some value'
+   * var qsHash = parseQueryString(); // no argument, will use the current browsing context's location.search
+   * // qsHash ~=~ {a:1, b: 'some value'};
+   * parseQueryString('?a=1&b=some value'); // ~=~ qsHash
+   **/
+  var parseQueryString = function (optArg) {
     var result = {};
     var qs = (optArg || sputils.lib.getval('location.search')).replace('?', '');
     var parts = qs.split('&');
@@ -90,7 +113,7 @@
   * `_info` property.
   *
   * @function sputils.helpers.clientContextForWeb
-  * @param {string} - the absolute url of the listitem, file or other asset.
+  * @param {string} absoluteUrl the absolute url of the listitem, file or other asset.
   * @returns {Promise<SP.ClientContext>} - the promise of a client context
   * @example
   * console.log(location);// => http://contoso.com/sub1
@@ -103,9 +126,9 @@
   *   // ...
   * });
   **/
-  var clientContext = function (absoluteFileOrWebUrl) {
-    var url = absoluteFileOrWebUrl.substring(
-      0, absoluteFileOrWebUrl.lastIndexOf('/')) ;
+  var clientContext = function (absoluteUrl) {
+    var url = absoluteUrl.substring(
+      0, absoluteUrl.lastIndexOf('/')) ;
 
     return sputils.rest.contextInfo(url).then(function (info) {
       // create the context and set the extra prop.
@@ -121,6 +144,6 @@
     withSharePointDependencies: withSharePointDependencies,
     abs2rel: abs2rel,
     clientContext: clientContext,
-    urlQuery: urlQuery
+    parseQueryString: parseQueryString
   };
 })();

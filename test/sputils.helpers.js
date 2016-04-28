@@ -9,11 +9,11 @@ describe('Helpers', function () {
     global = window;
   });
 
-  describe('urlQuery', function () {
+  describe('parseQueryString', function () {
     it('should return the query string as an object hash', function () {
       var u = ' \u0027';
       var query = '?k1=a&k2=' + encodeURIComponent('some string \u0027') + '&k3=false&k4=0&';
-      var qHash = sputils.helpers.urlQuery(query);
+      var qHash = sputils.helpers.parseQueryString(query);
 
       expect(qHash.k1).to.equal('a');
       expect(qHash.k2).to.equal(encodeURIComponent('some string' + u));
@@ -22,7 +22,7 @@ describe('Helpers', function () {
     });
 
     it('should degrade gracefully', function () {
-      var qHash = sputils.helpers.urlQuery();
+      var qHash = sputils.helpers.parseQueryString();
       expect(qHash).to.deep.equal({});
     });
   });
