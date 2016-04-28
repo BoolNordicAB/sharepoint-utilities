@@ -9,81 +9,88 @@ describe('SharePoint List API Wrapper', function () {
     initialize_dom();
   });
 
-  describe('getListByName', function () {
-    it('should have correct config settings', function (done) {
-      //Mock jQuery ajax
-      fetch = function (url, config) {
-        expect(config)
-          .to.have.deep.property('headers.accept',
-                                 'application/json;odata=verbose');
-        expect(config)
-          .to.have.property('url',
-            'http://example.com/_api/Web/Lists/getByTitle(\'Announcements\')/items/');
-        expect(config)
-          .to.have.property('method', 'GET');
+  describe('byName', function () {
+    describe('getItems', function () {
+      it('should have correct config settings', function (done) {
+        //Mock jQuery ajax
+        fetch = function (url, config) {
+          expect(config)
+            .to.have.deep.property('headers.accept',
+                                   'application/json;odata=verbose');
+          expect(config)
+            .to.have.property('url',
+                              'http://example.com/_api/Web/Lists/getByTitle(\'Announcements\')/items/');
+          expect(config)
+            .to.have.property('method', 'GET');
 
-        return stdPromise();
-      };
+          return stdPromise();
+        };
 
-      sputils.list.getListByName("Announcements")
-        .then(function (res) {
-          done();
-        });
+        var p = sputils.list.byName("Announcements").getItems()
+          .then(function (res) {
+            void res.should.be.ok;
+          });
+
+        p.then(done, done);
+      });
     });
-  });
 
-  describe('postListByName', function () {
-    it('should have correct config settings', function (done) {
-      //Mock jQuery ajax
-      fetch = function (url, config) {
-        expect(config)
-          .to.have.deep.property('headers.accept',
-                                 'application/json;odata=verbose');
-        expect(config)
-          .to.have.deep.property('headers.X-RequestDigest',
-                                 'TestValue');
-        expect(config)
-          .to.have.property('url',
-            'http://example.com/_api/Web/Lists/getByTitle(\'Announcements\')/items/');
-        expect(config)
-          .to.have.property('method', 'POST');
-        expect(config)
-          .to.have.property('body', '{"test":"test"}');
+    describe('postItems', function () {
+      it('should have correct config settings', function (done) {
+        //Mock jQuery ajax
+        fetch = function (url, config) {
+          expect(config)
+            .to.have.deep.property('headers.accept',
+                                   'application/json;odata=verbose');
+          expect(config)
+            .to.have.deep.property('headers.X-RequestDigest',
+                                   'TestValue');
+          expect(config)
+            .to.have.property('url',
+                              'http://example.com/_api/Web/Lists/getByTitle(\'Announcements\')/items/');
+          expect(config)
+            .to.have.property('method', 'POST');
+          expect(config)
+            .to.have.property('body', '{"test":"test"}');
 
-        return stdPromise();
-      };
+          return stdPromise();
+        };
 
-      sputils.list.postListByName("Announcements", { "test": "test" })
-        .then(function (res) {
-          done();
-        });
+        var p = sputils.list.byName("Announcements").postItems({ "test": "test" })
+          .then(function (res) {
+            void res.should.be.ok;
+          });
+
+        p.then(done, done);
+      });
     });
-  });
 
 
-  describe('getListItemById', function () {
-    it('should get an item by its id', function (done) {
-      var listName = 'Announcements',
-          id = 1,
-          result = {d: 'success'},
-          expUrl = _spPageContextInfo.webAbsoluteUrl +
-            "/_api/Web/Lists/getByTitle('" +
-            listName + "')/items/getbyid(" + id + ")";
+    describe('getItemById', function () {
+      it('should get an item by its id', function (done) {
+        var listName = 'Announcements',
+            id = 1,
+            result = {d: 'success'},
+            expUrl = _spPageContextInfo.webAbsoluteUrl +
+              "/_api/Web/Lists/getByTitle('" +
+              listName + "')/items/getbyid(" + id + ")";
 
-      fetch = function (url, cfg) {
-        expect(url.toLowerCase()).to.equal(expUrl.toLowerCase());
-        return stdPromise(result);
-      };
+        fetch = function (url, cfg) {
+          expect(url.toLowerCase()).to.equal(expUrl.toLowerCase());
+          return stdPromise(result);
+        };
 
-      sputils.list.getListItemById(listName, id).then(function (item) {
-        done();
-        expect(item).to.equal(result.d);
+        var p = sputils.list.byName(listName).getItemById(id).then(function (item) {
+          expect(item).to.equal(result.d);
+        });
+
+        p.then(done, done);
       });
     });
   });
 
 
-  describe('files', function () {
+  describe('list.items', function () {
     describe('checkOut/In', function () {
       it('should check files out and in', function (done) {
         var fileUrl = window.location.hostname + '/subweb1/list1/doc.txt';
@@ -130,9 +137,9 @@ describe('SharePoint List API Wrapper', function () {
           ClientContext: Ctor
         };
 
-        sputils.list.files.checkOut(fileUrl).then(function () {
+        sputils.list.items.checkOut(fileUrl).then(function () {
           expect(checkOuts).to.equal(1);
-          return sputils.list.files.checkIn(fileUrl);
+          return sputils.list.items.checkIn(fileUrl);
         }).then(function () {
           expect(checkIns).to.equal(1);
           done();
