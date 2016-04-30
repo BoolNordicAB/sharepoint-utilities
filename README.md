@@ -15,6 +15,15 @@
 
 [Production version (minified and mangled)](https://boolnordicab.github.io/sharepoint-utilities/dist/sputils.min.js)
 
+### Technical details
+
+* uglify reports that sputils.min.js is 31.68 kB
+* sputils aim to be compatible with MDS (Minimal Download Strategy).
+* sputils re-export the library [functional.js](http://functionaljs.com/) as the symbol `sputils.fjs`
+* sputils rely on the following libraries/APIs (excepting SharePoint) under the hood:
+    * [`fetch`](https://developer.mozilla.org/en/docs/Web/API/Fetch_API), which is enabled on older platforms by the polyfill [`fetch`](https://github.com/github/fetch). This is a global API, so is usable from all code using `window.fetch`.
+    * [`Promise`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise), which is enabled on older platforms by [`es6-promise-polyfill`](https://github.com/lahmatiy/es6-promise-polyfill). This is also a global API, and is accessible at `window.Promise`.
+
 ## Intro
 
 The intent of this project is to gather best practice in JavaScript interaction with SharePoint. The goal is to provide a unified API through which developers can work. Although there is much to read on the best practices of server side SP development, the same can not be said for client side.
@@ -28,6 +37,8 @@ The project is arranged into namespaces, all children of `sputils`. The currentl
 * search
 * termstore
 * user
+* helpers
+* lib
 
 Each namespace will be extensively documented with examples and through tests. This will be assisted by the build system.
 
@@ -51,8 +62,12 @@ helpers
 
 Miscellaneous convenience functions, eg promise based SP dependency loading.
 
+lib
+---
+generic functions that can be used for many different things.
+
 Setup
-------------
+-----
 
     $ git clone https://github.com/eakron/sharepoint-utilities.git
 
@@ -69,6 +84,13 @@ Building
 --------
 
 Running `npm run build` will create two build artifacts in the dist/ folder: sputils.js and sputils.min.js.
+
+It will also generate docs and coverage in their respective directories.
+
+Committing/pushing
+------------------
+
+This project uses husky that automatically runs tasks when committing/pushing. If any errors from these tasks occur, the commit or push will halt and rollback.
 
 Pull requests
 -------------

@@ -12,6 +12,7 @@ Thank you for your interest in contributing! Note that pull requests will only b
 ## Pull requests
 
 * Add as much information as you can, including screenshots and logs.
+* Apply the `.editorconfig` to your editor, so that the style adheres to the style guide.
 * Code must be well documented and the comments have to follow the style guide, as enforced by jscs.
 * Code must pass tests, jshint and jscs.
 * End all files with new lines.
