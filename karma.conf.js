@@ -13,10 +13,10 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'node_modules/chai/chai.js',
-      'test/utilities/*.js',
       'lib/functional.js',
       'bower_components/es6-promise-polyfill/promise.js',
       'bower_components/fetch/fetch.js',
+      'test/utilities/*.js',
       'src/**/*.js',
       'test/**/*.js'
     ],

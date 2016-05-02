@@ -1,17 +1,17 @@
 (function () {
-  // a function that creates common properties on a Node-like
-  // object. A Node-like object has children, and sortedChildren
-  var initNode = function (n) {
+  // a function that creates common properties on a TreeNode-like
+  // object. A TreeNode-like object has children, and sortedChildren
+  var initTreeNode = function (n) {
     // indexed by name, no guaranteed order
     n.children = {};
     // indexed by order (by custom sort order if defined)
     n.sortedChildren = [];
   };
 
-  var TermsTree = function (termSet) {
+  var TermsTree = function SputilsTermsTree(termSet) {
     this.termSet = termSet;
 
-    initNode(this);
+    initTreeNode(this);
   };
 
   TermsTree.prototype = {
@@ -22,13 +22,13 @@
 
   // A data structure wrapping SP.Term objects
   // with convenience functions and a children object
-  var Node = function (term) {
+  var TreeNode = function SputilsTreeNode(term) {
     this.term = term;
 
-    initNode(this);
+    initTreeNode(this);
   };
 
-  Node.prototype = {
+  TreeNode.prototype = {
     getName: function () {
       return this.term.get_name();
     },
@@ -61,6 +61,16 @@
     }
   };
 
+  // A ListNode do not have children/sortedChildren.
+  var ListNode = function SputilsListNode(term) {
+    this.term = term;
+  };
+
+  // A ListNode do expose the same operations as a TreeNode,
+  // since it does the same sort of wrapping of the underlying
+  // implementation of a SP.Term.
+  ListNode.prototype = TreeNode.prototype;
+
   var generateList = function (terms) {
     var termsEnumerator = terms.getEnumerator(),
         result = [];
@@ -87,11 +97,11 @@
         if (tree[name]) {
           tree[name].term = term;
         } else {
-          tree[name] = new Node(term);
+          tree[name] = new TreeNode(term);
         }
       } else {
         if (!tree[name]) {
-          tree[name] = new Node();
+          tree[name] = new TreeNode();
         }
 
         populateTree(tree[name].children, term, path.slice(1));
@@ -207,7 +217,7 @@
   var getTermsList = function (id) {
     var wrapObjects = function (list) {
       return fjs.map(function (spTerm) {
-        return new Node(spTerm);
+        return new ListNode(spTerm);
       }, list);
     };
 

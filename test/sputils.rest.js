@@ -4,12 +4,6 @@ describe('SharePoint REST API Wrapper', function () {
     expect(sputils).to.have.ownProperty('rest');
   });
 
-  function thrower(done) {
-    return function () {
-      throw new Error();
-    };
-  }
-
   beforeEach(function () {
     initialize_dom();
   });
@@ -32,10 +26,11 @@ describe('SharePoint REST API Wrapper', function () {
         });
       };
 
-      sputils.rest.withRequestDigest(true).then(function (rd) {
-        done();
+      var p = sputils.rest.withRequestDigest(true).then(function (rd) {
         expect(rd).to.equal(idVal);
-      }, thrower(done));
+      });
+
+      p.then(done, done);
     });
   });
 
@@ -44,7 +39,7 @@ describe('SharePoint REST API Wrapper', function () {
       // Mock jQuery ajax
       fetch = function (url, config) {
         expect(config)
-          .to.have.deep.property('headers.accept',
+          .to.have.deep.property('headers.Accept',
                                  'application/json;odata=verbose');
         expect(config)
           .to.have.property('url');
@@ -56,10 +51,12 @@ describe('SharePoint REST API Wrapper', function () {
         return stdPromise();
       };
 
-      sputils.rest.get("/")
+      var p = sputils.rest.get("/")
         .then(function (res) {
-          done();
+          void res.should.be.ok;
         });
+
+      p.then(done, done);
     });
 
     it('should allow absolute urls', function (done) {
@@ -71,10 +68,12 @@ describe('SharePoint REST API Wrapper', function () {
         return stdPromise();
       };
 
-      sputils.rest.get("http://example.com/")
+      var p = sputils.rest.get("http://example.com/")
         .then(function (res) {
-          done();
+          void res.should.be.ok;
         });
+
+      p.then(done, done);
     });
   });
 
@@ -83,10 +82,13 @@ describe('SharePoint REST API Wrapper', function () {
       // Mock jQuery ajax
       fetch = function (url, config) {
         expect(config)
-          .to.have.deep.property('headers.accept',
+          .to.have.deep.property('headers.Accept',
                                  'application/json;odata=verbose');
         expect(config)
           .to.have.deep.property('headers.X-RequestDigest');
+        expect(config)
+          .to.have.deep.property('headers.Content-Type',
+                                 'application/json;odata=verbose;charset=utf-8');
         expect(config)
           .to.have.property('method', 'POST');
         expect(config)
@@ -94,10 +96,12 @@ describe('SharePoint REST API Wrapper', function () {
         return stdPromise();
       };
 
-      sputils.rest.post("/", {"test":"test"})
+      var p = sputils.rest.post("/", {"test":"test"})
         .then(function (res) {
-          done();
-        }, thrower(done));
+          void res.should.be.ok;
+        });
+
+      p.then(done, done);
     });
   });
 });

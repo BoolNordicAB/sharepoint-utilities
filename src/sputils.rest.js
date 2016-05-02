@@ -62,7 +62,7 @@
         method: 'GET',
         credentials: 'include',
         headers: {
-          'accept': 'application/json;odata=verbose'
+          'Accept': 'application/json;odata=verbose'
         }
       };
 
@@ -85,12 +85,14 @@
         var headers = fjs.assign(
           getval('headers', config) || {},
           getval('headers', defaults) || {},
-          {'X-RequestDigest': digest});
+          {
+            'X-RequestDigest': digest,
+            'Content-Type': 'application/json;odata=verbose;charset=utf-8'
+          });
 
         var added = {
           method: 'POST',
-          body: data,
-          contentType: 'application/json;odata=verbose'
+          body: data
         };
 
         var cfg = fjs.assign(config || {}, added, defaults);

@@ -99,7 +99,7 @@ describe('SharePoint User Profile Helpers', function () {
       // Mock request object
       fetch = function (url, config) {
         expect(config)
-          .to.have.deep.property('headers.accept',
+          .to.have.deep.property('headers.Accept',
                                  'application/json;odata=verbose');
         expect(url)
           .to.equal('http://example.com/_api/SP.UserProfiles.PeopleManager/GetMyProperties?$select=UserUrl');

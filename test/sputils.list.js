@@ -15,7 +15,7 @@ describe('SharePoint List API Wrapper', function () {
         //Mock jQuery ajax
         fetch = function (url, config) {
           expect(config)
-            .to.have.deep.property('headers.accept',
+            .to.have.deep.property('headers.Accept',
                                    'application/json;odata=verbose');
           expect(config)
             .to.have.property('url',
@@ -40,7 +40,7 @@ describe('SharePoint List API Wrapper', function () {
         //Mock jQuery ajax
         fetch = function (url, config) {
           expect(config)
-            .to.have.deep.property('headers.accept',
+            .to.have.deep.property('headers.Accept',
                                    'application/json;odata=verbose');
           expect(config)
             .to.have.deep.property('headers.X-RequestDigest',
