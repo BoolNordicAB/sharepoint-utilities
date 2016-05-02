@@ -30,7 +30,7 @@ module.exports = function (grunt) {
       },
       dist: {
         src: concatFiles,
-        dest: 'dist/<%= pkg.name %>.js'
+        dest: 'dist/<%= pkg.name %>.debug.js'
       }
     },
     uglify: {

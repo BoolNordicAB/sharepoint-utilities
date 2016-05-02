@@ -10,7 +10,7 @@
 
 ## Distribution files **(BLEEDING EDGE)**
 
-[Development version (unminified)](https://boolnordicab.github.io/sharepoint-utilities/dist/sputils.js)
+[Development version (unminified)](https://boolnordicab.github.io/sharepoint-utilities/dist/sputils.debug.js)
 
 
 [Production version (minified and mangled)](https://boolnordicab.github.io/sharepoint-utilities/dist/sputils.min.js)
