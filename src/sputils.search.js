@@ -2,11 +2,12 @@
   /**
    * @private
    * @const search.POST_URL_PATH the sub-path used for POST requests */
-  var POST_URL_PATH = '/_api/search/postquery';
+  var POST_URL_PATH = '_api/search/postquery';
+
   /**
    * @private
    * @const search.GET_URL_PATH the sub-path used for GET requests */
-  var GET_URL_PATH = '/_api/search/query';
+  var GET_URL_PATH = '_api/search/query';
 
   /**
    * @private
@@ -158,6 +159,16 @@
     };
   };
 
+  var ensureEndsWithSlash = function (str) {
+    var SLASH = '/';
+    var lastIsSlash = (str || '').slice(-1)[0] === SLASH;
+    if (!lastIsSlash) {
+      return str + SLASH;
+    }
+
+    return str;
+  };
+
   /**
    * Make a search request with a POST method. Useful if complex data needs
    * to be sent to the server.
@@ -180,14 +191,105 @@
    *   .then(function (result) { console.log(result) });
    */
   var postSearch = function (cfg, webUrl) {
+    var url = webUrl || _spPageContextInfo.siteServerRelativeUrl;
+    var data = {
+      request: fjs.assign(cfg, __metadata())
+    };
+
     return sputils.rest.post(
-      (webUrl || _spPageContextInfo.siteServerRelativeUrl) + POST_URL_PATH,
-      fjs.assign(cfg, __metadata()));
+      ensureEndsWithSlash(url) + POST_URL_PATH,
+      data)
+      .then(function unwrap(data) {
+        return data.d.postquery;
+      });
+  };
+
+  /**
+   * @ignore
+   * @summary
+   * checks an object returned from the search API to be a specific type.
+   */
+  var checkType = function (obj, type) {
+    var err;
+    if (obj.__metadata.type !== type) {
+      if (sputils.DEBUG) {
+        err = new TypeError([
+          'Do not know how to handle an object with __metadata ===',
+          obj.__metadata.type
+        ].join(''));
+
+        console.warn(err);
+      }
+
+      return false;
+    }
+
+    return true;
+  };
+
+  /**
+   * @summary
+   * takes an object of type `Microsoft.Office.Server.Search.REST.SearchResult`,
+   * and gets the actual result rows.
+   * @param {Microsoft.Office.Server.Search.REST.SearchResult} postqueryObject
+   * the postquery object of the result from doing a request to the search API.
+   * @returns {Array<SP.SimpleDataRow>} the result rows
+   * @example
+   * sputils.search.postSearch({Querytext: '*'})
+   *   .then(function (result) {
+   *     var rows = sputils.search.extractResultRows(result);
+   *     return rows;
+   *   });
+   */
+  var extractResultRows = function (postqueryObject) {
+    var type = 'Microsoft.Office.Server.Search.REST.SearchResult';
+    if (!checkType(postqueryObject, type)) {
+      return {};
+    }
+
+    return postqueryObject.PrimaryQueryResult.RelevantResults.Table.Rows.results;
+  };
+
+  /**
+   * @summary
+   * Takes an object returned from the SP Search API, which contains
+   * a `Cells` property, which in turn, contains the data in the form
+   * of key/value pairs.
+   * @param {SP.SimpleDataRow} row - the row.
+   * @returns {object} - the object hash representation of the row.
+   * @example
+   * sputils.search.postSearch({Querytext: '*'})
+   *   .then(function (result) {
+   *     var rows = sputils.search.extractResultRows(result);
+   *     return sputils.fjs.map(
+   *       sputils.search.mapRowToHash,
+   *       rows);
+   *   })
+   *   .then(function (parsed) {
+   *     console.log(parsed);
+   *   });
+   */
+  var mapRowToHash = function (row) {
+    var type = 'SP.SimpleDataRow';
+    if (!checkType(row, type)) {
+      return {};
+    }
+
+    var kvPairs = row.Cells.results;
+
+    var map = fjs.fold(function (out, next) {
+      out[next.Key] = next.Value;
+      return out;
+    }, {});
+
+    return map(kvPairs);
   };
 
   /** @namespace */
   sputils.search = {
     searchCfgExample: searchCfgExample,
-    postSearch: postSearch
+    postSearch: postSearch,
+    mapRowToHash: mapRowToHash,
+    extractResultRows: extractResultRows
   };
 })();
