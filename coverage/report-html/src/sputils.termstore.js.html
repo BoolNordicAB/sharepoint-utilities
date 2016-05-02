@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">91.36% </span>
+        <span class="strong">91.67% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>74/81</span>
+        <span class='fraction'>77/84</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">70% </span>
@@ -30,14 +30,14 @@
         <span class='fraction'>7/10</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">86.67% </span>
+        <span class="strong">87.1% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>26/30</span>
+        <span class='fraction'>27/31</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">91.36% </span>
+        <span class="strong">91.67% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>74/81</span>
+        <span class='fraction'>77/84</span>
       </div>
     </div>
   </div>
@@ -288,34 +288,44 @@
 243
 244
 245
-246</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">5×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">5×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">4×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">4×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
@@ -350,6 +360,16 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">3×</span>
@@ -534,19 +554,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">(function () {
-  // a function that creates common properties on a Node-like
-  // object. A Node-like object has children, and sortedChildren
-  var initNode = function (n) {
+  // a function that creates common properties on a TreeNode-like
+  // object. A TreeNode-like object has children, and sortedChildren
+  var initTreeNode = function (n) {
     // indexed by name, no guaranteed order
     n.children = {};
     // indexed by order (by custom sort order if defined)
     n.sortedChildren = [];
   };
 &nbsp;
-  var TermsTree = function (termSet) {
+  var TermsTree = function SputilsTermsTree(termSet) {
     this.termSet = termSet;
 &nbsp;
-    initNode(this);
+    initTreeNode(this);
   };
 &nbsp;
   TermsTree.prototype = {
@@ -557,13 +577,13 @@
 &nbsp;
   // A data structure wrapping SP.Term objects
   // with convenience functions and a children object
-  var Node = function (term) {
+  var TreeNode = function SputilsTreeNode(term) {
     this.term = term;
 &nbsp;
-    initNode(this);
+    initTreeNode(this);
   };
 &nbsp;
-  Node.prototype = {
+  TreeNode.prototype = {
     getName: function () {
       return this.term.get_name();
     },
@@ -596,6 +616,16 @@
     }
   };
 &nbsp;
+  // A ListNode do not have children/sortedChildren.
+  var ListNode = function SputilsListNode(term) {
+    this.term = term;
+  };
+&nbsp;
+  // A ListNode do expose the same operations as a TreeNode,
+  // since it does the same sort of wrapping of the underlying
+  // implementation of a SP.Term.
+  ListNode.prototype = TreeNode.prototype;
+&nbsp;
   var generateList = function (terms) {
     var termsEnumerator = terms.getEnumerator(),
         result = [];
@@ -622,11 +652,11 @@
         <span class="missing-if-branch" title="if path not taken" >I</span>if (tree[name]) {
 <span class="cstat-no" title="statement not covered" >          tree[name].term = term;</span>
         } else {
-          tree[name] = new Node(term);
+          tree[name] = new TreeNode(term);
         }
       } else {
         <span class="missing-if-branch" title="if path not taken" >I</span>if (!tree[name]) {
-<span class="cstat-no" title="statement not covered" >          tree[name] = new Node();</span>
+<span class="cstat-no" title="statement not covered" >          tree[name] = new TreeNode();</span>
         }
 &nbsp;
         populateTree(tree[name].children, term, path.slice(1));
@@ -742,7 +772,7 @@
   var getTermsList = function (id) {
     var wrapObjects = function (list) {
       return fjs.map(function (spTerm) {
-        return new Node(spTerm);
+        return new ListNode(spTerm);
       }, list);
     };
 &nbsp;
@@ -784,7 +814,7 @@
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Apr 30 2016 22:06:05 GMT+0200 (CEST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon May 02 2016 22:51:54 GMT+0200 (CEST)
 </div>
 </div>
 <script src="../prettify.js"></script>
