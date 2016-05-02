@@ -8,12 +8,17 @@
 [Test coverage](https://boolnordicab.github.io/sharepoint-utilities/coverage/report-html)
 
 
-## Distribution files
+## Distribution files **(BLEEDING EDGE)**
 
 [Development version (unminified)](https://boolnordicab.github.io/sharepoint-utilities/dist/sputils.js)
 
 
 [Production version (minified and mangled)](https://boolnordicab.github.io/sharepoint-utilities/dist/sputils.min.js)
+
+
+For stable builds, look [at the list of releases](https://github.com/BoolNordicAB/sharepoint-utilities/releases).
+As of this moment, none are released. Please refer to the 
+[milestones](https://github.com/BoolNordicAB/sharepoint-utilities/milestones) for information.
 
 ### Technical details
 
