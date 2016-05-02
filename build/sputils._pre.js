@@ -34,6 +34,15 @@ https://github.com/BoolNordicAB/sharepoint-utilities
 
 global.sputils = global.sputils || {};
 var sputils = global.sputils;
+
+// This can be used internally to do debugging stuff conditionally.
+// You are free to set this to `true`, which will enable logging
+// and other debugging tools.
+sputils.DEBUG = false;
+
+// TODO: consider not throwing an error here.
+// this disallows loading this library before any SP libs,
+// and that may be preferable sometimes, perhaps?
 _spPageContextInfo = _spPageContextInfo || (function () {
   throw Error('_spPageContextInfo not found');
 })();
