@@ -157,7 +157,7 @@
   * var separator = ';';
   * downloadContent({
   *   type: 'text/csv;charset=utf-8',
-  *   filename: 'tolle.csv',
+  *   filename: 'results.csv',
   *   content: ['ASCII', separator,
   *      'Åbäcka sig', separator,
   *      'to się podoba: żźćąęłć',
@@ -166,9 +166,9 @@
   **/
   var downloadContent = function (options) {
     if (!options || !options.content) {
-      throw 'You have at least to provide content to download';
+      throw new Error('You have at least to provide content to download');
     }
-    options.filename = options.filename || 'tolle.txt';
+    options.filename = options.filename || 'download.txt';
     options.type = options.type || 'text/plain;charset=utf-8';
     options.bom = options.bom || decodeURIComponent('%ef%bb%bf');
     if (window.navigator.msSaveBlob) {

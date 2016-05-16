@@ -113,4 +113,13 @@ describe('Helpers', function () {
       p.then(done, done);
     });
   });
+  describe('downloadContent', function () {
+    it('should require content', function () {
+      var options = {};
+      var fn = function() {
+        sputils.helpers.downloadContent(options);
+      };
+      expect(fn).to.throw(Error);
+    });
+  });
 });
