@@ -59,6 +59,7 @@
   "requireSpaceAfterBinaryOperators": true,
   "requireCamelCaseOrUpperCaseIdentifiers": "ignoreProperties",
   "disallowKeywords": ["with"],
+  "disallowKeywordsOnNewLine": ["else"],
   "disallowMultipleLineStrings": true,
   "validateIndentation": 2,
   "disallowTrailingWhitespace": true,
