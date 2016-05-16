@@ -182,8 +182,10 @@
       var uriScheme = ['data:', options.type, ','].join('');
       link.href = uriScheme + content;
       link.download = options.filename;
+      //FF requires appending it to the DOM to make it clickable
+      document.body.appendChild(link);
       link.click();
-      link.remove();
+      document.body.removeChild(link);
     }
   };
 
@@ -192,6 +194,7 @@
     withSharePointDependencies: withSharePointDependencies,
     abs2rel: abs2rel,
     clientContext: clientContext,
-    parseQueryString: parseQueryString
+    parseQueryString: parseQueryString,
+    downloadContent: downloadContent
   };
 })();
