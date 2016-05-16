@@ -172,11 +172,9 @@
     options.type = options.type || 'text/plain;charset=utf-8';
     options.bom = options.bom || decodeURIComponent('%ef%bb%bf');
     if (window.navigator.msSaveBlob) {
-      var blob = new Blob([options.bom + options.content],
-                 {type: options.type});
+      var blob = new Blob([options.bom + options.content], {type: options.type});
       window.navigator.msSaveBlob(blob, options.filename);
-    }
-    else {
+    } else {
       var link = document.createElement('a');
       var content = options.bom + options.content;
       var uriScheme = ['data:', options.type, ','].join('');
