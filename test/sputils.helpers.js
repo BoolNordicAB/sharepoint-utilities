@@ -52,7 +52,7 @@ describe('Helpers', function () {
       var id = {};
 
       fetch = function (url, cfg) {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
           resolve({
             d: {
               GetContextWebInformation: {
@@ -116,7 +116,7 @@ describe('Helpers', function () {
   describe('downloadContent', function () {
     it('should require content', function () {
       var options = {};
-      var fn = function() {
+      var fn = function () {
         sputils.helpers.downloadContent(options);
       };
       expect(fn).to.throw(Error);

@@ -5,7 +5,7 @@ describe('SharePoint REST API Wrapper', function () {
   });
 
   beforeEach(function () {
-    initialize_dom();
+    initializeDOM();
   });
 
   describe('requestFormDigest', function () {
@@ -15,7 +15,7 @@ describe('SharePoint REST API Wrapper', function () {
       var idVal = '#123';
 
       fetch = function (url, cfg) {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
           resolve({
             d: {
               GetContextWebInformation: {
@@ -51,7 +51,7 @@ describe('SharePoint REST API Wrapper', function () {
         return stdPromise();
       };
 
-      var p = sputils.rest.get("/")
+      var p = sputils.rest.get('/')
         .then(function (res) {
           void res.should.be.ok;
         });
@@ -68,7 +68,7 @@ describe('SharePoint REST API Wrapper', function () {
         return stdPromise();
       };
 
-      var p = sputils.rest.get("http://example.com/")
+      var p = sputils.rest.get('http://example.com/')
         .then(function (res) {
           void res.should.be.ok;
         });
@@ -96,7 +96,7 @@ describe('SharePoint REST API Wrapper', function () {
         return stdPromise();
       };
 
-      var p = sputils.rest.post("/", {"test":"test"})
+      var p = sputils.rest.post('/', {'test':'test'})
         .then(function (res) {
           void res.should.be.ok;
         });

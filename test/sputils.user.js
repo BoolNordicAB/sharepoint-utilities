@@ -1,8 +1,7 @@
 describe('SharePoint User Profile Helpers', function () {
-
   describe('loginAsAnotherUser', function () {
     it('alters location correctly', function () {
-      global = { location: {} };
+      global = {location: {}};
       sputils.user.loginAsAnotherUser();
 
       expect(global.location.href)
@@ -13,7 +12,7 @@ describe('SharePoint User Profile Helpers', function () {
 
   describe('logoutUser', function () {
     it('alters location correctly', function () {
-      global = { location: {} };
+      global = {location: {}};
       sputils.user.logoutUser();
 
       expect(global.location.href)
@@ -70,10 +69,10 @@ describe('SharePoint User Profile Helpers', function () {
       };
     };
 
-    it('returns a promise which is resolved with the current user', function(done) {
+    it('returns a promise which is resolved with the current user', function (done) {
       var testData = initMocks({success: true});
 
-      var p = sputils.user.getCurrentUser().then(function(result) {
+      var p = sputils.user.getCurrentUser().then(function (result) {
         result.should.equal(testData.user);
         testData.getCounter().should.equal(4);
       });
@@ -84,7 +83,7 @@ describe('SharePoint User Profile Helpers', function () {
     it('rejects the Promise when something bad happens', function (done) {
       var testData = initMocks({success: false});
 
-      var p = sputils.user.getCurrentUser().then(function() {
+      var p = sputils.user.getCurrentUser().then(function () {
         throw new Error('should not happen');
       }, function (err) {
         void err.should.be.ok;
@@ -95,7 +94,7 @@ describe('SharePoint User Profile Helpers', function () {
   });
 
   describe('getCurrentUserPersonalSiteUrl', function () {
-   it('should have correct config settings', function (done) {
+    it('should have correct config settings', function (done) {
       // Mock request object
       fetch = function (url, config) {
         expect(config)

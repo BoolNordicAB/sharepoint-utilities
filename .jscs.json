@@ -3,7 +3,12 @@
     "jscs-jsdoc"
   ],
   "jsDoc": {
-    "checkAnnotations": "jsdoc3"
+    "checkAnnotations": {
+      "preset": "jsdoc3",
+      "extra": {
+        "memberof!": true
+      }
+    }
   },
 
   "requireCurlyBraces": [
@@ -27,6 +32,8 @@
     "catch"
   ],
   "requireSpaceBeforeBlockStatements": true,
+  "disallowNewlineBeforeBlockStatements": true,
+  "disallowKeywordsOnNewLine": ["else"],
   "requireParenthesesAroundIIFE": true,
   "requireSpacesInConditionalExpression": true,
   "requireSpacesInAnonymousFunctionExpression": {
@@ -69,6 +76,5 @@
   "validateQuoteMarks": {
     "mark": "'",
     "escape": true
-  },
-  "esnext": true
+  }
 }

@@ -69,7 +69,7 @@ module.exports = function (grunt) {
       }
     },
     jscs: {
-      main: ["src/**/*.js"]
+      main: ['src/**/*.js', 'test/**/*.js']
     },
     clean: {
       docs: ['doc/**/*'],

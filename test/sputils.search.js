@@ -38,7 +38,7 @@ describe('Search module', function () {
         });
       };
 
-      var p = sputils.search.postSearch({ Querytext: '*' }).then(function (res) {
+      var p = sputils.search.postSearch({Querytext: '*'}).then(function (res) {
         res.should.equal(result);
       });
 

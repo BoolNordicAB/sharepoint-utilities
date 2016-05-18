@@ -6,7 +6,7 @@ describe('SharePoint List API Wrapper', function () {
   });
 
   beforeEach(function () {
-    initialize_dom();
+    initializeDOM();
   });
 
   describe('byName', function () {
@@ -26,7 +26,7 @@ describe('SharePoint List API Wrapper', function () {
           return stdPromise();
         };
 
-        var p = sputils.list.byName("Announcements").getItems()
+        var p = sputils.list.byName('Announcements').getItems()
           .then(function (res) {
             void res.should.be.ok;
           });
@@ -56,7 +56,7 @@ describe('SharePoint List API Wrapper', function () {
           return stdPromise();
         };
 
-        var p = sputils.list.byName("Announcements").postItems({ "test": "test" })
+        var p = sputils.list.byName('Announcements').postItems({'test': 'test'})
           .then(function (res) {
             void res.should.be.ok;
           });
@@ -73,7 +73,7 @@ describe('SharePoint List API Wrapper', function () {
             result = {d: 'success'},
             expUrl = _spPageContextInfo.webAbsoluteUrl +
               "/_api/Web/Lists/getByTitle('" +
-              listName + "')/items/getbyid(" + id + ")";
+              listName + "')/items/getbyid(" + id + ')';
 
         fetch = function (url, cfg) {
           expect(url.toLowerCase()).to.equal(expUrl.toLowerCase());
@@ -113,7 +113,7 @@ describe('SharePoint List API Wrapper', function () {
           expect(url).to.equal(window.location.hostname + '/subweb1');
 
           this.executeQueryAsync = function (resolve, reject) {
-            resolve({ });
+            resolve({});
           };
 
           this.get_web = function () {

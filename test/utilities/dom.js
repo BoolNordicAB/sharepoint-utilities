@@ -1,12 +1,12 @@
-var initialize_dom = function () {
+var initializeDOM = function () {
   // Clean the DOM
-  document.body.innerHTML = "";
+  document.body.innerHTML = '';
 
-  var input = document.createElement("input");
-  input.value = "TestValue";
-  input.id = "__REQUESTDIGEST";
+  var input = document.createElement('input');
+  input.value = 'TestValue';
+  input.id = '__REQUESTDIGEST';
   document.body.appendChild(input);
 };
 
-initialize_dom();
+initializeDOM();
 

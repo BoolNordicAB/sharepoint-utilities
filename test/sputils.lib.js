@@ -11,7 +11,7 @@ describe('SPUTILS LIB', function () {
   var testObjects = {
     a: {
       b: {
-        c: { es: '', n: false, z: 0, e: null, f: function(){} },
+        c: {es: '', n: false, z: 0, e: null, f: function () {}},
         d: [null, 1, {'long prop name': 9}]
       }
     }

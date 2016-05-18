@@ -1,5 +1,4 @@
 describe('Termstore', function () {
-
   it('should have a namespace', function () {
     expect(sputils).to.have.ownProperty('termstore');
   });
@@ -39,10 +38,10 @@ describe('Termstore', function () {
   beforeEach(function () {
     // yes, mocking SP libs is a full time job :P
     termsAsArray = [
-      new MockTerm({ id: '0', path: 'root1' }),
-      new MockTerm({ id: '1', path: 'root1;a' }),
-      new MockTerm({ id: '2', path: 'root2' }),
-      new MockTerm({ id: '3', path: 'root2;b' }),
+      new MockTerm({id: '0', path: 'root1'}),
+      new MockTerm({id: '1', path: 'root1;a'}),
+      new MockTerm({id: '2', path: 'root2'}),
+      new MockTerm({id: '3', path: 'root2;b'})
     ];
     terms = {
       data: termsAsArray,
@@ -126,27 +125,26 @@ describe('Termstore', function () {
   describe('withTaxonomyDeps', function () {
     it('should return a Promise that resolves after the taxonomy deps are loaded',
        function (done) {
-         sputils.termstore.withTaxonomyDeps().then(function () {
-           // the deps are now loaded!
-           done();
-         }, done);
-       });
+        sputils.termstore.withTaxonomyDeps().then(function () {
+          // the deps are now loaded!
+          done();
+        }, done);
+      });
   });
 
   describe('getTerms', function () {
     it('should return all terms in the termSet with the supplied ID',
        function (done) {
-         var p = sputils.termstore.getTerms(termSetId).then(function (result) {
-           result.should.equal(terms);
-         });
+        var p = sputils.termstore.getTerms(termSetId).then(function (result) {
+          result.should.equal(terms);
+        });
 
-         p.then(done, done);
-       });
+        p.then(done, done);
+      });
   });
 
   describe('getTermsList', function () {
     it('should result in the array representation of the terms', function (done) {
-
       var p = sputils.termstore.getTermsList(termSetId).then(function (termsArray) {
         fjs.each(function (node, i) {
           var origTerm = termsAsArray[i];
@@ -160,7 +158,6 @@ describe('Termstore', function () {
 
   describe('getTermsTree', function () {
     it('should result in a "tree" representation of the terms', function (done) {
-
       var p = sputils.termstore.getTermsTree(termSetId).then(function (termsTree) {
         void termsTree.should.be.ok;
 
@@ -191,9 +188,7 @@ describe('Termstore', function () {
   });
 
   describe('Wrappers', function () {
-
     it('should expose a nice(r) API to the taxonomy objects', function (done) {
-
       var p = sputils.termstore.getTermsList(termSetId).then(function (list) {
         list.length.should.not.equal(0);
         var t = list[0]; // not sorted by sortOrder, so will be equivalent to root1
