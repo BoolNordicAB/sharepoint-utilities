@@ -5,3 +5,4 @@ coverage/
 doc/
 dist/
 .tern-port
+.DS_Store
