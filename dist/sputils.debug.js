@@ -34,6 +34,15 @@ https://github.com/BoolNordicAB/sharepoint-utilities
 
 global.sputils = global.sputils || {};
 var sputils = global.sputils;
+
+// This can be used internally to do debugging stuff conditionally.
+// You are free to set this to `true`, which will enable logging
+// and other debugging tools.
+sputils.DEBUG = false;
+
+// TODO: consider not throwing an error here.
+// this disallows loading this library before any SP libs,
+// and that may be preferable sometimes, perhaps?
 _spPageContextInfo = _spPageContextInfo || (function () {
   throw Error('_spPageContextInfo not found');
 })();
@@ -1266,13 +1275,59 @@ sputils.lib = {
       return cctx;
     });
   };
+  /**
+  * Download a file using javascript
+  * Useful to implement Export functionality in Search.
+  *
+  * You can download as csv or text. The function triggers the download
+  * not the actual csv creation.
+  *
+  * Works with utf-8
+  *
+  * @function sputils.helpers.downloadContent
+  * @param {Array<string>} options.
+  * @returns {nil}
+  * @example
+  * var separator = ';';
+  * downloadContent({
+  *   type: 'text/csv;charset=utf-8',
+  *   filename: 'results.csv',
+  *   content: ['ASCII', separator,
+  *      'Åbäcka sig', separator,
+  *      'to się podoba: żźćąęłć',
+  *      separator, 'Яшлӑхӑма туйаймарӑм'].join('')
+  * });
+  **/
+  var downloadContent = function (options) {
+    if (!options || !options.content) {
+      throw new Error('You have at least to provide content to download');
+    }
+    options.filename = options.filename || 'download.txt';
+    options.type = options.type || 'text/plain;charset=utf-8';
+    options.bom = options.bom || decodeURIComponent('%ef%bb%bf');
+    if (window.navigator.msSaveBlob) {
+      var blob = new Blob([options.bom + options.content], {type: options.type});
+      window.navigator.msSaveBlob(blob, options.filename);
+    } else {
+      var link = document.createElement('a');
+      var content = options.bom + options.content;
+      var uriScheme = ['data:', options.type, ','].join('');
+      link.href = uriScheme + content;
+      link.download = options.filename;
+      //FF requires appending it to the DOM to make it clickable
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
 
   /** @namespace */
   sputils.helpers = {
     withSharePointDependencies: withSharePointDependencies,
     abs2rel: abs2rel,
     clientContext: clientContext,
-    parseQueryString: parseQueryString
+    parseQueryString: parseQueryString,
+    downloadContent: downloadContent
   };
 })();
 ;(function () {

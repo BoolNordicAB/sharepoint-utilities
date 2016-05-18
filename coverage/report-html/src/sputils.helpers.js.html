@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">71.43% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>32/32</span>
+        <span class='fraction'>35/49</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">50% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>6/6</span>
+        <span class='fraction'>9/18</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>12/12</span>
+        <span class='fraction'>13/13</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">71.43% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>32/32</span>
+        <span class='fraction'>35/49</span>
       </div>
     </div>
   </div>
-  <div class='status-line high'></div>
+  <div class='status-line medium'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -195,7 +195,53 @@
 150
 151
 152
-153</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -340,7 +386,53 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -490,13 +582,59 @@
       return cctx;
     });
   };
+  /**
+  * Download a file using javascript
+  * Useful to implement Export functionality in Search.
+  *
+  * You can download as csv or text. The function triggers the download
+  * not the actual csv creation.
+  *
+  * Works with utf-8
+  *
+  * @function sputils.helpers.downloadContent
+  * @param {Array&lt;string&gt;} options.
+  * @returns {nil}
+  * @example
+  * var separator = ';';
+  * downloadContent({
+  *   type: 'text/csv;charset=utf-8',
+  *   filename: 'results.csv',
+  *   content: ['ASCII', separator,
+  *      'Åbäcka sig', separator,
+  *      'to się podoba: żźćąęłć',
+  *      separator, 'Яшлӑхӑма туйаймарӑм'].join('')
+  * });
+  **/
+  var downloadContent = function (options) {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (!options || !options.content) {
+      throw new Error('You have at least to provide content to download');
+    }
+<span class="cstat-no" title="statement not covered" >    options.filename = options.filename || 'download.txt';</span>
+<span class="cstat-no" title="statement not covered" >    options.type = options.type || 'text/plain;charset=utf-8';</span>
+<span class="cstat-no" title="statement not covered" >    options.bom = options.bom || decodeURIComponent('%ef%bb%bf');</span>
+<span class="cstat-no" title="statement not covered" >    if (window.navigator.msSaveBlob) {</span>
+<span class="cstat-no" title="statement not covered" >      var blob = new Blob([options.bom + options.content], {type: options.type});</span>
+<span class="cstat-no" title="statement not covered" >      window.navigator.msSaveBlob(blob, options.filename);</span>
+    } else {
+<span class="cstat-no" title="statement not covered" >      var link = document.createElement('a');</span>
+<span class="cstat-no" title="statement not covered" >      var content = options.bom + options.content;</span>
+<span class="cstat-no" title="statement not covered" >      var uriScheme = ['data:', options.type, ','].join('');</span>
+<span class="cstat-no" title="statement not covered" >      link.href = uriScheme + content;</span>
+<span class="cstat-no" title="statement not covered" >      link.download = options.filename;</span>
+      //FF requires appending it to the DOM to make it clickable
+<span class="cstat-no" title="statement not covered" >      document.body.appendChild(link);</span>
+<span class="cstat-no" title="statement not covered" >      link.click();</span>
+<span class="cstat-no" title="statement not covered" >      document.body.removeChild(link);</span>
+    }
+  };
 &nbsp;
   /** @namespace */
   sputils.helpers = {
     withSharePointDependencies: withSharePointDependencies,
     abs2rel: abs2rel,
     clientContext: clientContext,
-    parseQueryString: parseQueryString
+    parseQueryString: parseQueryString,
+    downloadContent: downloadContent
   };
 })();
 &nbsp;</pre></td></tr>
@@ -505,7 +643,7 @@
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon May 02 2016 22:59:02 GMT+0200 (CEST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed May 18 2016 17:38:21 GMT+0200 (CEST)
 </div>
 </div>
 <script src="../prettify.js"></script>
